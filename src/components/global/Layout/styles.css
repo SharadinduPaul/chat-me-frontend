@@ -1,0 +1,9 @@
+.layout-main{
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+.layout-content{
+    height: 100%;
+    width: 100%;
+}

@@ -1,0 +1,34 @@
+.content1{
+    color: var(--color-primary);
+    font-size: 14px;
+    font-weight: 300;
+}
+.content2{
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 200;
+}
+.content3{
+    color: var(--color-primary);
+    font-size: 10px;
+    font-weight: 200;
+}
+
+.header1{
+    color: var(--color-primary);
+    font-size: 2rem;
+    font-weight: 600;
+    font-family: 'EB Garamond', serif;
+}
+.header2{
+    color: var(--color-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: 'EB Garamond', serif;
+}
+.header3{
+    color: var(--color-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-family: 'EB Garamond', serif;
+}
