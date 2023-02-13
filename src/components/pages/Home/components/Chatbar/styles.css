@@ -1,0 +1,107 @@
+.chatbar-main {
+  height: 100%;
+  width: 100%;
+  max-width: 300px;
+  background-color: var(--bg-primary);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+.chatbar-main > .heading {
+  height: var(--topbar-height);
+  display: flex;
+  align-items: center;
+  padding: 0 1rem 0 1.4rem;
+  gap: 1rem;
+  cursor: pointer;
+}
+.chatbar-main > .heading > img:first-child {
+  height: 1.8rem;
+  width: 1.8rem;
+}
+.chatbar-main > .heading > img:last-child {
+  height: 1.2rem;
+  width: 1.2rem;
+  display: none;
+}
+.chatbar-main > .heading > img:last-child.chat-loader {
+  display: block;
+  animation: rotate 2s infinite;
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.chatbar-main > .heading > span {
+  flex: 1;
+}
+.chatbar-main > #hr {
+  height: 1px;
+  width: 100%;
+  background-image: linear-gradient(
+    to left,
+    var(--color-accent),
+    var(--color-accent2)
+  );
+  margin-bottom: 0.6rem;
+}
+.chatbar-main > .add-new {
+  border-radius: 50px;
+  height: 2.8rem;
+  margin: 0.6rem 0.4rem;
+  background-color: var(--bg-secondary);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.chatbar-main > .add-new > img {
+  height: 1.6rem;
+}
+
+/* chat styles */
+.chat-main {
+  position: relative;
+  margin: 0.4rem 0.4rem 0;
+  border-radius: var(--radius2);
+  padding: 1px;
+  cursor: pointer;
+  border: 1px solid;
+  transition: 0.5s;
+}
+.chat-main:hover {
+  background-image: linear-gradient(
+    to left,
+    var(--color-accent),
+    var(--color-accent2)
+  );
+}
+.chat-main.selected {
+  background-image: linear-gradient(
+    to left,
+    var(--color-accent),
+    var(--color-accent2)
+  );
+}
+.chat-container {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius2);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.chat-container > img {
+  height: 1.8rem;
+  aspect-ratio: 1/1;
+}

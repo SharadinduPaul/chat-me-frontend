@@ -1,6 +1,5 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-// import { Sidebar, Topbar } from "../index";
 import "./styles.css";
 
 interface LayoutProps {
@@ -9,12 +8,8 @@ interface LayoutProps {
 export const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="layout-main">
-      {/* <Sidebar /> */}
-      <div className="layout-content">
-        {/* <Topbar /> */}
-        <Outlet />
-        {children}
-      </div>
+      <Outlet />
+      {children}
     </div>
   );
 };

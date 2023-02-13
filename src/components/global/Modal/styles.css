@@ -1,0 +1,44 @@
+.modal-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  perspective: 1000px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  animation: fadeIn 0.8s forwards ease-out;
+}
+.modal-content {
+  height: 50%;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  background-color: var(--bg-primary);
+  border-radius: var(--radius1);
+  animation: flip 0.5s forwards cubic-bezier(.48,.45,.69,1.16);
+  transform-style: preserve-3d;
+  overflow: hidden auto;
+}
+
+@keyframes fadeIn {
+  0% {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes flip {
+  0% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}

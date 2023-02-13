@@ -1,0 +1,33 @@
+.switch-main {
+  --size: 1rem;
+  height: var(--size);
+  width: calc(var(--size) * 1.5);
+  border-radius: 2rem;
+  position: relative;
+  cursor: pointer;
+  transition: 0.6s;
+}
+.switch-main {
+  background-color: var(--bg-secondary);
+}
+.switch-main.accent1.selected {
+  background-color: var(--color-accent);
+}
+.switch-main.accent2.selected {
+  background-color: var(--color-accent2);
+}
+.switch-main > div {
+  background-color: var(--color-primary);
+  height: calc(var(--size) * 1.2);
+  width: calc(var(--size) * 1.2);
+
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+  transition: 0.4s ease-in;
+  border-radius: 50%;
+}
+.switch-main.selected > div {
+  left: 100%;
+}

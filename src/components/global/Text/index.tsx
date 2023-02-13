@@ -15,6 +15,7 @@ interface TextProps {
   children?: any;
   style?: React.CSSProperties;
   className?: string;
+  onClick?: () => void;
 }
 export const Text = ({
   varient = "content1",
@@ -24,6 +25,7 @@ export const Text = ({
   children,
   style,
   className,
+  onClick,
 }: TextProps) => {
   return (
     <div
@@ -34,6 +36,7 @@ export const Text = ({
         opacity: faded ? 0.5 : 1,
         fontStyle: italic ? "italic" : "normal",
       }}
+      onClick={onClick}
     >
       {children}
     </div>

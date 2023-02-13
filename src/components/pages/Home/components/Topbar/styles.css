@@ -1,0 +1,9 @@
+.topbar-main{
+    width: 100%;
+    height: var(--topbar-height);
+    background-color: var(--bg-primary);
+
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
