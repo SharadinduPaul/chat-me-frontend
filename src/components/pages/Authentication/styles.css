@@ -3,6 +3,10 @@
   height: 100%;
   position: relative;
   perspective: 800px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 .authentication-card:first-child{
   --color: var(--color-accent);
@@ -47,7 +51,7 @@
   color: var(--color);
   border-radius: var(--radius2);
 
-  height: 2.5rem;
+  height: 2.6rem;
   padding: 10px;
   margin-top: 1rem;
   opacity: 0.9;
@@ -64,7 +68,6 @@
   width: 100%;
   height: 3rem;
   background-color: var(--color);
-  /* background: linear-gradient(); */
 
   border: none;
   cursor: pointer;
@@ -72,6 +75,10 @@
 }
 .authentication-card > button:active {
   filter: brightness(80%);
+}
+.authentication-card > button > * {
+  color: #000;
+  font-weight: 800;
 }
 .authentication-card p {
   color: var(--color);
@@ -104,3 +111,4 @@
 .authentication-card > .toggle > .toggleSignup:hover {
   text-decoration: underline;
 }
+

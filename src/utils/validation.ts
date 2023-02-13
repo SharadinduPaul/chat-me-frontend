@@ -9,13 +9,13 @@ export const signUpValidation = (
   if (!name) {
     return {
       errLocation: "name",
-      errMessage: "Please enter you name",
+      errMessage: "Please enter your name",
     };
   }
   if (!email) {
     return {
       errLocation: "email",
-      errMessage: "Please enter you email",
+      errMessage: "Please enter your email",
     };
   }
   if (!email.match(emailRegex)) {
@@ -27,7 +27,7 @@ export const signUpValidation = (
   if (!password) {
     return {
       errLocation: "password",
-      errMessage: "Please enter you password",
+      errMessage: "Please enter your password",
     };
   }
 };
@@ -35,7 +35,7 @@ export const loginValidation = (email: string, password: string) => {
   if (!email) {
     return {
       errLocation: "email",
-      errMessage: "Please enter you email",
+      errMessage: "Please enter your email",
     };
   }
   if (!email.match(emailRegex)) {
@@ -47,7 +47,7 @@ export const loginValidation = (email: string, password: string) => {
   if (!password) {
     return {
       errLocation: "password",
-      errMessage: "Please enter you password",
+      errMessage: "Please enter your password",
     };
   }
 };

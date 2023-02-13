@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Login, Registration } from "../../../apis";
+import { user } from "../../../assets/animated";
 import { POST } from "../../../utils/fetch";
 import { saveUser } from "../../../utils/handleUser";
 import { loginValidation, signUpValidation } from "../../../utils/validation";
