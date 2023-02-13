@@ -18,17 +18,17 @@
     color: var(--color-primary);
     font-size: 2rem;
     font-weight: 600;
-    font-family: 'EB Garamond', serif;
+    font-family: 'Quicksand', sans-serif;
 }
 .header2{
     color: var(--color-primary);
     font-size: 1.5rem;
     font-weight: 600;
-    font-family: 'EB Garamond', serif;
+    font-family: 'Quicksand', sans-serif;
 }
 .header3{
     color: var(--color-primary);
     font-size: 1.2rem;
     font-weight: 600;
-    font-family: 'EB Garamond', serif;
+    font-family: 'Quicksand', sans-serif;
 }

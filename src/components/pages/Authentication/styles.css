@@ -1,46 +1,106 @@
-.authentication-main{
-    width: 100%;
-    height: 100%;
-    position: relative;
-    perspective: 800px;
+.authentication-main {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  perspective: 800px;
 }
-.authentication-card{
-    width: 100%;
-    max-width: 400px;
-    height: 60%;
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--color-accent);
-    border-radius: var(--radius);
-    padding: 1rem;
-
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1rem;
-
-    transition: 0.6s;
-    backface-visibility: hidden;
-    transform-style: preserve-3d;
-    /* overflow: hidden; */
+.authentication-card:first-child{
+  --color: var(--color-accent);
+  --color2: var(--color-accent2)
 }
-.authentication-card > *:not(button){
-    translate: 0 0 6rem;
-    width: 70%;
+.authentication-card:last-child{
+  --color: var(--color-accent2);
+  --color2: var(--color-accent)
 }
-.authentication-card > button{
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 3rem;
-    border-radius:  0 0 var(--radius) var(--radius);
-    background-color: var(--color-accent);
+.authentication-card {
+  width: 100%;
+  max-width: 400px;
+  height: 60%;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--color);
+  border-radius: var(--radius1);
+  padding: 1rem 1rem 3rem;
 
-    border: none;
-    cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  transition: 1s;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+.authentication-card > *:not(button) {
+  width: 85%;
+}
+.authentication-card > input {
+  border: none;
+  outline: none;
+  background-color: var(--bg-primary);
+  color: var(--color);
+  border-radius: var(--radius2);
+
+  height: 2.5rem;
+  padding: 10px;
+  margin-top: 1rem;
+  opacity: 0.9;
+  border: 1px solid #000;
+  transition: 0.2s;
+}
+.authentication-card > input:focus {
+  opacity: 1;
+  border-bottom: 1px solid var(--color);
+}
+.authentication-card > button {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 3rem;
+  background-color: var(--color);
+  /* background: linear-gradient(); */
+
+  border: none;
+  cursor: pointer;
+  transition: 0.1s;
+}
+.authentication-card > button:active {
+  filter: brightness(80%);
+}
+.authentication-card p {
+  color: var(--color);
+  display: inline;
+}
+.authentication-card p#failed {
+  color: var(--color-error);
+}
+.authentication-card .error {
+  color: var(--color-error);
+  margin-top: 0.2rem;
+}
+.authentication-card > input.inputErr {
+  border: 1px solid var(--color-error);
+}
+.authentication-card > .heading {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.authentication-card > .toggle {
+  text-align: right;
+  margin-top: 0.6rem;
+}
+.authentication-card > .toggle > .toggleSignup {
+  font-weight: 600;
+  padding: 0 4px;
+  cursor: pointer;
+  color: var(--color2);
+}
+.authentication-card > .toggle > .toggleSignup:hover {
+  text-decoration: underline;
 }
