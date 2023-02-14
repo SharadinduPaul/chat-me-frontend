@@ -29,7 +29,7 @@ export const Text = ({
 }: TextProps) => {
   return (
     <div
-      className={`${varient} ${className}`}
+      className={`text-main ${varient} ${className}`}
       style={{
         ...style,
         textDecoration: underline ? "underline" : "none",

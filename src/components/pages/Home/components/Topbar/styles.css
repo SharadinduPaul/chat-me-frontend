@@ -1,9 +1,22 @@
-.topbar-main{
-    width: 100%;
-    height: var(--topbar-height);
-    background-color: var(--bg-primary);
+.topbar-main {
+  width: 100%;
+  height: var(--topbar-height);
+  background-color: var(--bg-primary);
 
-    display: flex;
-    align-items: center;
-    justify-content: right;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 0.8rem;
+}
+.topbar-main > img {
+  display: none;
+  height: 1.4rem;
+  aspect-ratio: 1/1;
+}
+
+@media all and (max-width: 650px) {
+  .topbar-main > img {
+    display: block;
+  }
 }

@@ -4,12 +4,13 @@ import {
   chat,
   user,
   loading as loader,
-  plus,
+  close,
 } from "../../../../../assets/images";
 import "./styles.css";
-import { Chats } from "../../../../../apis";
-import { GET } from "../../../../../utils/fetch";
-import { getUser } from "../../../../../utils/handleUser";
+import { UserContext } from "../../../../../utils/context";
+import Lottie from "lottie-react";
+import chatlottie from "../../../../../assets/animated/chat.json";
+import plus from "../../../../../assets/animated/plus.json";
 
 interface ChatProps {
   name: string;
@@ -43,46 +44,58 @@ const Chat = ({
 
 interface ChatBarProps {
   setModal: (input: boolean) => void;
+  chats: any[];
+  selected: number | null;
+  setSelected: (input: number) => void;
+  getChats: () => void;
+  loading: boolean;
+  active: boolean;
+  setActive: (input: boolean) => void;
 }
-export const Chatbar = ({ setModal }: ChatBarProps) => {
-  const [chats, setChats] = React.useState<any[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [selected, setSelected] = React.useState<number | null>(null);
-
-  const user = getUser();
-
-  const getChats = async () => {
-    setLoading(true);
-    const res = await GET(Chats);
-    setChats(res);
-    console.log("chats", res);
-    setLoading(false);
-  };
-  React.useEffect(() => {
-    getChats();
-  }, []);
+export const Chatbar = ({
+  setModal,
+  chats,
+  selected,
+  setSelected,
+  getChats,
+  loading,
+  active,
+  setActive,
+}: ChatBarProps) => {
+  const { user } = React.useContext(UserContext);
 
   return (
-    <div className="chatbar-main">
+    <div className={`chatbar-main ${active ? "active" : ""}`}>
       <Text varient="header3" className="heading" onClick={getChats}>
-        <img src={chat} alt="chat" />
-        <span>All Chats</span>
-        <img
-          src={loader}
-          alt="reload"
-          className={loading ? "chat-loader" : ""}
+        <Lottie
+          loop
+          animationData={chatlottie}
+          style={{ height: "3rem", marginLeft: ".5rem" }}
         />
+        <span>All Chats</span>
+        {loading ? (
+          <img src={loader} alt="reload" />
+        ) : (
+          <img
+            src={close}
+            alt="close"
+            onClick={(e) => {
+              e.stopPropagation();
+              setActive(false);
+            }}
+          />
+        )}
+        <div id="hr" />
       </Text>
-      <div id="hr" />
       <div className="add-new" onClick={() => setModal(true)}>
-        <img src={plus} alt="add" />
+        <Lottie loop animationData={plus} style={{ height: "2rem" }} />
         <Text varient="content1">New Chat/Group</Text>
       </div>
       {chats?.map((item: any, index) => {
         const isGroupChat = item?.isGroupChat;
         const name = !isGroupChat
           ? item?.users?.find(
-              (chatUser: any) => chatUser?.email === user?.email
+              (chatUser: any) => chatUser?.email !== user?.email
             )?.name
           : item?.chatName;
         const latestMessage =
@@ -94,7 +107,10 @@ export const Chatbar = ({ setModal }: ChatBarProps) => {
             name={name}
             latestMessage={latestMessage}
             selected={selected === index}
-            onClick={() => setSelected(index)}
+            onClick={() => {
+              setSelected(index);
+              setActive(false);
+            }}
           />
         );
       })}

@@ -1,6 +1,6 @@
 :root{
   --bg-primary: #0d0d10;
-  --bg-secondary: #252531;
+  --bg-secondary: #21222b;
   --color-primary: #e8ecff;
   --color-error: #ff3c3c;
   --color-accent: #b325d3;
@@ -28,4 +28,22 @@ html, body, #root, .App{
   width: 100%;
   position: relative;
   background-color: var(--bg-primary);
+}
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: #00000000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent2);
+  border-radius: 2px;
 }

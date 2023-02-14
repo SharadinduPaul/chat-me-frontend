@@ -1,9 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Login, Registration } from "../../../apis";
-import { user } from "../../../assets/animated";
+import { UserContext } from "../../../utils/context";
 import { POST } from "../../../utils/fetch";
-import { saveUser } from "../../../utils/handleUser";
 import { loginValidation, signUpValidation } from "../../../utils/validation";
 import { Text } from "../../global";
 import "./styles.css";
@@ -16,6 +15,7 @@ export const Authentication = ({ login = false }: { login?: boolean }) => {
     { errLocation: string; errMessage: string } | undefined
   >(undefined);
   const navigate = useNavigate();
+  const { user, setUser } = React.useContext(UserContext);
 
   React.useEffect(() => {
     document.title = signup
@@ -45,10 +45,11 @@ export const Authentication = ({ login = false }: { login?: boolean }) => {
       name: e.target[0]?.value,
       email: e.target[1]?.value,
       password: e.target[2]?.value,
-    });
+    },
+    user?.token);
     //validating the API response
     if (res?.token) {
-      saveUser(res);
+      setUser(res);
       setAuth(true);
       setTimeout(() => {
         navigate("/");
@@ -75,11 +76,11 @@ export const Authentication = ({ login = false }: { login?: boolean }) => {
     const res = await POST(Login, {
       email: e.target[0]?.value,
       password: e.target[1]?.value,
-    });
+    }, user?.token);
 
     //validating the API response
     if (res?.token) {
-      saveUser(res);
+      setUser(res);
       setAuth(true);
       setTimeout(() => {
         navigate("/");
