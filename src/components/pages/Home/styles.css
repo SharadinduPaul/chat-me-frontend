@@ -4,6 +4,7 @@
     position: relative;
     display: flex;
     background-color: var(--bg-secondary);
+    overflow: hidden;
 }
 .home-content{
     flex: 1;

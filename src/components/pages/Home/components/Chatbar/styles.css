@@ -85,6 +85,7 @@
   cursor: pointer;
   border: 1px solid;
   transition: 0.5s;
+  overflow: hidden;
 }
 .chat-main:hover {
   background-image: linear-gradient(
@@ -100,6 +101,23 @@
     var(--color-accent2)
   );
 }
+.chat-main > div{
+  flex: 1;
+}
+.chat-main .content2{
+  width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chat-main .content3{
+  width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
 .chat-container {
   display: flex;
   align-items: center;
@@ -113,7 +131,9 @@
   height: 1.8rem;
   aspect-ratio: 1/1;
 }
-
+.chatbar-main .close{
+    opacity: 0;
+  }
 @media all and (max-width: 650px) {
   .chatbar-main {
     position: fixed;
@@ -125,5 +145,8 @@
   }
   .chatbar-main.active {
     transform: translateX(0%);
+  }
+  .chatbar-main .close{
+   opacity: 1;
   }
 }

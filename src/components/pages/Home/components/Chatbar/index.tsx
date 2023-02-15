@@ -35,7 +35,9 @@ const Chat = ({
         <img src={user} alt="User" />
         <div>
           <Text varient="content2">{name}</Text>
-          <Text varient="content3">{latestMessage}</Text>
+          <Text varient="content3" faded>
+            {latestMessage}
+          </Text>
         </div>
       </div>
     </div>
@@ -78,6 +80,7 @@ export const Chatbar = ({
         ) : (
           <img
             src={close}
+            className="close"
             alt="close"
             onClick={(e) => {
               e.stopPropagation();

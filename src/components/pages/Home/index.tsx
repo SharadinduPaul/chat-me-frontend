@@ -1,13 +1,17 @@
 import React from "react";
-import { AllMessages, Chats } from "../../../apis";
+import { io } from "socket.io-client";
+import { AllMessages, Chats, SendMessage } from "../../../apis";
 import { UserContext } from "../../../utils/context";
-import { GET } from "../../../utils/fetch";
+import { GET, POST } from "../../../utils/fetch";
 import { Modal } from "../../global";
 import { Chatbar } from "./components/Chatbar";
 import { CreateChat } from "./components/CreateChat";
 import { MessagePanel } from "./components/MessagePanel";
 import { Topbar } from "./components/Topbar";
 import "./styles.css";
+
+const ENDPOINT = "http://localhost:5000";
+let socket: any, selectedChatCompare: any;
 
 export const Home = () => {
   const [modal, setModal] = React.useState<boolean>(false);
@@ -20,6 +24,26 @@ export const Home = () => {
   const [messageLoading, setMessageLoading] = React.useState<boolean>(false);
 
   const { user } = React.useContext(UserContext);
+
+  React.useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connection", () => {
+      console.log("connected to socket io");
+    });
+  }, []);
+  React.useEffect(() => {
+    socket.on("message received", (newMessage: any) => {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare?._id !== newMessage?.chat?._id
+      ) {
+        //give notification
+      } else {
+        setMessages([...messages, newMessage]);
+      }
+    });
+  });
 
   const getChats = async () => {
     setChatLoading(true);
@@ -38,19 +62,36 @@ export const Home = () => {
       setMessages(res);
     }
     setMessageLoading(false);
+    socket?.emit("join chat", chats[selected]?._id);
   };
   const sendMessage = async (text: string) => {
-    console.log(text);
-    return;
+    if (!text || selected === null) return;
+    const res = await POST(
+      SendMessage,
+      {
+        content: text,
+        chatId: chats[selected]?._id,
+      },
+      user?.token
+    );
+
+    if (res) {
+      console.log(res);
+      socket.emit("new message", res);
+      setMessages((prev) => [...prev, res]);
+    }
   };
+
   React.useEffect(() => {
     getChats();
   }, [modal]);
   React.useEffect(() => {
     if (selected !== null) {
       getMessages();
+      selectedChatCompare = chats[selected];
     }
   }, [selected]);
+
   return (
     <div className="home-main">
       {modal ? (
@@ -69,7 +110,7 @@ export const Home = () => {
           <MessagePanel
             noChatSelected={selected === null}
             loading={messageLoading}
-            {...{ messages, sendMessage }}
+            {...{ messages, sendMessage, user }}
           />
         </div>
       </div>

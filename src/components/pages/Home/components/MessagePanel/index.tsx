@@ -6,20 +6,24 @@ import empty from "../../../../../assets/animated/empty.json";
 import "./styles.css";
 import { Text } from "../../../../global";
 import { send } from "../../../../../assets/images";
+import { Message } from "../Message";
 
 interface MessagePanelProps {
   noChatSelected: boolean;
   loading: boolean;
   messages: any[];
   sendMessage: (text: string) => void;
+  user: any;
 }
 export const MessagePanel = ({
   noChatSelected,
   loading,
   messages,
   sendMessage,
+  user,
 }: MessagePanelProps) => {
   const [text, setText] = React.useState<string>("");
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     sendMessage(text);
@@ -43,21 +47,35 @@ export const MessagePanel = ({
         </div>
       ) : (
         <div className="message-container">
-          {messages.map((item, index) => (
-            <Text key={index}>something</Text>
-          ))}
+          {messages.map((item, index) => {
+            const isImage =
+              messages[index]?.sender?.email !==
+              messages[index + 1]?.sender?.email;
+            return (
+              <Message
+                text={item?.content}
+                key={index}
+                received={item?.sender?.email !== user?.email}
+                isImage={isImage}
+              />
+            );
+          })}
         </div>
       )}
-      <form onSubmit={handleSubmit} className="message-send">
-        <input
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          type="text"
-        />
-        <button>
-          <img src={send} alt="send" />
-        </button>
-      </form>
+      {!noChatSelected ? (
+        <form onSubmit={handleSubmit} className="message-send">
+          <input
+            value={text}
+            max={500}
+            placeholder="Type here"
+            onChange={(e) => setText(e.target.value)}
+            type="text"
+          />
+          <button>
+            <img src={send} alt="send" />
+          </button>
+        </form>
+      ) : null}
     </div>
   );
 };
