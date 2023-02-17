@@ -4,25 +4,26 @@
   position: relative;
   perspective: 800px;
 }
-.authentication-card:first-child{
+.authentication-card:first-of-type{
   --color: var(--color-accent);
   --color2: var(--color-accent2)
 }
-.authentication-card:last-child{
+.authentication-card:last-of-type{
   --color: var(--color-accent2);
   --color2: var(--color-accent)
 }
 .authentication-card {
   width: 90%;
   max-width: 400px;
-  height: 60%;
+  min-height: 400px;
+  height: 50%;
   background-color: var(--bg-secondary);
   border: 1px solid var(--color);
   border-radius: var(--radius1);
   padding: 1rem 1rem 3rem;
 
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: 50%;
   translate: -50% -50%;
   z-index: 10;

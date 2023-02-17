@@ -70,7 +70,7 @@ export const MessagePanel = ({
       {noChatSelected ? (
         <div className="lottie-container">
           <Lottie animationData={social} style={{ height: "50vmin" }} />
-          <Text varient="header3">Select/start a conversation</Text>
+          <Text varient="header3">Select or start a new conversation</Text>
         </div>
       ) : loading ? (
         <div className="lottie-container">

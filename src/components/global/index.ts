@@ -1,3 +1,4 @@
+export { Footer } from "./Footer";
 export { Layout } from "./Layout";
 export { Modal } from "./Modal";
 export { Switch } from "./Switch";

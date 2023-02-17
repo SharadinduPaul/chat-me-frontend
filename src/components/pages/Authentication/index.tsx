@@ -1,10 +1,12 @@
 import React from "react";
+import Lottie from "lottie-react";
 import { useNavigate } from "react-router-dom";
 import { Login, Registration } from "../../../apis";
 import { UserContext } from "../../../utils/context";
 import { POST } from "../../../utils/fetch";
 import { loginValidation, signUpValidation } from "../../../utils/validation";
-import { Text } from "../../global";
+import { Footer, Text } from "../../global";
+import authLottie from "../../../assets/animated/auth.json";
 import "./styles.css";
 
 export const Authentication = ({ login = false }: { login?: boolean }) => {
@@ -41,12 +43,15 @@ export const Authentication = ({ login = false }: { login?: boolean }) => {
     }
 
     //making the signup POST request
-    const res = await POST(Registration, {
-      name: e.target[0]?.value,
-      email: e.target[1]?.value,
-      password: e.target[2]?.value,
-    },
-    user?.token);
+    const res = await POST(
+      Registration,
+      {
+        name: e.target[0]?.value,
+        email: e.target[1]?.value,
+        password: e.target[2]?.value,
+      },
+      user?.token
+    );
     //validating the API response
     if (res?.token) {
       setUser(res);
@@ -73,10 +78,14 @@ export const Authentication = ({ login = false }: { login?: boolean }) => {
     }
 
     //making the login POST request
-    const res = await POST(Login, {
-      email: e.target[0]?.value,
-      password: e.target[1]?.value,
-    }, user?.token);
+    const res = await POST(
+      Login,
+      {
+        email: e.target[0]?.value,
+        password: e.target[1]?.value,
+      },
+      user?.token
+    );
 
     //validating the API response
     if (res?.token) {
@@ -92,6 +101,9 @@ export const Authentication = ({ login = false }: { login?: boolean }) => {
   };
   return (
     <div className="authentication-main">
+      <div className="lottie-auth">
+        <Lottie animationData={authLottie} style={{ height: "18rem" }} />
+      </div>
       <form
         className="authentication-card"
         style={{ transform: signup ? "rotateY(0deg)" : "rotateY(180deg)" }}
@@ -210,6 +222,7 @@ export const Authentication = ({ login = false }: { login?: boolean }) => {
           <Text varient="header3">Login</Text>
         </button>
       </form>
+      <Footer />
     </div>
   );
 };
