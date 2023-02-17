@@ -3,6 +3,7 @@
   width: 100%;
   display: flex;
   padding: .05rem 1vw;
+  margin-top: .2rem;
   justify-content: flex-end;
   align-items: flex-end;
   gap: .4rem;
@@ -10,8 +11,8 @@
 .message-main.received{
     flex-direction: row-reverse;
 }
-.message-main.sent{
-}
+/* .message-main.sent{
+} */
 
 .message-main > .message{
     max-width:  75%;

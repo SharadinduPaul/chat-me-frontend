@@ -5,18 +5,35 @@
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 0.5rem;
 
   padding: 0 0.8rem;
 }
-.topbar-main > img {
+.topbar-main .menu {
   display: none;
   height: 1.4rem;
   aspect-ratio: 1/1;
+  cursor: pointer;
+}
+.topbar-main .options {
+  height: 1.7rem;
+  cursor: pointer;
+}
+.topbar-main > .name {
+  flex: 1;
+  text-align: center;
+}
+.topbar-main .bell {
+  height: 1.5rem;
+  transform: translate(-15%, 12%);
+  filter: invert(1) opacity(0.1);
+}
+.topbar-main > .notfication {
+  cursor: pointer;
 }
 
 @media all and (max-width: 650px) {
-  .topbar-main > img {
+  .topbar-main .menu {
     display: block;
   }
 }

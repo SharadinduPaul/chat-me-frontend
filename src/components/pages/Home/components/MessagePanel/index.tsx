@@ -3,10 +3,11 @@ import Lottie from "lottie-react";
 import messageloading from "../../../../../assets/animated/messageLoading.json";
 import social from "../../../../../assets/animated/social.json";
 import empty from "../../../../../assets/animated/empty.json";
-import "./styles.css";
 import { Text } from "../../../../global";
 import { send } from "../../../../../assets/images";
 import { Message } from "../Message";
+import { debounce } from "../../../../../utils/debounce";
+import "./styles.css";
 
 interface MessagePanelProps {
   noChatSelected: boolean;
@@ -14,6 +15,10 @@ interface MessagePanelProps {
   messages: any[];
   sendMessage: (text: string) => void;
   user: any;
+  faded?: boolean;
+  socket: any;
+  typing: boolean;
+  chatId: string;
 }
 export const MessagePanel = ({
   noChatSelected,
@@ -21,16 +26,47 @@ export const MessagePanel = ({
   messages,
   sendMessage,
   user,
+  faded = false,
+  socket,
+  typing,
+  chatId,
 }: MessagePanelProps) => {
   const [text, setText] = React.useState<string>("");
+  const msgRef = React.useRef<HTMLDivElement>(null);
+  let mytyping = false;
 
+  React.useEffect(() => {
+    if (!loading) {
+      msgRef.current?.scrollTo(0, msgRef.current.offsetHeight + 1000000000);
+    }
+  }, [loading, messages, typing]);
+
+  const emitStopTyping = async () => {
+    if (mytyping) {
+      await socket.emit("stop typing", chatId);
+      mytyping = false;
+    }
+  };
+  const debouncedEmitStop = debounce(() => emitStopTyping(), 3000);
+  const handleTyping = async (e: any) => {
+    setText(e.target.value);
+
+    if (!mytyping) {
+      mytyping = true;
+      await socket.emit("typing", chatId);
+    }
+    debouncedEmitStop();
+  };
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (text.length === 0) {
+      return;
+    }
     sendMessage(text);
     setText("");
   };
   return (
-    <div className="message-panel">
+    <div className={`message-panel ${faded ? "faded" : ""}`}>
       {noChatSelected ? (
         <div className="lottie-container">
           <Lottie animationData={social} style={{ height: "50vmin" }} />
@@ -46,7 +82,8 @@ export const MessagePanel = ({
           <Text varient="header3">No message found. Send a message?</Text>
         </div>
       ) : (
-        <div className="message-container">
+        <div ref={msgRef} className="message-container">
+          <div style={{ flex: "1" }}></div>
           {messages.map((item, index) => {
             const isImage =
               messages[index]?.sender?.email !==
@@ -60,6 +97,7 @@ export const MessagePanel = ({
               />
             );
           })}
+          {typing ? <Message received typing isImage /> : null}
         </div>
       )}
       {!noChatSelected ? (
@@ -68,10 +106,10 @@ export const MessagePanel = ({
             value={text}
             max={500}
             placeholder="Type here"
-            onChange={(e) => setText(e.target.value)}
+            onChange={handleTyping}
             type="text"
           />
-          <button>
+          <button type="submit">
             <img src={send} alt="send" />
           </button>
         </form>

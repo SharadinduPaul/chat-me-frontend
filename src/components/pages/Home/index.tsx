@@ -22,28 +22,51 @@ export const Home = () => {
 
   const [messages, setMessages] = React.useState<any[]>([]);
   const [messageLoading, setMessageLoading] = React.useState<boolean>(false);
+  const [typing, setTyping] = React.useState<boolean>(false);
+
+  const [notifications, setNotifications] = React.useState<any[]>([]);
 
   const { user } = React.useContext(UserContext);
+
+  var selectedChat = selected !== null ? chats[selected] : "sss";
 
   React.useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", user);
-    socket.on("connection", () => {
+    socket.on("connected", () => {
       console.log("connected to socket io");
     });
+    socket.on("typing", () => setTyping(true));
+    socket.on("stop typing", () => setTyping(false));
   }, []);
   React.useEffect(() => {
     socket.on("message received", (newMessage: any) => {
+      console.log("new message", newMessage);
+      console.log("selected Chat", selectedChat, selected);
       if (
-        !selectedChatCompare ||
+        selected === null ||
         selectedChatCompare?._id !== newMessage?.chat?._id
       ) {
-        //give notification
+        console.log("send notification");
+        setNotifications((prev) => [...prev, newMessage]);
+        setChats((prev) => {
+          const updatedChats = prev?.map((item: any) => {
+            if (item?._id === newMessage?.chat?._id) {
+              console.log("updateing this chat");
+              return { ...item, latestMessage: newMessage };
+            } else {
+              console.log("just returning");
+              return item;
+            }
+          });
+          return updatedChats;
+        });
       } else {
-        setMessages([...messages, newMessage]);
+        console.log("send message");
+        setMessages((prev) => [...prev, newMessage]);
       }
     });
-  });
+  }, [selected, chats]);
 
   const getChats = async () => {
     setChatLoading(true);
@@ -57,7 +80,6 @@ export const Home = () => {
     if (selected === null) return;
 
     const res = await GET(AllMessages + chats[selected]?._id, user?.token);
-    console.log(res);
     if (res) {
       setMessages(res);
     }
@@ -76,7 +98,7 @@ export const Home = () => {
     );
 
     if (res) {
-      console.log(res);
+      setTyping(false);
       socket.emit("new message", res);
       setMessages((prev) => [...prev, res]);
     }
@@ -91,7 +113,15 @@ export const Home = () => {
       selectedChatCompare = chats[selected];
     }
   }, [selected]);
-
+  const selectedUserName =
+    selected !== null
+      ? chats[selected]?.isGroupChat
+        ? chats[selected]?.chatName
+        : chats[selected]?.users?.find(
+            (item: any) => item?.email !== user?.email
+          )?.name
+      : "Messages";
+  const chatId: string = selected !== null ? chats[selected]._id : "";
   return (
     <div className="home-main">
       {modal ? (
@@ -105,12 +135,13 @@ export const Home = () => {
         {...{ chats, getChats, selected, setSelected, active, setActive }}
       />
       <div className="home-content">
-        <Topbar {...{ setActive }} />
+        <Topbar userName={selectedUserName} {...{ setActive, notifications }} />
         <div className="message-container">
           <MessagePanel
             noChatSelected={selected === null}
             loading={messageLoading}
-            {...{ messages, sendMessage, user }}
+            faded={active}
+            {...{ messages, sendMessage, user, socket, typing, chatId }}
           />
         </div>
       </div>

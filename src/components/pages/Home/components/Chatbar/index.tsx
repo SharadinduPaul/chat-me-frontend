@@ -10,7 +10,8 @@ import "./styles.css";
 import { UserContext } from "../../../../../utils/context";
 import Lottie from "lottie-react";
 import chatlottie from "../../../../../assets/animated/chat.json";
-import plus from "../../../../../assets/animated/plus.json";
+import addUser from "../../../../../assets/animated/addUser.json";
+import addChat from "../../../../../assets/animated/addChat.json";
 
 interface ChatProps {
   name: string;
@@ -74,7 +75,7 @@ export const Chatbar = ({
           animationData={chatlottie}
           style={{ height: "3rem", marginLeft: ".5rem" }}
         />
-        <span>All Chats</span>
+        <Text varient="header3">All Chats</Text>
         {loading ? (
           <img src={loader} alt="reload" />
         ) : (
@@ -91,32 +92,50 @@ export const Chatbar = ({
         <div id="hr" />
       </Text>
       <div className="add-new" onClick={() => setModal(true)}>
-        <Lottie loop animationData={plus} style={{ height: "2rem" }} />
-        <Text varient="content1">New Chat/Group</Text>
+        <Lottie loop animationData={addUser} style={{ height: "3rem" }} />
+        <Text varient="content1">New Chat</Text>
       </div>
-      {chats?.map((item: any, index) => {
-        const isGroupChat = item?.isGroupChat;
-        const name = !isGroupChat
-          ? item?.users?.find(
-              (chatUser: any) => chatUser?.email !== user?.email
-            )?.name
-          : item?.chatName;
-        const latestMessage =
-          item?.latestMessage?.content ?? "Send a first message?";
-
-        return (
-          <Chat
-            key={index}
-            name={name}
-            latestMessage={latestMessage}
-            selected={selected === index}
-            onClick={() => {
-              setSelected(index);
-              setActive(false);
-            }}
+      {chats?.length === 0 ? (
+        <div>
+          <Lottie
+            animationData={addChat}
+            style={{ height: "200px", marginTop: "20vh" }}
           />
-        );
-      })}
+          <Text
+            varient="header3"
+            style={{ textAlign: "center", marginTop: "2rem" }}
+          >
+            No chat found
+          </Text>
+          <Text faded style={{ textAlign: "center" }}>
+            Start a new one.
+          </Text>
+        </div>
+      ) : (
+        chats?.map((item: any, index) => {
+          const isGroupChat = item?.isGroupChat;
+          const name = !isGroupChat
+            ? item?.users?.find(
+                (chatUser: any) => chatUser?.email !== user?.email
+              )?.name
+            : item?.chatName;
+          const latestMessage =
+            item?.latestMessage?.content ?? "Send a first message?";
+
+          return (
+            <Chat
+              key={index}
+              name={name}
+              latestMessage={latestMessage}
+              selected={selected === index}
+              onClick={() => {
+                setSelected(index);
+                setActive(false);
+              }}
+            />
+          );
+        })
+      )}
     </div>
   );
 };
