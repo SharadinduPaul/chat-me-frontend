@@ -1,4 +1,4 @@
-const base_url: string | undefined = process.env.REACT_APP_PROD_API_BASE;
+const base_url: string | undefined = process.env.REACT_APP_API_BASE;
 
 //User APIs
 export const Registration = base_url + "/api/user";
