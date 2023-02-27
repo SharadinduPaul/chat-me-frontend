@@ -2,41 +2,41 @@
   height: max-content;
   width: 100%;
   display: flex;
-  padding: .05rem 1vw;
-  margin-top: .2rem;
+  padding: 0.05rem 1vw;
+  margin-top: 0.2rem;
   justify-content: flex-end;
   align-items: flex-end;
-  gap: .4rem;
+  gap: 0.4rem;
 }
-.message-main.received{
-    flex-direction: row-reverse;
+.message-main.received {
+  flex-direction: row-reverse;
 }
 /* .message-main.sent{
 } */
 
-.message-main > .message{
-    max-width:  75%;
-    min-width: min-content;
-    border-radius: var(--radius2);
-    padding: .4rem;
+.message-main > .message {
+  max-width: 75%;
+  min-width: min-content;
+  border-radius: var(--radius2);
+  padding: 0.4rem 0.6rem;
 }
-.message-main.received > .message{
-    background-color: var(--color-accent);
-    border-bottom-left-radius: 0px;
+.message-main.received > .message {
+  background-color: var(--color-accent);
+  border-bottom-left-radius: 0px;
 }
-.message-main.sent > .message{
-    border-bottom-right-radius: 0px;
-    background-color: var(--color-accent2);
+.message-main.sent > .message {
+  border-bottom-right-radius: 0px;
+  background-color: var(--color-accent2);
 }
 
-.message-main > .image{
-    height: 2rem;
-    width: 2rem;
-    position: relative;
+.message-main > .image {
+  height: 2rem;
+  width: 2rem;
+  position: relative;
 }
-.message-main > .image > img{
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    object-position: center;
+.message-main > .image > img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
 }

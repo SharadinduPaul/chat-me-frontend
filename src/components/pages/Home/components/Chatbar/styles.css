@@ -97,6 +97,9 @@ padding-bottom: 2rem;
     var(--color-accent2)
   );
 }
+.chat-main.unread .content2 {
+  font-weight: 600;
+}
 .chat-main > div {
   flex: 1;
 }

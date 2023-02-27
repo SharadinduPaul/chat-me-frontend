@@ -13,12 +13,13 @@ interface MessagePanelProps {
   noChatSelected: boolean;
   loading: boolean;
   messages: any[];
-  sendMessage: (text: string) => void;
+  sendMessage: (text: string, chatId: string) => void;
   user: any;
   faded?: boolean;
   socket: any;
   typing: boolean;
   chatId: string;
+  readBy: any[];
 }
 export const MessagePanel = ({
   noChatSelected,
@@ -30,6 +31,7 @@ export const MessagePanel = ({
   socket,
   typing,
   chatId,
+  readBy = [],
 }: MessagePanelProps) => {
   const [text, setText] = React.useState<string>("");
   const msgRef = React.useRef<HTMLDivElement>(null);
@@ -62,7 +64,7 @@ export const MessagePanel = ({
     if (text.length === 0) {
       return;
     }
-    sendMessage(text);
+    sendMessage(text, chatId);
     setText("");
   };
   return (
@@ -97,9 +99,14 @@ export const MessagePanel = ({
               />
             );
           })}
-          {typing ? <Message received typing isImage /> : null}
         </div>
       )}
+      {readBy.length > 0 ? (
+        <Text className="read-by" varient="content2" faded>
+          Read
+        </Text>
+      ) : null}
+      {typing ? <Message received typing isImage /> : null}
       {!noChatSelected ? (
         <form onSubmit={handleSubmit} className="message-send">
           <input

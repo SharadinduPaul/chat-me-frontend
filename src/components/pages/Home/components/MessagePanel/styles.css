@@ -16,6 +16,11 @@
   gap: 1%;
   background-color: var(--bg-secondary);
 }
+.message-panel > .read-by {
+  width: 100%;
+  text-align: right;
+  padding-right: 3rem;
+}
 .message-panel > .message-send {
   display: flex;
   align-items: center;
@@ -59,6 +64,28 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+}
+.message-panel > .message-container .message-main.received:last-of-type > .message{
+  animation: fromLeft 0.8s forwards;
+}
+@keyframes fromLeft {
+  0%{
+    transform: translateX(-150%);
+  }
+  100%{
+    transform: translateX(0%);
+  }
+}
+.message-panel > .message-container .message-main.sent:last-of-type > .message{
+  animation: fromRight 0.8s forwards;
+}
+@keyframes fromRight {
+  0%{
+    transform: translateX(150%);
+  }
+  100%{
+    transform: translateX(0%);
+  }
 }
 
 @media all and (max-width: 650px) {

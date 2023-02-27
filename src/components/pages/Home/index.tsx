@@ -1,8 +1,8 @@
 import React from "react";
 import { io } from "socket.io-client";
-import { AllMessages, Chats, SendMessage } from "../../../apis";
+import { AllMessages, Chats, ReadByUsers, SendMessage } from "../../../apis";
 import { UserContext } from "../../../utils/context";
-import { GET, POST } from "../../../utils/fetch";
+import { GET, POST, PUT } from "../../../utils/fetch";
 import { Modal } from "../../global";
 import { Chatbar } from "./components/Chatbar";
 import { CreateChat } from "./components/CreateChat";
@@ -10,8 +10,8 @@ import { MessagePanel } from "./components/MessagePanel";
 import { Topbar } from "./components/Topbar";
 import "./styles.css";
 
-const ENDPOINT = "http://localhost:5000";
-let socket: any, selectedChatCompare: any;
+const ENDPOINT = process.env.REACT_APP_API_BASE!;
+let socket: any, selectedChat: any;
 
 export const Home = () => {
   const [modal, setModal] = React.useState<boolean>(false);
@@ -24,13 +24,11 @@ export const Home = () => {
   const [messageLoading, setMessageLoading] = React.useState<boolean>(false);
   const [typing, setTyping] = React.useState<boolean>(false);
 
-  const [notifications, setNotifications] = React.useState<any[]>([]);
-
   const { user } = React.useContext(UserContext);
 
-  var selectedChat = selected !== null ? chats[selected] : "sss";
-
   React.useEffect(() => {
+    document.title = "Messages - Chatme";
+
     socket = io(ENDPOINT);
     socket.emit("setup", user);
     socket.on("connected", () => {
@@ -38,35 +36,58 @@ export const Home = () => {
     });
     socket.on("typing", () => setTyping(true));
     socket.on("stop typing", () => setTyping(false));
-  }, []);
-  React.useEffect(() => {
+
+    socket.on("read by", (data: any) => {
+      const { room, users } = data;
+      console.log("received read by", users);
+      setChats((prev) => {
+        const updatedChats = prev?.map((item) => {
+          if (item?._id === room) return { ...item, readBy: users };
+          else return item;
+        });
+        return updatedChats;
+      });
+    });
+
     socket.on("message received", (newMessage: any) => {
       console.log("new message", newMessage);
-      console.log("selected Chat", selectedChat, selected);
-      if (
-        selected === null ||
-        selectedChatCompare?._id !== newMessage?.chat?._id
-      ) {
+      if (selectedChat?._id !== newMessage?.chat?._id) {
         console.log("send notification");
-        setNotifications((prev) => [...prev, newMessage]);
+      } else {
+        console.log("add message");
+        //adding the new message to messages
+        setMessages((prev) => {
+          const lastMessage: any = prev.slice(-1);
+          if (lastMessage?._id === newMessage?._id) return prev;
+          else return [...prev, newMessage];
+        });
+        //emitting socket read
+        socket.emit("read", {
+          room: selectedChat?._id,
+          users: [...selectedChat?.readBy, user],
+        });
+
         setChats((prev) => {
-          const updatedChats = prev?.map((item: any) => {
-            if (item?._id === newMessage?.chat?._id) {
-              console.log("updateing this chat");
-              return { ...item, latestMessage: newMessage };
-            } else {
-              console.log("just returning");
-              return item;
-            }
+          const updatedChats = prev?.map((item) => {
+            if (item?._id === selectedChat?._id)
+              return { ...item, readBy: [...selectedChat?.readBy, user] };
+            else return item;
           });
           return updatedChats;
         });
-      } else {
-        console.log("send message");
-        setMessages((prev) => [...prev, newMessage]);
       }
+      setChats((prev) => {
+        const updatedChats = prev?.map((item: any) => {
+          if (item?._id === newMessage?.chat?._id) {
+            return { ...item, latestMessage: newMessage };
+          } else {
+            return item;
+          }
+        });
+        return updatedChats;
+      });
     });
-  }, [selected, chats]);
+  }, []);
 
   const getChats = async () => {
     setChatLoading(true);
@@ -75,44 +96,111 @@ export const Home = () => {
     console.log("chats", res);
     setChatLoading(false);
   };
-  const getMessages = async () => {
+  const getMessages = async (chat: any) => {
     setMessageLoading(true);
     if (selected === null) return;
 
     const res = await GET(AllMessages + chats[selected]?._id, user?.token);
+
     if (res) {
+      //updateing messages
       setMessages(res);
+
+      const userIds = (await chat?.readBy?.map((item: any) => item?._id)) ?? [];
+
+      if (!userIds?.includes(user?._id)) {
+        const readByRes = await PUT(
+          ReadByUsers,
+          {
+            chatId: chat?._id,
+            users: [...userIds, user?._id],
+          },
+          user?.token
+        );
+
+        if (readByRes) {
+          //emitting socket read
+          socket.emit("read", {
+            room: chat?._id,
+            users: [...chat?.readBy, user],
+          });
+
+          setChats((prev) => {
+            const updatedChats = prev?.map((item) => {
+              if (item?._id === chat?._id)
+                return { ...item, readBy: [...chat?.readBy, user] };
+              else return item;
+            });
+            return updatedChats;
+          });
+        }
+      }
     }
     setMessageLoading(false);
-    socket?.emit("join chat", chats[selected]?._id);
+    socket?.emit("join chat", selectedChat?._id);
   };
-  const sendMessage = async (text: string) => {
+  const sendMessage = async (text: string, chatId: string) => {
+    //validation
     if (!text || selected === null) return;
+
+    const readByRes = await PUT(
+      ReadByUsers,
+      { chatId: chats[selected]?._id, users: [user?._id] },
+      user?.token
+    );
+    if (readByRes) {
+      //emitting socket read
+      socket.emit("read", {
+        room: chatId,
+        users: [user],
+      });
+      setChats((prev) => {
+        const updatedChats = prev?.map((item) => {
+          if (item?._id === chatId) return { ...item, readBy: [user] };
+          else return item;
+        });
+        return updatedChats;
+      });
+    }
+
     const res = await POST(
       SendMessage,
       {
         content: text,
-        chatId: chats[selected]?._id,
+        chatId: chatId,
       },
       user?.token
     );
 
     if (res) {
-      setTyping(false);
-      socket.emit("new message", res);
+      //appending new message to allmessages
       setMessages((prev) => [...prev, res]);
+      //emitting socket message
+      socket.emit("new message", res);
+      //setting the new message as latest message in chats
+      setChats((prev) => {
+        const updatedChats = prev?.map((item: any) => {
+          if (item?._id === chats[selected ?? 0]?._id) {
+            return { ...item, latestMessage: res };
+          } else {
+            return item;
+          }
+        });
+        return updatedChats;
+      });
     }
   };
 
   React.useEffect(() => {
-    getChats();
+    if (!modal) getChats();
   }, [modal]);
   React.useEffect(() => {
     if (selected !== null) {
-      getMessages();
-      selectedChatCompare = chats[selected];
+      selectedChat = chats[selected];
+      getMessages(chats[selected]);
     }
   }, [selected]);
+
   const selectedUserName =
     selected !== null
       ? chats[selected]?.isGroupChat
@@ -121,7 +209,7 @@ export const Home = () => {
             (item: any) => item?.email !== user?.email
           )?.name
       : "Messages";
-  const chatId: string = selected !== null ? chats[selected]._id : "";
+  const chatId: string = selected !== null ? selectedChat?._id : "";
   return (
     <div className="home-main">
       {modal ? (
@@ -135,12 +223,17 @@ export const Home = () => {
         {...{ chats, getChats, selected, setSelected, active, setActive }}
       />
       <div className="home-content">
-        <Topbar userName={selectedUserName} {...{ setActive, notifications }} />
+        <Topbar userName={selectedUserName} {...{ setActive }} />
         <div className="message-container">
           <MessagePanel
             noChatSelected={selected === null}
             loading={messageLoading}
             faded={active}
+            readBy={
+              chats[selected ?? 0]?.readBy?.filter(
+                (item: any) => item?._id !== user?._id
+              ) ?? []
+            }
             {...{ messages, sendMessage, user, socket, typing, chatId }}
           />
         </div>

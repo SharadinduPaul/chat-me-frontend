@@ -6,18 +6,19 @@ import {
   loading as loader,
   close,
 } from "../../../../../assets/images";
-import "./styles.css";
 import { UserContext } from "../../../../../utils/context";
 import Lottie from "lottie-react";
 import chatlottie from "../../../../../assets/animated/chat.json";
 import addUser from "../../../../../assets/animated/addUser.json";
 import addChat from "../../../../../assets/animated/addChat.json";
+import "./styles.css";
 
 interface ChatProps {
   name: string;
   latestMessage: string;
   image_url?: string;
   selected: boolean;
+  read: boolean;
   onClick: () => void;
 }
 const Chat = ({
@@ -25,18 +26,21 @@ const Chat = ({
   latestMessage,
   image_url,
   selected,
+  read,
   onClick,
 }: ChatProps) => {
   return (
     <div
-      className={`chat-main ${selected ? "selected" : ""}`}
+      className={`chat-main ${selected ? "selected" : ""} ${
+        !read ? "unread" : ""
+      }`}
       onClick={onClick}
     >
       <div className="chat-container">
         <img src={user} alt="User" />
         <div>
           <Text varient="content2">{name}</Text>
-          <Text varient="content3" faded>
+          <Text varient="content3" faded={read}>
             {latestMessage}
           </Text>
         </div>
@@ -121,11 +125,12 @@ export const Chatbar = ({
             : item?.chatName;
           const latestMessage =
             item?.latestMessage?.content ?? "Send a first message?";
-
+          const readByIds = item?.readBy?.map((item: any) => item?._id);
           return (
             <Chat
               key={index}
               name={name}
+              read={readByIds?.includes(user?._id)}
               latestMessage={latestMessage}
               selected={selected === index}
               onClick={() => {
