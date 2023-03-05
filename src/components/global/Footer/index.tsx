@@ -7,7 +7,7 @@ export const Footer = () => {
     <div className="footer-main">
       {/* <div className="hr" /> */}
       <div className="madeby">
-        <Text varient="content2">Made by Sharadindu Paul</Text>
+        <Text varient="content2">Made by Sharadindu Paul & Arpan Sadhu </Text>
       </div>
     </div>
   );

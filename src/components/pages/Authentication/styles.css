@@ -1,111 +1,171 @@
 .authentication-main {
   width: 100%;
+  min-height: max-content;
+  overflow: hidden auto;
   height: 100%;
   position: relative;
-  perspective: 800px;
-}
-.authentication-card:first-of-type{
-  --color: var(--color-accent);
-  --color2: var(--color-accent2)
-}
-.authentication-card:last-of-type{
-  --color: var(--color-accent2);
-  --color2: var(--color-accent)
-}
-.authentication-card {
-  width: 90%;
-  max-width: 400px;
-  min-height: 400px;
-  height: 50%;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--color);
-  border-radius: var(--radius1);
-  padding: 1rem 1rem 3rem;
 
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  translate: -50% -50%;
-  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  padding-top: 6rem;
+  gap: 2rem;
+}
+
+.authentication-main > .chatme-banner {
+  width: 100%;
+  min-height: 540px;
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+}
+.authentication-main > .chatme-banner:nth-child(2n) {
+  flex-direction: row-reverse;
+}
+.authentication-main > .chatme-banner > * {
+  flex: 1;
+}
+.authentication-main > .chatme-banner > .banner-text {
+  height: 100%;
+  max-height: max-content;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: 1s 0.4s;
+  transform: translateY(100px);
+  opacity: 0;
+}
+.authentication-main > .chatme-banner > .banner-text.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+.authentication-main > .chatme-banner > .banner-text > * {
+  width: 100%;
+  max-width: 500px;
+}
+.auth-button-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  transform: translateY(-5rem);
+  transition: 0.6s 0s;
 
   display: flex;
   align-items: center;
+  gap: 1rem;
+}
+.auth-button-container.active {
+  transform: translateY(0);
+  transition-delay: 1s;
+}
+.auth-button-container > button {
+  height: 3.2rem;
+  width: 6.8rem;
+  border-radius: 100px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+.auth-button-container > button > .bg {
+  height: 8rem;
+  width: 8rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 12;
+  animation: rotate 2s infinite;
+  animation-timing-function: linear;
+}
+.auth-button-container > .open-login > .bg {
+  background: linear-gradient(to left, #60dfff, #d621ff);
+}
+.auth-button-container > .open-about > .bg {
+  background: linear-gradient(to left, #ff1414, #ffd83d);
+}
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+.auth-button-container > button > .header3 {
+  z-index: 13;
+  position: relative;
+  background-color: var(--bg-primary);
+  border-radius: 100px;
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scale: 0.94 0.85;
+}
+
+.authentication-main > form {
+  position: fixed;
+  top: 5vh;
+  z-index: 10;
+  display: flex;
+  align-items: stretch;
   flex-direction: column;
   justify-content: center;
 
+  height: 90%;
+  width: calc(100% - 2rem);
+  max-width: 450px;
+  padding: 2vmin;
+  gap: 0.5rem;
+
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(25px) brightness(50%);
+  border-radius: var(--radius1);
   transition: 1s;
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-  overflow: hidden;
 }
-.authentication-card > *:not(button) {
-  width: 85%;
+.authentication-main > form:first-of-type {
+  transform: translateX(-120%);
+  left: 1rem;
 }
-.authentication-card > input {
-  border: none;
-  outline: none;
-  background-color: var(--bg-primary);
-  color: var(--color);
-  border-radius: var(--radius2);
-
-  height: 2.6rem;
-  padding: 10px;
-  margin-top: 1rem;
-  opacity: 0.9;
-  border: 1px solid #000;
-  transition: 0.2s;
+.authentication-main > form:last-of-type {
+  transform: translateX(120%);
+  right: 1rem;
 }
-.authentication-card > input:focus {
-  opacity: 1;
-  border-bottom: 1px solid var(--color);
+.authentication-main > form > .header1 {
+  margin: 1rem 0;
 }
-.authentication-card > button {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 3rem;
-  background-color: var(--color);
-
-  border: none;
+.authentication-main > form span {
   cursor: pointer;
-  transition: 0.1s;
-}
-.authentication-card > button:active {
-  filter: brightness(80%);
-}
-.authentication-card > button > * {
-  color: #000;
-  font-weight: 800;
-}
-.authentication-card p {
-  color: var(--color);
-  display: inline;
-}
-.authentication-card p#failed {
-  color: var(--color-error);
-}
-.authentication-card .error {
-  color: var(--color-error);
-  margin-top: 0.2rem;
-}
-.authentication-card > input.inputErr {
-  border: 1px solid var(--color-error);
-}
-.authentication-card > .heading {
-  margin-bottom: 1rem;
-  text-align: center;
-}
-.authentication-card > .toggle {
-  text-align: right;
-  margin-top: 0.6rem;
-}
-.authentication-card > .toggle > .toggleSignup {
+  color: var(--color-accent2);
   font-weight: 600;
-  padding: 0 4px;
-  cursor: pointer;
-  color: var(--color2);
+  font-size: 14px;
 }
-.authentication-card > .toggle > .toggleSignup:hover {
-  text-decoration: underline;
+.authentication-main > form:first-of-type span {
+  color: var(--color-accent);
+}
+.authentication-main > form:last-of-type span {
+  color: var(--color-accent2);
+}
+.authentication-main > form.active {
+  transform: translateX(0);
 }
 
+@media all and (max-width: 750px) {
+  .authentication-main {
+    gap: 5rem;
+  }
+  .authentication-main > .chatme-banner {
+    flex-direction: column !important;
+    min-height: max-content;
+  }
+}

@@ -1,227 +1,129 @@
 import React from "react";
 import Lottie from "lottie-react";
-import { useNavigate } from "react-router-dom";
-import { Login, Registration } from "../../../apis";
-import { UserContext } from "../../../utils/context";
-import { POST } from "../../../utils/fetch";
-import { loginValidation, signUpValidation } from "../../../utils/validation";
-import { Footer, Text } from "../../global";
-import authLottie from "../../../assets/animated/auth.json";
+import { Login } from "./components/Login";
+import { Signup } from "./components/Signup";
+import authpage from "../../../assets/animated/authPage.json";
+import authpage2 from "../../../assets/animated/authPage2.json";
+import authpage3 from "../../../assets/animated/authPage3.json";
 import "./styles.css";
+import { Footer, Text } from "../../global";
 
 export const Authentication = ({ login = false }: { login?: boolean }) => {
-  const [signup, setSignup] = React.useState<boolean>(!login);
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [auth, setAuth] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<
-    { errLocation: string; errMessage: string } | undefined
-  >(undefined);
-  const navigate = useNavigate();
-  const { user, setUser } = React.useContext(UserContext);
+  const [signup, setSignup] = React.useState<"login" | "signup" | null>(null);
+
+  const banner1 = React.useRef<HTMLDivElement>(null);
+  const banner2 = React.useRef<HTMLDivElement>(null);
+  const banner3 = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    document.title = signup
-      ? "Register New Account - Chatme"
-      : "Log into your account - Chatme";
+    if (banner1.current) {
+      const observer = new IntersectionObserver((e) => {
+        console.log(e);
+        banner1.current?.classList.toggle("show", e[0]?.isIntersecting);
+      });
+      observer.observe(banner1.current);
+    }
+    if (banner2.current) {
+      const observer = new IntersectionObserver((e) => {
+        console.log(e);
+        banner2.current?.classList.toggle("show", e[0]?.isIntersecting);
+      });
+      observer.observe(banner2.current);
+    }
+    if (banner3.current) {
+      const observer = new IntersectionObserver((e) => {
+        console.log(e);
+        banner3.current?.classList.toggle("show", e[0]?.isIntersecting);
+      });
+      observer.observe(banner3.current);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    document.title =
+      signup === "signup"
+        ? "Register New Account - Chatme"
+        : signup === "login"
+        ? "Log into your account - Chatme"
+        : "Welcome to Chatme";
   }, [signup]);
 
-  const handleSignUpSubmit = async (e: any) => {
-    e.preventDefault();
-    setLoading(true);
-    //validating the input data
-    const hasError = signUpValidation(
-      e?.target[0]?.value,
-      e?.target[1]?.value,
-      e?.target[2]?.value
-    );
-    if (hasError) {
-      setLoading(false);
-      setError(hasError);
-      return;
-    } else {
-      setError(undefined);
-    }
-
-    //making the signup POST request
-    const res = await POST(
-      Registration,
-      {
-        name: e.target[0]?.value,
-        email: e.target[1]?.value,
-        password: e.target[2]?.value,
-      },
-      user?.token
-    );
-    //validating the API response
-    if (res?.token) {
-      setUser(res);
-      setAuth(true);
-      setTimeout(() => {
-        navigate("/profile?skipable=true");
-      }, 3000);
-    } else {
-      setError({ errLocation: "main", errMessage: "Signup failed" });
-    }
-    setLoading(false);
-  };
-  const handleLogInSubmit = async (e: any) => {
-    e.preventDefault();
-    setLoading(true);
-    //validating the input data
-    const hasError = loginValidation(e?.target[0]?.value, e?.target[1]?.value);
-    if (hasError) {
-      setLoading(false);
-      setError(hasError);
-      return;
-    } else {
-      setError(undefined);
-    }
-
-    //making the login POST request
-    const res = await POST(
-      Login,
-      {
-        email: e.target[0]?.value,
-        password: e.target[1]?.value,
-      },
-      user?.token
-    );
-
-    //validating the API response
-    if (res?.token) {
-      setUser(res);
-      setAuth(true);
-      setTimeout(() => {
-        navigate("/");
-      }, 3000);
-    } else {
-      setError({ errLocation: "main", errMessage: "Signup failed" });
-    }
-    setLoading(false);
-  };
   return (
-    <div className="authentication-main">
-      <div className="lottie-auth">
-        <Lottie animationData={authLottie} style={{ height: "18rem" }} />
+    <div className="authentication-main" onClick={() => setSignup(null)}>
+      <div className="chatme-banner">
+        <Lottie animationData={authpage} style={{ height: "60vh" }} />
+        <div className="banner-text" ref={banner1}>
+          <Text varient="header1">
+            Hi, welcome to{" "}
+            <span style={{ color: "var(--color-accent2)" }}>Chat</span>
+            <span style={{ color: "var(--color-accent)" }}>me</span>
+          </Text>
+          <Text varient="content1" faded>
+            Whether you're looking to catch up with a loved one, with
+            colleagues, or simply hang out with friends, our app makes it easy
+            to stay connected and engaged.
+            <br />
+            Scroll down for a quick insight or rather Login to explore yourself.
+          </Text>
+        </div>
       </div>
-      <form
-        className="authentication-card"
-        style={{ transform: signup ? "rotateY(0deg)" : "rotateY(180deg)" }}
-        onSubmit={handleSignUpSubmit}
+      <div className="chatme-banner">
+        <Lottie animationData={authpage3} style={{ height: "50vh" }} />
+        <div className="banner-text" ref={banner2}>
+          <Text varient="header1">Real-time messaging</Text>
+          <Text varient="content1" faded>
+            Chatme provides a unique messaging experience that prioritizes
+            privacy, customization, across multiple devices, meaning that you
+            can continue your conversations from wherever you left off, whether
+            on your phone, tablet, or desktop.
+          </Text>
+        </div>
+      </div>
+      <div className="chatme-banner">
+        <Lottie animationData={authpage2} style={{ height: "50vh" }} />
+        <div className="banner-text" ref={banner3}>
+          <Text varient="header1">Seamless Audio & Video calling</Text>
+          <Text varient="content1" faded>
+            Chatme offers an intuitive interface that allows you to easily
+            initiate audio or video calls with a single click. With high-quality
+            video and audio technology, you can communicate with crystal-clear
+            clarity, ensuring that every word is heard and every detail is seen.
+            <br />
+            It provides a reliable, secure, and convenient way to connect
+          </Text>
+        </div>
+      </div>
+      <Login
+        active={signup === "login"}
+        setSignupActive={() => setSignup("signup")}
+      />
+      <Signup
+        active={signup === "signup"}
+        setLoginActive={() => setSignup("login")}
+      />
+      <div
+        className={`auth-button-container ${signup === null ? "active" : ""}`}
       >
-        <Text varient="header2" className="heading">
-          {auth ? (
-            <>
-              Sign up <p>successful</p>
-            </>
-          ) : error?.errLocation === "main" ? (
-            <>
-              Sign up <p id="failed">failed</p>
-            </>
-          ) : (
-            <>
-              Sign up for a <p>new</p> account
-            </>
-          )}
-        </Text>
-        <input
-          className={error?.errLocation === "name" ? "inputErr" : ""}
-          type="text"
-          name="name"
-          placeholder="Name"
-          autoFocus
-        />
-        {error?.errLocation === "name" && (
-          <Text varient="content2" className="error">
-            {error?.errMessage}
-          </Text>
-        )}
-        <input
-          className={error?.errLocation === "email" ? "inputErr" : ""}
-          type="email"
-          name="email"
-          placeholder="Email"
-        />
-        {error?.errLocation === "email" && (
-          <Text varient="content2" className="error">
-            {error?.errMessage}
-          </Text>
-        )}
-        <input
-          className={error?.errLocation === "password" ? "inputErr" : ""}
-          type="password"
-          name="password"
-          placeholder="Password"
-        />
-        {error?.errLocation === "password" && (
-          <Text varient="content2" className="error">
-            {error?.errMessage}
-          </Text>
-        )}
-        <Text varient="content2" className="toggle" italic>
-          Already have an account?
-          <span className="toggleSignup" onClick={() => setSignup(false)}>
-            Login
-          </span>
-          instead
-        </Text>
-        <button type="submit" disabled={loading}>
-          <Text varient="header3">Sign up</Text>
-        </button>
-      </form>
-      <form
-        className="authentication-card"
-        style={{ transform: signup ? "rotateY(180deg)" : "rotateY(360deg)" }}
-        onSubmit={handleLogInSubmit}
-      >
-        <Text varient="header2" className="heading">
-          {auth ? (
-            <>
-              Login <p>successful</p>
-            </>
-          ) : error?.errLocation === "main" ? (
-            <>
-              Login <p id="failed">failed</p>
-            </>
-          ) : (
-            <>
-              Login to <p>your</p> account
-            </>
-          )}
-        </Text>
-        <input
-          className={error?.errLocation === "email" ? "inputErr" : ""}
-          type="email"
-          name="email"
-          placeholder="Email"
-        />
-        {error?.errLocation === "email" && (
-          <Text varient="content2" className="error">
-            {error?.errMessage}
-          </Text>
-        )}
-        <input
-          className={error?.errLocation === "password" ? "inputErr" : ""}
-          type="password"
-          name="password"
-          placeholder="Password"
-        />
-        {error?.errLocation === "password" && (
-          <Text varient="content2" className="error">
-            {error?.errMessage}
-          </Text>
-        )}
-        <Text varient="content2" className="toggle" italic>
-          Don't have an account?
-          <span className="toggleSignup" onClick={() => setSignup(true)}>
-            Signup
-          </span>
-          instead
-        </Text>
-        <button type="submit" disabled={loading}>
+        <button
+          className="open-login"
+          onClick={(e) => {
+            setSignup("login");
+            e.stopPropagation();
+          }}
+        >
+          <div className="bg" />
           <Text varient="header3">Login</Text>
         </button>
-      </form>
+        <button
+          className="open-about"
+          onClick={(e) => {
+            alert("About is yet to be made");
+          }}
+        >
+          <div className="bg" />
+          <Text varient="header3">About</Text>
+        </button>
+      </div>
       <Footer />
     </div>
   );

@@ -1,8 +1,6 @@
 .footer-main {
   background-color: var(--bg-secondary);
-  position: fixed;
-  bottom: 0;
-  left: 0;
+  
   height: fit-content;
   z-index: 10;
   width: 100%;
@@ -12,17 +10,18 @@
   justify-content: space-between;
 }
 .footer-main > .madeby {
-  background-color: #0b0b0b;
+  background-color: #000000;
   height: 1.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .footer-main > .madeby > * {
+  
   background: linear-gradient(
     to left,
-    var(--color-accent),
-    var(--color-accent2)
+    rgb(70, 98, 255),
+    #cb2fff
   );
   background-clip: text;
   -webkit-background-clip: text;
@@ -36,8 +35,4 @@
     var(--color-accent),
     var(--color-accent2)
   );
-}
-.footer-main > .footer-container {
-  height: 100px;
-  background-color: var(--bg-primary);
 }

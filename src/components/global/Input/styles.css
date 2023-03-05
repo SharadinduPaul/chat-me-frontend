@@ -1,11 +1,10 @@
 .input-main {
-  --input-height: 2.6rem;
-  --error-height: 2rem;
+  --input-height: 2.8rem;
+  --error-height: 1.2rem;
   --border: 1px;
 
-  height: calc(var(--input-height) + var(--error-height));
+  height: max-content;
   width: 100%;
-  flex: 1;
 
   display: flex;
   flex-direction: column;
@@ -29,11 +28,12 @@
   background-color: var(--color);
 
   clip-path: ellipse(64% 10% at 50% 100%);
-  transition: 0.4s;
+  opacity: .5;
+  transition: 0.5s;
 }
 .input-main.focused > .input-container > .input-background {
   clip-path: ellipse(64% 100% at 49% 58%);
-
+  opacity: 1;
 }
 .input-main > .input-container > .placeholder {
   position: absolute;
@@ -42,8 +42,11 @@
   transform: translateY(-50%);
   background-color: var(--bg-primary);
   color: var(--color);
-  padding: 2px 3px;
+  padding: 0 4px;
+  border-radius: 4px;
   transition: 0.4s;
+  font-size: 13px;
+  pointer-events: none;
 }
 .input-main.focused > .input-container > .placeholder {
   top: 0;
@@ -59,7 +62,7 @@
   height: calc(100% - (2 * var(--border)));
   width: calc(100% - (2 * var(--border)));
   border-radius: var(--radius2);
-  padding: 0 0.6rem;
+  padding: 0 0.8rem;
 
   position: absolute;
   top: var(--border);
@@ -70,6 +73,14 @@
   color: var(--color-primary);
   caret-color: var(--color);
 
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 300;
+}
+
+.input-main > .error-message{
+  display: flex;
+  align-items: center;
+  height: var(--error-height);
+  padding-left: .8rem;
+  color: var(--color-error);
 }

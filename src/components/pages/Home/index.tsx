@@ -7,6 +7,7 @@ import { Modal } from "../../global";
 import { Chatbar } from "./components/Chatbar";
 import { CreateChat } from "./components/CreateChat";
 import { MessagePanel } from "./components/MessagePanel";
+import { Options } from "./components/Options";
 import { Topbar } from "./components/Topbar";
 import "./styles.css";
 
@@ -15,6 +16,7 @@ let socket: any, selectedChat: any;
 
 export const Home = () => {
   const [modal, setModal] = React.useState<boolean>(false);
+  const [options, setOptions] = React.useState<boolean>(false);
   const [chats, setChats] = React.useState<any[]>([]);
   const [selected, setSelected] = React.useState<number | null>(null);
   const [active, setActive] = React.useState<boolean>(false);
@@ -92,7 +94,9 @@ export const Home = () => {
   const getChats = async () => {
     setChatLoading(true);
     const res = await GET(Chats, user?.token);
-    setChats(res);
+    if (res) {
+      setChats(res);
+    }
     console.log("chats", res);
     setChatLoading(false);
   };
@@ -217,22 +221,33 @@ export const Home = () => {
           <CreateChat close={() => setModal(false)} />
         </Modal>
       ) : null}
+      {options ? (
+        <Modal onClose={() => setOptions(false)}>
+          <Options />
+        </Modal>
+      ) : null}
       <Chatbar
         setModal={setModal}
         loading={chatLoading}
         {...{ chats, getChats, selected, setSelected, active, setActive }}
       />
       <div className="home-content">
-        <Topbar userName={selectedUserName} {...{ setActive }} />
+        <Topbar
+          userName={selectedUserName}
+          openOptions={() => setOptions(true)}
+          {...{ setActive }}
+        />
         <div className="message-container">
           <MessagePanel
             noChatSelected={selected === null}
             loading={messageLoading}
             faded={active}
             readBy={
-              chats[selected ?? 0]?.readBy?.filter(
-                (item: any) => item?._id !== user?._id
-              ) ?? []
+              chats
+                ? chats[selected ?? 0]?.readBy?.filter(
+                    (item: any) => item?._id !== user?._id
+                  )
+                : []
             }
             {...{ messages, sendMessage, user, socket, typing, chatId }}
           />

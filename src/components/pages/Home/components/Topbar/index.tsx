@@ -7,9 +7,10 @@ import "./styles.css";
 
 interface TopbarProps {
   setActive: (input: boolean) => void;
+  openOptions: () => void;
   userName: string;
 }
-export const Topbar = ({ setActive, userName }: TopbarProps) => {
+export const Topbar = ({ setActive, userName, openOptions }: TopbarProps) => {
   return (
     <div className="topbar-main">
       <div>
@@ -23,7 +24,7 @@ export const Topbar = ({ setActive, userName }: TopbarProps) => {
       <Text className="name" style={{ fontSize: "17px", fontWeight: "500" }}>
         {userName}
       </Text>
-      <img src={options} alt="dots" className="options" />
+      <img src={options} alt="dots" className="options" onClick={openOptions} />
     </div>
   );
 };

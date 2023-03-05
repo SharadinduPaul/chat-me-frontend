@@ -1,0 +1,26 @@
+.options-main {
+  height: 100%;
+  width: 100%;
+  border: 1px solid var(--color-accent2);
+  border-radius: var(--radius1);
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: .5rem;
+}
+.options-main > div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: var(--bg-secondary);
+  height: 3.4rem;
+  padding: 0 1rem;
+  gap: 1rem;
+  border-radius: var(--radius2);
+  cursor: pointer;
+}
+.options-main img {
+  height: 1.4rem;
+  aspect-ratio: 1/1;
+}
