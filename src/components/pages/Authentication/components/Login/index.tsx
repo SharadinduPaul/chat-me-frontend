@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { close as closePNG } from "../../../../../assets/images";
 import { Login as LoginAPI } from "../../../../../apis";
 import { UserContext } from "../../../../../utils/context";
 import { POST } from "../../../../../utils/fetch";
@@ -10,8 +11,9 @@ import "./styles.css";
 interface LoginProps {
   active: boolean;
   setSignupActive: () => void;
+  close: () => void;
 }
-export const Login = ({ active, setSignupActive }: LoginProps) => {
+export const Login = ({ active, setSignupActive, close }: LoginProps) => {
   const [data, setData] = React.useState<{
     email: string;
     password: string;
@@ -73,6 +75,7 @@ export const Login = ({ active, setSignupActive }: LoginProps) => {
       className={`${active ? "active" : ""}`}
       onClick={(e) => e.stopPropagation()}
     >
+      <img src={closePNG} alt="close" className="close" onClick={close} />
       <Text varient="header1">
         Login to an{" "}
         <span style={{ color: "var(--color-accent2)", font: "inherit" }}>
@@ -87,6 +90,8 @@ export const Login = ({ active, setSignupActive }: LoginProps) => {
         value={data.email}
         onChange={(e) => changeData("email", e?.target?.value)}
         color="accent2"
+        showError={error?.errLocation === "email"}
+        errorMessage={error?.errMessage}
       />
       <Input
         placeHolder="Password"
@@ -95,6 +100,8 @@ export const Login = ({ active, setSignupActive }: LoginProps) => {
         value={data.password}
         onChange={(e) => changeData("password", e?.target?.value)}
         color="accent2"
+        showError={error?.errLocation === "password"}
+        errorMessage={error?.errMessage}
       />
       <Button style={{ marginTop: "2rem" }} color="accent2" type="submit">
         Login

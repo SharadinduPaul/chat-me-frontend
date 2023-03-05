@@ -96,10 +96,12 @@ export const Authentication = ({ login = false }: { login?: boolean }) => {
       <Login
         active={signup === "login"}
         setSignupActive={() => setSignup("signup")}
+        close={() => setSignup(null)}
       />
       <Signup
         active={signup === "signup"}
         setLoginActive={() => setSignup("login")}
+        close={() => setSignup(null)}
       />
       <div
         className={`auth-button-container ${signup === null ? "active" : ""}`}

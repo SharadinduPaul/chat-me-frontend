@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Registration } from "../../../../../apis";
+import { close as closePNG } from "../../../../../assets/images";
 import { UserContext } from "../../../../../utils/context";
 import { POST } from "../../../../../utils/fetch";
 import { signUpValidation } from "../../../../../utils/validation";
@@ -10,8 +11,9 @@ import "./styles.css";
 interface SignupProps {
   active: boolean;
   setLoginActive: () => void;
+  close: () => void;
 }
-export const Signup = ({ active, setLoginActive }: SignupProps) => {
+export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
   const [data, setData] = React.useState<{
     name: string;
     email: string;
@@ -51,6 +53,15 @@ export const Signup = ({ active, setLoginActive }: SignupProps) => {
       setError(undefined);
     }
 
+    //comparing password and confirm password
+    if (data.password !== data.confirm) {
+      setError({
+        errLocation: "password",
+        errMessage: "Password doesn't match with confirm password",
+      });
+      return;
+    }
+
     //making the signup POST request
     const res = await POST(
       Registration,
@@ -80,6 +91,7 @@ export const Signup = ({ active, setLoginActive }: SignupProps) => {
       className={`${active ? "active" : ""}`}
       onClick={(e) => e.stopPropagation()}
     >
+      <img src={closePNG} alt="close" className="close" onClick={close} />
       <Text varient="header1">
         Signup for a{" "}
         <span style={{ color: "var(--color-accent)", font: "inherit" }}>
@@ -92,7 +104,8 @@ export const Signup = ({ active, setLoginActive }: SignupProps) => {
         name="name"
         value={data.name}
         onChange={(e) => changeData("name", e?.target?.value)}
-        errorMessage="Please enter a valid name"
+        showError={error?.errLocation === "name"}
+        errorMessage={error?.errMessage}
       />
       <Input
         placeHolder="Email"
@@ -100,6 +113,8 @@ export const Signup = ({ active, setLoginActive }: SignupProps) => {
         name="email"
         value={data.email}
         onChange={(e) => changeData("email", e?.target?.value)}
+        showError={error?.errLocation === "email"}
+        errorMessage={error?.errMessage}
       />
       <Input
         placeHolder="Password"
@@ -107,6 +122,8 @@ export const Signup = ({ active, setLoginActive }: SignupProps) => {
         name="password"
         value={data.password}
         onChange={(e) => changeData("password", e?.target?.value)}
+        showError={error?.errLocation === "password"}
+        errorMessage={error?.errMessage}
       />
       <Input
         placeHolder="Confirm Password"

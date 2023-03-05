@@ -48,6 +48,17 @@
   font-size: 13px;
   pointer-events: none;
 }
+.input-main > .input-container > .show-hide {
+  display: none;
+  height: 1rem;
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+}
+.input-main > .input-container:hover > .show-hide {
+  display: block;
+}
 .input-main.focused > .input-container > .placeholder {
   top: 0;
   transform: translateY(-50%);

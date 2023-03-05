@@ -1,4 +1,5 @@
 import React from "react";
+import { show as showPNG, hide } from "../../../assets/images";
 import { Text } from "../Text";
 import "./styles.css";
 
@@ -21,11 +22,25 @@ export const Input = ({
   errorMessage,
   color = "accent1",
   value = "",
+  type = "text",
   style,
   className,
   ...rest
 }: InputProps) => {
   const [focus, setFocus] = React.useState<boolean>(false);
+  const [show, setShow] = React.useState<boolean>(false);
+
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  React.useEffect(() => {
+    if (inputRef.current && type === "password") {
+      if (show) {
+        inputRef.current.type = "text";
+      } else {
+        inputRef.current.type = "password";
+      }
+      inputRef.current.focus();
+    }
+  }, [show]);
   return (
     <div
       className={`input-main ${color} ${focus ? "focused" : ""} ${className}`}
@@ -34,15 +49,29 @@ export const Input = ({
         <div className="input-background" />
         <input
           {...rest}
+          ref={inputRef}
+          type={type}
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
         />
-        <Text
-          className={`placeholder ${value?.length > 0 ? "active" : ""}`}
-          //   varient="content2"
-        >
+        <Text className={`placeholder ${value?.length > 0 ? "active" : ""}`}>
           {placeHolder}
         </Text>
+        {type !== "password" ? null : show ? (
+          <img
+            className="show-hide"
+            src={showPNG}
+            alt="show"
+            onClick={() => setShow(false)}
+          />
+        ) : (
+          <img
+            className="show-hide"
+            src={hide}
+            alt="hide"
+            onClick={() => setShow(true)}
+          />
+        )}
       </div>
       {showError ? (
         <Text varient="content3" className="error-message">
