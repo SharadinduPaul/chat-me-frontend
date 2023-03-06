@@ -1,53 +1,18 @@
 import React from "react";
 import { Text } from "../../../../global";
 import {
-  chat,
-  user,
+  user as userPNG,
   loading as loader,
   close,
 } from "../../../../../assets/images";
 import { UserContext } from "../../../../../utils/context";
 import Lottie from "lottie-react";
-import chatlottie from "../../../../../assets/animated/chat.json";
+import loadingLottie from "../../../../../assets/animated/loading.json";
 import addUser from "../../../../../assets/animated/addUser.json";
 import addChat from "../../../../../assets/animated/addChat.json";
+import { useNavigate } from "react-router-dom";
+import { Chat } from "../Chat";
 import "./styles.css";
-
-interface ChatProps {
-  name: string;
-  latestMessage: string;
-  image_url?: string;
-  selected: boolean;
-  read: boolean;
-  onClick: () => void;
-}
-const Chat = ({
-  name,
-  latestMessage,
-  image_url,
-  selected,
-  read,
-  onClick,
-}: ChatProps) => {
-  return (
-    <div
-      className={`chat-main ${selected ? "selected" : ""} ${
-        !read ? "unread" : ""
-      }`}
-      onClick={onClick}
-    >
-      <div className="chat-container">
-        <img src={user} alt="User" />
-        <div>
-          <Text varient="content2">{name}</Text>
-          <Text varient="content3" faded={read}>
-            {latestMessage}
-          </Text>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 interface ChatBarProps {
   setModal: (input: boolean) => void;
@@ -71,33 +36,42 @@ export const Chatbar = ({
 }: ChatBarProps) => {
   const { user } = React.useContext(UserContext);
 
+  const navigate = useNavigate();
+
   return (
     <div className={`chatbar-main ${active ? "active" : ""}`}>
-      <Text varient="header3" className="heading" onClick={getChats}>
-        <Lottie
-          loop
-          animationData={chatlottie}
-          style={{ height: "3rem", marginLeft: ".5rem" }}
+      <Text className="heading" onClick={() => navigate("/profile")}>
+        <img
+          src={user?.pic}
+          alt=""
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null;
+            currentTarget.src = String(userPNG);
+          }}
         />
-        <Text varient="header3">All Chats</Text>
-        {loading ? (
-          <img src={loader} alt="reload" />
-        ) : (
-          <img
-            src={close}
-            className="close"
-            alt="close"
-            onClick={(e) => {
-              e.stopPropagation();
-              setActive(false);
-            }}
-          />
-        )}
+        <Text>{user?.name}</Text>
+        <img
+          src={close}
+          alt="Close"
+          className="close"
+          onClick={(e) => {
+            e.stopPropagation();
+            setActive(false);
+          }}
+        />
         <div id="hr" />
       </Text>
       <div className="add-new" onClick={() => setModal(true)}>
         <Lottie loop animationData={addUser} style={{ height: "3rem" }} />
         <Text varient="content1">New Chat</Text>
+      </div>
+      <div className="all-chats" onClick={getChats}>
+        <Text varient="content2" italic style={{ padding: "0.4rem" }}>
+          All chats
+        </Text>
+        {loading ? (
+          <Lottie animationData={loadingLottie} style={{ height: "2.4rem" }} />
+        ) : null}
       </div>
       {chats?.length === 0 ? (
         <div>
@@ -117,6 +91,7 @@ export const Chatbar = ({
         </div>
       ) : (
         chats?.map((item: any, index) => {
+          console.log("chat", item);
           const isGroupChat = item?.isGroupChat;
           const name = !isGroupChat
             ? item?.users?.find(
@@ -125,14 +100,18 @@ export const Chatbar = ({
             : item?.chatName;
           const latestMessage =
             item?.latestMessage?.content ?? "Send a first message?";
+          const updatedAt = item?.updatedAt;
           const readByIds = item?.readBy?.map((item: any) => item?._id);
           return (
             <Chat
               key={index}
               name={name}
+              online={false}
+              image_url={""}
               read={readByIds?.includes(user?._id)}
               latestMessage={latestMessage}
               selected={selected === index}
+              updatedAt={updatedAt}
               onClick={() => {
                 setSelected(index);
                 setActive(false);

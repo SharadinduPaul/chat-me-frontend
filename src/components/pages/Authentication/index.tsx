@@ -6,7 +6,9 @@ import authpage from "../../../assets/animated/authPage.json";
 import authpage2 from "../../../assets/animated/authPage2.json";
 import authpage3 from "../../../assets/animated/authPage3.json";
 import "./styles.css";
-import { Footer, Text } from "../../global";
+import { Button, Footer, Text } from "../../global";
+import { UserContext } from "../../../utils/context";
+import { useNavigate } from "react-router-dom";
 
 export const Authentication = ({ login = false }: { login?: boolean }) => {
   const [signup, setSignup] = React.useState<"login" | "signup" | null>(null);
@@ -14,6 +16,10 @@ export const Authentication = ({ login = false }: { login?: boolean }) => {
   const banner1 = React.useRef<HTMLDivElement>(null);
   const banner2 = React.useRef<HTMLDivElement>(null);
   const banner3 = React.useRef<HTMLDivElement>(null);
+
+  const { user } = React.useContext(UserContext);
+
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     if (banner1.current) {
@@ -65,6 +71,15 @@ export const Authentication = ({ login = false }: { login?: boolean }) => {
             <br />
             Scroll down for a quick insight or rather Login to explore yourself.
           </Text>
+          {user?.name ? (
+            <Button
+              style={{ marginTop: "2rem" }}
+              color="accent2"
+              onClick={() => navigate("/")}
+            >
+              Continue as {user?.name}
+            </Button>
+          ) : null}
         </div>
       </div>
       <div className="chatme-banner">

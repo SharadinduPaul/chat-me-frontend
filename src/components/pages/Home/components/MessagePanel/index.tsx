@@ -20,6 +20,7 @@ interface MessagePanelProps {
   typing: boolean;
   chatId: string;
   readBy: any[];
+  closeChatbar: () => void;
 }
 export const MessagePanel = ({
   noChatSelected,
@@ -32,6 +33,7 @@ export const MessagePanel = ({
   typing,
   chatId,
   readBy = [],
+  closeChatbar,
 }: MessagePanelProps) => {
   const [text, setText] = React.useState<string>("");
   const msgRef = React.useRef<HTMLDivElement>(null);
@@ -68,7 +70,10 @@ export const MessagePanel = ({
     setText("");
   };
   return (
-    <div className={`message-panel ${faded ? "faded" : ""}`}>
+    <div
+      className={`message-panel ${faded ? "faded" : ""}`}
+      onClick={closeChatbar}
+    >
       {noChatSelected ? (
         <div className="lottie-container">
           <Lottie animationData={social} style={{ height: "50vmin" }} />

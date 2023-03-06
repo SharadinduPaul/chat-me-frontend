@@ -41,7 +41,6 @@ export const Home = () => {
 
     socket.on("read by", (data: any) => {
       const { room, users } = data;
-      console.log("received read by", users);
       setChats((prev) => {
         const updatedChats = prev?.map((item) => {
           if (item?._id === room) return { ...item, readBy: users };
@@ -56,7 +55,6 @@ export const Home = () => {
       if (selectedChat?._id !== newMessage?.chat?._id) {
         console.log("send notification");
       } else {
-        console.log("add message");
         //adding the new message to messages
         setMessages((prev) => {
           const lastMessage: any = prev.slice(-1);
@@ -249,7 +247,15 @@ export const Home = () => {
                   )
                 : []
             }
-            {...{ messages, sendMessage, user, socket, typing, chatId }}
+            closeChatbar={() => setActive(false)}
+            {...{
+              messages,
+              sendMessage,
+              user,
+              socket,
+              typing,
+              chatId,
+            }}
           />
         </div>
       </div>

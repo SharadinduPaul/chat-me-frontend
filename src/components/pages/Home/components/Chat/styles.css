@@ -1,0 +1,64 @@
+.chat-main {
+  height: 3.5rem;
+  width: 100%;
+  background-color: var(--bg-secondary);
+  margin-top: 0.2rem;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0.8rem;
+  gap: 0.5rem;
+
+  cursor: pointer;
+}
+.chat-main::after{
+    content: '';
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    position: absolute;
+    background-color: var(--bg-primary) ;
+    height: 60%;
+    width: .2rem;
+    border-radius: 0 var(--radius2) var(--radius2) 0;
+}
+.chat-main.selected::after{
+    background-color: var(--color-accent) ;
+}
+.chat-main > .user-image {
+  height: 2rem;
+}
+.chat-main > .chat-content {
+  flex: 1;
+}
+.chat-main > .chat-content > .content2 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 180px;
+  overflow: hidden;
+
+}
+.chat-main > .chat-content > .content3 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 200px;
+  overflow: hidden;
+}
+
+.chat-main.unread > .chat-content > *:is(.content2, .content3){
+    font-weight: 600;
+    opacity: 1 !important;
+}
+.chat-main > .updated-at{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50px;
+    position: relative;
+}
+.chat-main > .updated-at > .content3{
+    text-align: right;
+    width: 100%;
+}
