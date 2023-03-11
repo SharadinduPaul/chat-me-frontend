@@ -1,15 +1,62 @@
 .profile-main{
     height: 100%;
     width: 100%;
-
+    
     display: flex;
     flex-direction: column;
     align-items: center;
-
     overflow: hidden auto;
 }
 .profile-container{
+    max-height: 500px;
     flex: 1;
     width: 100%;
     max-width: 425px;
+    background-color: var(--bg-secondary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    margin: auto;
+    border-radius: var(--radius1);
+}
+.profile-container > .button-container{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.profile-container > .image-container{
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+    position: relative;
+}
+.profile-container > .image-container > img.user-image{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 400px;
+    object-position: center;
+}
+.profile-container > .image-container > img.option{
+    height: 2.8rem;
+    position: absolute;
+    bottom: -5%;
+    border: 4px solid var(--bg-secondary);
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+}
+.profile-container > .image-container > img.option:active{
+    scale: 0.9;
+}
+.profile-container > .image-container > img.option.edit{
+    right: -5%;
+}
+.profile-container > .image-container > img.option.delete{
+    left: -5%;
 }

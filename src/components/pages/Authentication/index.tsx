@@ -10,7 +10,7 @@ import { Button, Footer, Text } from "../../global";
 import { UserContext } from "../../../utils/context";
 import { useNavigate } from "react-router-dom";
 
-export const Authentication = ({ login = false }: { login?: boolean }) => {
+export const Authentication = () => {
   const [signup, setSignup] = React.useState<"login" | "signup" | null>(null);
 
   const banner1 = React.useRef<HTMLDivElement>(null);

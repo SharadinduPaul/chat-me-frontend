@@ -12,6 +12,7 @@ interface InputProps {
   showError?: boolean;
   errorMessage?: string;
   autoFocus?: boolean;
+  disabled?: boolean;
   color?: "accent1" | "accent2";
   style?: React.CSSProperties;
   className?: string;
@@ -23,6 +24,7 @@ export const Input = ({
   color = "accent1",
   value = "",
   type = "text",
+  disabled = false,
   style,
   className,
   ...rest
@@ -48,9 +50,12 @@ export const Input = ({
       <div className="input-container">
         <div className="input-background" />
         <input
+          className={disabled ? "disabled" : ""}
           {...rest}
           ref={inputRef}
           type={type}
+          value={value}
+          disabled={disabled}
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
         />

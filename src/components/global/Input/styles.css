@@ -87,6 +87,10 @@
   font-size: 13px;
   font-weight: 300;
 }
+.input-main > .input-container > input.disabled {
+  color: #fff5;
+  cursor: not-allowed;
+}
 
 .input-main > .error-message{
   display: flex;

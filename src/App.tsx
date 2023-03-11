@@ -2,7 +2,12 @@ import React from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
 import { Layout } from "./components/global";
-import { AuthenticationPage, HomePage, ProfilePage } from "./pages";
+import {
+  AuthenticationPage,
+  HomePage,
+  PageNotFound,
+  ProfilePage
+} from "./pages";
 import { UserContext } from "./utils/context";
 import { getUser, saveUser } from "./utils/handleUser";
 
@@ -12,7 +17,7 @@ function App() {
   React.useEffect(() => {
     const user = getUser();
     if (!user?.token) {
-      navigate("/login");
+      navigate("/auth");
     }
   }, []);
   React.useEffect(() => {
@@ -24,9 +29,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
-            <Route path="signup" element={<AuthenticationPage />} />
-            <Route path="login" element={<AuthenticationPage login />} />
+            <Route path="auth" element={<AuthenticationPage />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
       </div>

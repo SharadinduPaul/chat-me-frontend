@@ -1,6 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { info, logout, profile, setting } from "../../../../../assets/images";
+import {
+  info,
+  logout,
+  password,
+  profile,
+  setting
+} from "../../../../../assets/images";
 import { UserContext } from "../../../../../utils/context";
 import { removeUser } from "../../../../../utils/handleUser";
 import { Text } from "../../../../global";
@@ -14,7 +20,7 @@ export const Options = () => {
   const handleLogout = () => {
     removeUser();
     setUser({});
-    navigate("/login");
+    navigate("/auth");
   };
 
   return (
@@ -27,22 +33,21 @@ export const Options = () => {
         </Text>
       </div>
       <div>
-        <img src={profile} alt="profile" />
-        <Text>Profile</Text>
-        <Text varient="content3" faded italic>
-          - View or edit your profile details
-        </Text>
-      </div>
-      <div>
         <img src={setting} alt="profile" />
         <Text>About us</Text>
         <Text varient="content3" faded italic>
           - Our journey and testimonials
         </Text>
       </div>
+      <div>
+        <img src={password} alt="profile" />
+        <Text>Change password</Text>
+        <Text varient="content3" faded italic></Text>
+      </div>
       <div onClick={handleLogout}>
         <img src={logout} alt="logout" />
         <Text>Log out</Text>
+        <Text varient="content3" faded italic></Text>
       </div>
     </div>
   );

@@ -77,8 +77,7 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
       setUser(res);
       setAuth(true);
       setTimeout(() => {
-        navigate("/");
-        // navigate("/profile?skipable=true");
+        navigate("/profile?skippable=true");
       }, 3000);
     } else {
       setError({ errLocation: "main", errMessage: "Signup failed" });

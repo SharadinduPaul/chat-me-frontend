@@ -6,24 +6,24 @@ interface ButtonProps {
   type?: "button" | "reset" | "submit" | undefined;
   color?: "accent1" | "accent2";
   children?: any;
-  onClick?: () => void;
+  onClick?: (e?: any) => void;
   style?: React.CSSProperties;
   className?: string;
 }
 export const Button = ({
   type,
-  onClick,
+  onClick = () => {},
   style,
   color = "accent1",
   className,
-  children,
+  children
 }: ButtonProps) => {
   return (
     <button
       className={`button-main ${color} ${className}`}
       type={type}
       style={{ ...style }}
-      onClick={onClick}
+      onClick={(e) => onClick(e)}
     >
       <Text varient="content1">{children}</Text>
     </button>
