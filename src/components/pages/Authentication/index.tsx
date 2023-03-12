@@ -1,14 +1,15 @@
 import React from "react";
 import Lottie from "lottie-react";
+import { useNavigate } from "react-router-dom";
+
+import { UserContext } from "../../../utils/context";
 import { Login } from "./components/Login";
 import { Signup } from "./components/Signup";
+import { Button, Footer, Text } from "../../global";
 import authpage from "../../../assets/animated/authPage.json";
 import authpage2 from "../../../assets/animated/authPage2.json";
 import authpage3 from "../../../assets/animated/authPage3.json";
 import "./styles.css";
-import { Button, Footer, Text } from "../../global";
-import { UserContext } from "../../../utils/context";
-import { useNavigate } from "react-router-dom";
 
 export const Authentication = () => {
   const [signup, setSignup] = React.useState<"login" | "signup" | null>(null);

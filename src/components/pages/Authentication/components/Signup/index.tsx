@@ -1,4 +1,5 @@
 import React from "react";
+import Lottie from "lottie-react";
 import { useNavigate } from "react-router-dom";
 import { Registration } from "../../../../../apis";
 import { close as closePNG } from "../../../../../assets/images";
@@ -6,6 +7,7 @@ import { UserContext } from "../../../../../utils/context";
 import { POST } from "../../../../../utils/fetch";
 import { signUpValidation } from "../../../../../utils/validation";
 import { Button, Input, Text } from "../../../../global";
+import loadingPlane from "../../../../../assets/animated/loading-plane.json";
 import "./styles.css";
 
 interface SignupProps {
@@ -23,9 +25,9 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
     name: "",
     email: "",
     password: "",
-    confirm: "",
+    confirm: ""
   });
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<"loading" | "done" | null>(null);
   const [auth, setAuth] = React.useState<boolean>(false);
   const [error, setError] = React.useState<
     { errLocation: string; errMessage: string } | undefined
@@ -41,12 +43,10 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
 
   const handleSignUpSubmit = async (e: any) => {
     e.preventDefault();
-    setLoading(true);
 
     //validating the input data
     const hasError = signUpValidation(data.name, data.email, data.password);
     if (hasError) {
-      setLoading(false);
       setError(hasError);
       return;
     } else {
@@ -57,10 +57,12 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
     if (data.password !== data.confirm) {
       setError({
         errLocation: "password",
-        errMessage: "Password doesn't match with confirm password",
+        errMessage: "Password doesn't match with confirm password"
       });
       return;
     }
+
+    setLoading("loading");
 
     //making the signup POST request
     const res = await POST(
@@ -68,21 +70,22 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
       {
         name: data.name,
         email: data.email,
-        password: data.password,
+        password: data.password
       },
       user?.token
     );
     //validating the API response
     if (res?.token) {
+      setLoading("done");
       setUser(res);
       setAuth(true);
       setTimeout(() => {
         navigate("/profile?skippable=true");
-      }, 3000);
+      }, 800);
     } else {
       setError({ errLocation: "main", errMessage: "Signup failed" });
+      setLoading(null);
     }
-    setLoading(false);
   };
   return (
     <form
@@ -98,6 +101,10 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
         </span>{" "}
         account
       </Text>
+      {error?.errLocation === "main" ? (
+        <Text className="error">{error.errMessage}</Text>
+      ) : null}
+      {loading === "done" ? <Text>Signup successful</Text> : null}
       <Input
         placeHolder="Name"
         name="name"
@@ -105,6 +112,7 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
         onChange={(e) => changeData("name", e?.target?.value)}
         showError={error?.errLocation === "name"}
         errorMessage={error?.errMessage}
+        completed={loading !== null}
       />
       <Input
         placeHolder="Email"
@@ -114,6 +122,7 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
         onChange={(e) => changeData("email", e?.target?.value)}
         showError={error?.errLocation === "email"}
         errorMessage={error?.errMessage}
+        completed={loading !== null}
       />
       <Input
         placeHolder="Password"
@@ -123,6 +132,7 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
         onChange={(e) => changeData("password", e?.target?.value)}
         showError={error?.errLocation === "password"}
         errorMessage={error?.errMessage}
+        completed={loading !== null}
       />
       <Input
         placeHolder="Confirm Password"
@@ -130,7 +140,13 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
         name="comfirm password"
         value={data.confirm}
         onChange={(e) => changeData("confirm", e?.target?.value)}
+        completed={loading !== null}
       />
+      {loading !== null ? (
+        <div className="lottie-container">
+          <Lottie animationData={loadingPlane} style={{ height: "16rem" }} />
+        </div>
+      ) : null}
       <Button style={{ marginTop: "2rem" }} type="submit">
         Signup
       </Button>

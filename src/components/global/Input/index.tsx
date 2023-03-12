@@ -4,29 +4,31 @@ import { Text } from "../Text";
 import "./styles.css";
 
 interface InputProps {
-  name?: string;
-  type?: React.HTMLInputTypeAttribute;
-  placeHolder: string;
-  value?: string;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  showError?: boolean;
-  errorMessage?: string;
   autoFocus?: boolean;
-  disabled?: boolean;
-  color?: "accent1" | "accent2";
-  style?: React.CSSProperties;
   className?: string;
+  color?: "accent1" | "accent2";
+  completed?: boolean;
+  disabled?: boolean;
+  errorMessage?: string;
+  name?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  placeHolder: string;
+  showError?: boolean;
+  style?: React.CSSProperties;
+  type?: React.HTMLInputTypeAttribute;
+  value?: string;
 }
 export const Input = ({
+  color = "accent1",
+  completed = false,
+  className,
+  disabled = false,
+  errorMessage,
   placeHolder = "text",
   showError,
-  errorMessage,
-  color = "accent1",
-  value = "",
-  type = "text",
-  disabled = false,
   style,
-  className,
+  type = "text",
+  value = "",
   ...rest
 }: InputProps) => {
   const [focus, setFocus] = React.useState<boolean>(false);
@@ -45,7 +47,9 @@ export const Input = ({
   }, [show]);
   return (
     <div
-      className={`input-main ${color} ${focus ? "focused" : ""} ${className}`}
+      className={`input-main ${color} ${focus ? "focused" : ""} ${
+        completed ? "completed" : ""
+      } ${className}`}
     >
       <div className="input-container">
         <div className="input-background" />

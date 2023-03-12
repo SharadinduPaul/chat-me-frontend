@@ -35,6 +35,12 @@
     border-radius: 50%;
     position: relative;
 }
+.profile-container > .lottie-container{
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 .profile-container > .image-container > img.user-image{
     height: 100%;
     width: 100%;

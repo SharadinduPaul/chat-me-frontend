@@ -4,10 +4,11 @@ import { Button, Text } from "../../../../global";
 import "./styles.css";
 
 interface ImageUploaderProps {
-  setUserImage: (input: string) => void;
+  setUserImage: (file: any, image: string) => void;
   close: () => void;
 }
 export const ImageUploader = ({ setUserImage, close }: ImageUploaderProps) => {
+  const [file, setFile] = React.useState<any>(null);
   const [image, setImage] = React.useState<string>("nolink");
   const [error, setError] = React.useState<string>("");
   const imageRef = React.useRef<HTMLInputElement>(null);
@@ -32,19 +33,20 @@ export const ImageUploader = ({ setUserImage, close }: ImageUploaderProps) => {
       containerRef.current.addEventListener("drop", (e) => {
         e.preventDefault();
         containerRef.current?.classList.remove("drag-enter");
-        const file = e.dataTransfer?.files[0];
-        if (file?.size && file?.size > maxFileSize) {
+        const imageFile = e.dataTransfer?.files[0];
+        setFile(imageFile);
+        if (imageFile?.size && imageFile?.size > maxFileSize) {
           // filesize <= 5Mb
           setError("File size too big");
           return;
-        } else if (file?.type?.split("/")[0] !== "image") {
+        } else if (imageFile?.type?.split("/")[0] !== "image") {
           setError("Please select an image file");
           return;
         } else {
           setError("");
         }
         const reader = new FileReader();
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(imageFile);
         reader.addEventListener("loadend", () => {
           setImage(String(reader.result));
         });
@@ -60,7 +62,9 @@ export const ImageUploader = ({ setUserImage, close }: ImageUploaderProps) => {
 
   const handleConfirm = (e: any) => {
     e.stopPropagation();
-    setUserImage(image);
+    console.log(file);
+    // return;
+    setUserImage(file, image);
     close();
   };
 
@@ -68,6 +72,7 @@ export const ImageUploader = ({ setUserImage, close }: ImageUploaderProps) => {
     e.preventDefault();
 
     const imageFile = e.target.files[0];
+    setFile(imageFile);
     if (imageFile?.size > maxFileSize) {
       setError("File size too big");
       return;

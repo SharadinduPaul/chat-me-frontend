@@ -1,20 +1,31 @@
 import React from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import Lottie from "lottie-react";
+import loader from "../../../assets/animated/loading-balls.json";
 import { UserContext } from "../../../utils/context";
 import { Button, Footer, Input, Modal, Text } from "../../global";
 import { deletePng, edit, user as userPNG } from "../../../assets/images";
-import "./styles.css";
 import { ImageUploader } from "./components/ImageUploader";
+import "./styles.css";
 
 interface ProfileProps {
   //   skippable: boolean;
 }
 export const Profile = ({}: ProfileProps) => {
   const { user } = React.useContext(UserContext);
+
+  const [file, setFile] = React.useState<any>(null);
   const [name, setName] = React.useState<string>(user?.name ?? "");
-  const [email, setEmail] = React.useState<string>(user?.email ?? "");
   const [image, setImage] = React.useState<string>(user?.pic ?? "");
+
+  const [error, setError] = React.useState<{
+    errLocation: "name" | null;
+    errMessage: string;
+  }>({ errLocation: null, errMessage: "" });
   const [modal, setModal] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<"uploading" | "done" | null>(
+    null
+  );
 
   const skippable = useSearchParams()[0].get("skippable");
   const navigate = useNavigate();
@@ -22,9 +33,21 @@ export const Profile = ({}: ProfileProps) => {
   React.useEffect(() => {
     document.title = "Edit Profile - Chatme";
   }, []);
+  React.useEffect(() => {
+    if (loading === "done") {
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    }
+  }, [loading]);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+  };
+
+  const setSelectedImageFile = (fileData: any, imageData: string) => {
+    setFile(fileData);
+    setImage(imageData);
   };
 
   const handleEdit = () => {
@@ -37,8 +60,25 @@ export const Profile = ({}: ProfileProps) => {
 
   const handleSave = async () => {
     console.log("name:", name);
-    console.log("email:", email);
     console.log("image:", image);
+    if (name.length === 0) {
+      setError({
+        errLocation: "name",
+        errMessage: "Please enter a valid name"
+      });
+      return;
+    }
+    setError({
+      errLocation: null,
+      errMessage: ""
+    });
+    setLoading("uploading");
+
+    //POST the image and name here
+    setTimeout(() => {
+      console.log(file);
+      setLoading("done");
+    }, 4000);
   };
   return (
     <div className="profile-main">
@@ -46,11 +86,22 @@ export const Profile = ({}: ProfileProps) => {
         <Modal onClose={() => setModal(false)}>
           <ImageUploader
             close={() => setModal(false)}
-            setUserImage={setImage}
+            setUserImage={setSelectedImageFile}
           />
         </Modal>
       ) : null}
       <form onSubmit={handleSubmit} className="profile-container">
+        <Text varient="header3">
+          {loading === null
+            ? skippable
+              ? "Add your profile picture"
+              : "Profile"
+            : loading === "uploading"
+            ? file
+              ? "Uploading image..."
+              : "Saving data..."
+            : "Done!"}
+        </Text>
         <div className="image-container">
           <img
             className="user-image"
@@ -61,8 +112,15 @@ export const Profile = ({}: ProfileProps) => {
               currentTarget.src = String(userPNG);
             }}
           />
-          <img className="option edit" onClick={handleEdit} src={edit} alt="" />
-          {!!image ? (
+          {loading === null ? (
+            <img
+              className="option edit"
+              onClick={handleEdit}
+              src={edit}
+              alt=""
+            />
+          ) : null}
+          {!!image && loading === null ? (
             <img
               className="option delete"
               src={deletePng}
@@ -71,24 +129,40 @@ export const Profile = ({}: ProfileProps) => {
             />
           ) : null}
         </div>
+        <div></div>
         <Input
           placeHolder="Name"
           name="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          showError={error.errLocation === "name"}
+          errorMessage={error.errMessage}
+          completed={loading !== null}
         />
         <Input
           placeHolder="Email"
           name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={user?.email}
           disabled
+          completed={loading !== null}
         />
+        <div />
+        {loading === "uploading" ? (
+          <div className="lottie-container">
+            <Lottie animationData={loader} style={{ height: "10rem" }} />
+          </div>
+        ) : loading === "done" ? (
+          <div className="lottie-container">
+            <Lottie animationData={loader} style={{ height: "10rem" }} />
+          </div>
+        ) : null}
         <div className="button-container">
           <Button color="accent2" onClick={() => navigate("/")}>
-            {skippable ? "Skip" : "Cancel"}
+            {skippable ? "Skip for now" : "Return home"}
           </Button>
-          <Button onClick={handleSave}>Save</Button>
+          <Button disabled={loading === "uploading"} onClick={handleSave}>
+            Save
+          </Button>
         </div>
       </form>
       <Footer />

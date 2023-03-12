@@ -16,6 +16,20 @@
 .input-main.accent2 {
   --color: var(--color-accent2);
 }
+.input-main.completed {
+  animation: fadeup 0.5s forwards;
+}
+@keyframes fadeup {
+  0%{
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100%{
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  
+}
 .input-main > .input-container {
   height: var(--input-height);
   position: relative;

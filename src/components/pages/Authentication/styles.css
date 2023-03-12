@@ -11,6 +11,18 @@
   gap: 2rem;
 }
 
+.authentication-main .lottie-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  height: max-content;
+  width: 100%;
+}
+.authentication-main .error {
+  color: var(--color-error);
+}
 .authentication-main > .chatme-banner {
   width: 100%;
   min-height: 540px;
@@ -131,7 +143,7 @@
   border: 1px solid rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(25px) brightness(50%);
   border-radius: var(--radius1);
-  transition: 1s;
+  transition: 1s ease-in-out;
 }
 .authentication-main > form:first-of-type {
   transform: translateX(-120%);
