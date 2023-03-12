@@ -41,7 +41,7 @@ export const Chat = ({
     } else {
       setLastUpdate(String(updatedAtTime));
     }
-  }, []);
+  }, [updatedAt]);
 
   return (
     <div

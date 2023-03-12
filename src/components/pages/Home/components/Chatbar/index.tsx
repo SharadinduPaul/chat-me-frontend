@@ -91,7 +91,6 @@ export const Chatbar = ({
         </div>
       ) : (
         chats?.map((item: any, index) => {
-          console.log("chat", item);
           const isGroupChat = item?.isGroupChat;
           const name = !isGroupChat
             ? item?.users?.find(
@@ -100,7 +99,7 @@ export const Chatbar = ({
             : item?.chatName;
           const latestMessage =
             item?.latestMessage?.content ?? "Send a first message?";
-          const updatedAt = item?.updatedAt;
+          const updatedAt = item?.latestMessage?.updatedAt;
           const readByIds = item?.readBy?.map((item: any) => item?._id);
           return (
             <Chat

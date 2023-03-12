@@ -29,7 +29,7 @@ export const Home = () => {
   const { user } = React.useContext(UserContext);
 
   React.useEffect(() => {
-    document.title = "Messages - Chatme";
+    document.title = "Messages | Chatme";
 
     socket = io(ENDPOINT);
     socket.emit("setup", user);
@@ -51,10 +51,10 @@ export const Home = () => {
     });
 
     socket.on("message received", (newMessage: any) => {
-      console.log("new message", newMessage);
       if (selectedChat?._id !== newMessage?.chat?._id) {
         console.log("send notification");
       } else {
+        console.log("new message", newMessage);
         //adding the new message to messages
         setMessages((prev) => {
           const lastMessage: any = prev.slice(-1);
@@ -64,8 +64,9 @@ export const Home = () => {
         //emitting socket read
         socket.emit("read", {
           room: selectedChat?._id,
-          users: [...selectedChat?.readBy, user],
+          users: [...selectedChat?.readBy, user]
         });
+        sendReadBy(selectedChat?._id, [...selectedChat?.readBy, user]);
 
         setChats((prev) => {
           const updatedChats = prev?.map((item) => {
@@ -89,6 +90,29 @@ export const Home = () => {
     });
   }, []);
 
+  React.useEffect(() => {
+    if (!modal) getChats();
+  }, [modal]);
+  React.useEffect(() => {
+    if (selected !== null) {
+      selectedChat = chats[selected];
+      getMessages(chats[selected]);
+    }
+  }, [selected]);
+  React.useEffect(() => {
+    const unreadMessages =
+      chats.filter((chat) => {
+        const ifUserHasRead = chat?.readBy?.filter(
+          (item: any) => item?._id === user?._id
+        );
+        if (ifUserHasRead.length === 0) return true;
+        else return false;
+      }).length ?? 0;
+    document.title = unreadMessages
+      ? `(${unreadMessages}) Messages | Chatme`
+      : "Messages | Chatme";
+  }, [chats]);
+
   const getChats = async () => {
     setChatLoading(true);
     const res = await GET(Chats, user?.token);
@@ -98,6 +122,7 @@ export const Home = () => {
     console.log("chats", res);
     setChatLoading(false);
   };
+
   const getMessages = async (chat: any) => {
     setMessageLoading(true);
     if (selected === null) return;
@@ -111,36 +136,38 @@ export const Home = () => {
       const userIds = (await chat?.readBy?.map((item: any) => item?._id)) ?? [];
 
       if (!userIds?.includes(user?._id)) {
-        const readByRes = await PUT(
-          ReadByUsers,
-          {
-            chatId: chat?._id,
-            users: [...userIds, user?._id],
-          },
-          user?.token
-        );
+        sendReadBy(chat?._id, [...userIds, user?._id]);
 
-        if (readByRes) {
-          //emitting socket read
-          socket.emit("read", {
-            room: chat?._id,
-            users: [...chat?.readBy, user],
-          });
+        socket.emit("read", {
+          room: chat?._id,
+          users: [...chat?.readBy, user]
+        });
 
-          setChats((prev) => {
-            const updatedChats = prev?.map((item) => {
-              if (item?._id === chat?._id)
-                return { ...item, readBy: [...chat?.readBy, user] };
-              else return item;
-            });
-            return updatedChats;
+        setChats((prev) => {
+          const updatedChats = prev?.map((item) => {
+            if (item?._id === chat?._id)
+              return { ...item, readBy: [...chat?.readBy, user] };
+            else return item;
           });
-        }
+          return updatedChats;
+        });
       }
     }
     setMessageLoading(false);
     socket?.emit("join chat", selectedChat?._id);
   };
+
+  const sendReadBy = async (chatId: string, users: any[]) => {
+    await PUT(
+      ReadByUsers,
+      {
+        chatId: chatId,
+        users: users
+      },
+      user?.token
+    );
+  };
+
   const sendMessage = async (text: string, chatId: string) => {
     //validation
     if (!text || selected === null) return;
@@ -154,7 +181,7 @@ export const Home = () => {
       //emitting socket read
       socket.emit("read", {
         room: chatId,
-        users: [user],
+        users: [user]
       });
       setChats((prev) => {
         const updatedChats = prev?.map((item) => {
@@ -169,7 +196,7 @@ export const Home = () => {
       SendMessage,
       {
         content: text,
-        chatId: chatId,
+        chatId: chatId
       },
       user?.token
     );
@@ -192,16 +219,6 @@ export const Home = () => {
       });
     }
   };
-
-  React.useEffect(() => {
-    if (!modal) getChats();
-  }, [modal]);
-  React.useEffect(() => {
-    if (selected !== null) {
-      selectedChat = chats[selected];
-      getMessages(chats[selected]);
-    }
-  }, [selected]);
 
   const selectedUserName =
     selected !== null
@@ -254,7 +271,7 @@ export const Home = () => {
               user,
               socket,
               typing,
-              chatId,
+              chatId
             }}
           />
         </div>
