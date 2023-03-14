@@ -3,16 +3,13 @@
   width: 100%;
   display: flex;
   padding: 0.05rem 1vw;
-  margin-top: 0.2rem;
   justify-content: flex-end;
-  align-items: flex-end;
+  align-items: center;
   gap: 0.4rem;
 }
 .message-main.received {
   flex-direction: row-reverse;
 }
-/* .message-main.sent{
-} */
 
 .message-main > .message {
   max-width: 75%;
@@ -28,7 +25,13 @@
   border-bottom-right-radius: 0px;
   background-color: var(--color-accent2);
 }
-
+.message-main > .sent-at{
+ opacity: 0;
+  transition: 0.2s;
+}
+.message-main:hover > .sent-at{
+ opacity: 1;
+}
 .message-main > .image {
   height: 2rem;
   width: 2rem;

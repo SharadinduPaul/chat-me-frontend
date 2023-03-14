@@ -134,8 +134,8 @@ export const Authentication = () => {
         </button>
         <button
           className="open-about"
-          onClick={(e) => {
-            alert("About is yet to be made");
+          onClick={() => {
+            navigate("/about");
           }}
         >
           <div className="bg" />

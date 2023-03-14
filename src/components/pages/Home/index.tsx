@@ -9,6 +9,7 @@ import { CreateChat } from "./components/CreateChat";
 import { MessagePanel } from "./components/MessagePanel";
 import { Options } from "./components/Options";
 import { Topbar } from "./components/Topbar";
+// import notificationSound from "../../../assets/audio/notification.mp3";
 import "./styles.css";
 
 const ENDPOINT = process.env.REACT_APP_API_BASE!;
@@ -28,6 +29,10 @@ export const Home = () => {
 
   const { user } = React.useContext(UserContext);
 
+  const audio = new Audio(
+    String(require("../../../assets/audio/notification.mp3"))
+  );
+
   React.useEffect(() => {
     document.title = "Messages | Chatme";
 
@@ -41,6 +46,7 @@ export const Home = () => {
 
     socket.on("read by", (data: any) => {
       const { room, users } = data;
+      console.log("read by socket received");
       setChats((prev) => {
         const updatedChats = prev?.map((item) => {
           if (item?._id === room) return { ...item, readBy: users };
@@ -53,6 +59,15 @@ export const Home = () => {
     socket.on("message received", (newMessage: any) => {
       if (selectedChat?._id !== newMessage?.chat?._id) {
         console.log("send notification");
+        audio.play();
+        setChats((prev) => {
+          const updatedChats = prev?.map((item) => {
+            if (item?._id === newMessage?._id)
+              return { ...item, readBy: [newMessage?.sender] };
+            else return item;
+          });
+          return updatedChats;
+        });
       } else {
         console.log("new message", newMessage);
         //adding the new message to messages

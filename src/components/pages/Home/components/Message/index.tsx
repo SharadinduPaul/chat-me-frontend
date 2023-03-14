@@ -11,6 +11,7 @@ interface MessageProps {
   image_url?: string;
   isImage?: boolean;
   typing?: boolean;
+  sentAt?: string;
 }
 export const Message = ({
   text = "",
@@ -18,13 +19,35 @@ export const Message = ({
   isImage = false,
   image_url,
   typing = false,
+  sentAt = ""
 }: MessageProps) => {
+  const time = sentAt?.split("/");
   return (
-    <div className={`message-main ${received ? "received" : "sent"}`}>
+    <div
+      className={`message-main ${received ? "received" : "sent"}`}
+      style={{ marginBottom: isImage ? "0.4rem" : "0.1rem" }}
+    >
       {typing ? (
         <Lottie animationData={typingLottie} style={{ height: "2rem" }} />
       ) : (
-        <Text className="message">{text}</Text>
+        <>
+          <div className="sent-at">
+            <Text
+              varient="content3"
+              style={{
+                lineHeight: "0.8rem",
+                textAlign: received ? "left" : "right"
+              }}
+              faded
+              italic
+            >
+              {time[1]}
+              <br />
+              {time[0]}
+            </Text>
+          </div>
+          <Text className="message">{text}</Text>
+        </>
       )}
       <div className="image">
         {isImage ? <img src={image_url ?? user} alt="u" /> : null}

@@ -13,9 +13,17 @@ import { Text } from "../../../../global";
 import "./styles.css";
 
 export const Options = () => {
-  const { user, setUser } = React.useContext(UserContext);
+  const { setUser } = React.useContext(UserContext);
 
   const navigate = useNavigate();
+
+  const handleAbout = () => {
+    navigate("/about");
+  };
+
+  const handleChangePassword = () => {
+    navigate("/change-password");
+  };
 
   const handleLogout = () => {
     removeUser();
@@ -32,14 +40,14 @@ export const Options = () => {
           - View all users, created at, and other chat details
         </Text>
       </div>
-      <div>
+      <div onClick={handleAbout}>
         <img src={setting} alt="profile" />
         <Text>About us</Text>
         <Text varient="content3" faded italic>
           - Our journey and testimonials
         </Text>
       </div>
-      <div>
+      <div onClick={handleChangePassword}>
         <img src={password} alt="profile" />
         <Text>Change password</Text>
         <Text varient="content3" faded italic></Text>

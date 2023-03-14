@@ -5,6 +5,7 @@ import { Text } from "../../../../global";
 import onlineLottie from "../../../../../assets/animated/online.json";
 import "./styles.css";
 import moment from "moment";
+import { shortHandTime } from "../../../../../utils/formatTime";
 
 interface ChatProps {
   name: string;
@@ -24,23 +25,13 @@ export const Chat = ({
   read,
   updatedAt,
   online,
-  onClick,
+  onClick
 }: ChatProps) => {
   const [lastUpdate, setLastUpdate] = React.useState<string>("");
+
   React.useEffect(() => {
-    // if()
-    const updatedAtYear = Number(moment(updatedAt).format("YYYY"));
-    const updatedAtMonth = Number(moment(updatedAt).format("MM"));
-    const updatedAtDay = Number(moment(updatedAt).format("DD"));
-    const updatedAtTime = moment(updatedAt).format("LT");
-    console.log(updatedAtTime, updatedAtDay, updatedAtMonth, updatedAtYear);
-    if (moment().year() - updatedAtYear > 0) {
-      setLastUpdate(String(updatedAtYear));
-    } else if (moment().date() - updatedAtDay > 0) {
-      setLastUpdate(moment(updatedAt).format("Do MMM"));
-    } else {
-      setLastUpdate(String(updatedAtTime));
-    }
+    const shortHandUpdatedAt = shortHandTime(updatedAt);
+    setLastUpdate(shortHandUpdatedAt);
   }, [updatedAt]);
 
   return (

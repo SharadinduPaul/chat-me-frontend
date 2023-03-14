@@ -8,6 +8,7 @@ import { send } from "../../../../../assets/images";
 import { Message } from "../Message";
 import { debounce } from "../../../../../utils/debounce";
 import "./styles.css";
+import { sentAtTime } from "../../../../../utils/formatTime";
 
 interface MessagePanelProps {
   noChatSelected: boolean;
@@ -33,7 +34,7 @@ export const MessagePanel = ({
   typing,
   chatId,
   readBy = [],
-  closeChatbar,
+  closeChatbar
 }: MessagePanelProps) => {
   const [text, setText] = React.useState<string>("");
   const msgRef = React.useRef<HTMLDivElement>(null);
@@ -43,7 +44,7 @@ export const MessagePanel = ({
     if (!loading) {
       msgRef.current?.scrollTo(0, msgRef.current.offsetHeight + 1000000000);
     }
-  }, [loading, messages, typing]);
+  }, [loading, messages, typing, readBy]);
 
   const emitStopTyping = async () => {
     if (mytyping) {
@@ -101,6 +102,7 @@ export const MessagePanel = ({
                 key={index}
                 received={item?.sender?.email !== user?.email}
                 isImage={isImage}
+                sentAt={sentAtTime(item?.updatedAt)}
               />
             );
           })}

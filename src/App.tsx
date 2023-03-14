@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
 import { Layout } from "./components/global";
 import {
+  AboutPage,
   AuthenticationPage,
   HomePage,
   PageNotFound,
@@ -31,6 +32,7 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="auth" element={<AuthenticationPage />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="about" element={<AboutPage />} />
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
