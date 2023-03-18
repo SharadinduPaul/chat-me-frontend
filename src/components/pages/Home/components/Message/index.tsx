@@ -12,10 +12,12 @@ interface MessageProps {
   isImage?: boolean;
   typing?: boolean;
   sentAt?: string;
+  topRounded?: boolean;
 }
 export const Message = ({
   text = "",
   received = false,
+  topRounded,
   isImage = false,
   image_url,
   typing = false,
@@ -46,7 +48,13 @@ export const Message = ({
               {time[0]}
             </Text>
           </div>
-          <Text className="message">{text}</Text>
+          <Text
+            className={`message ${isImage ? "tail" : ""} ${
+              topRounded ? "topRounded" : ""
+            }`}
+          >
+            <pre style={{ whiteSpace: "pre-wrap" }}>{text}</pre>
+          </Text>
         </>
       )}
       <div className="image">

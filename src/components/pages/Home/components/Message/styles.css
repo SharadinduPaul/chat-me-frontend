@@ -12,11 +12,32 @@
 }
 
 .message-main > .message {
-  max-width: 75%;
+  max-width: 72.5%;
   min-width: min-content;
   border-radius: var(--radius2);
   padding: 0.4rem 0.6rem;
+  position: relative;
 }
+.message-main > .message.tail::after {
+  content: "";
+  height: 0.5rem;
+  width: 0.5rem;
+  position: absolute;
+  bottom: 0;
+  z-index: 10;
+}
+.message-main.received > .message.tail::after {
+  right: calc(100% - 3px);
+  background-color: var(--color-accent);
+  clip-path: polygon( 0% 100%,100% 0, 100% 100%);
+}
+.message-main.sent > .message.tail::after {
+  clip-path: polygon(0 0, 0% 100%, 100% 100%);
+  left: calc(100% - 3px);
+  background-color: var(--color-accent2);
+}
+
+
 .message-main.received > .message {
   background-color: var(--color-accent);
   border-bottom-left-radius: 0px;
@@ -25,17 +46,24 @@
   border-bottom-right-radius: 0px;
   background-color: var(--color-accent2);
 }
-.message-main > .sent-at{
- opacity: 0;
+.message-main.received > .message.topRounded {
+  border-top-left-radius: 0px;
+}
+.message-main.sent > .message.topRounded {
+  border-top-right-radius: 0px;
+}
+.message-main > .sent-at {
+  opacity: 0;
   transition: 0.2s;
 }
-.message-main:hover > .sent-at{
- opacity: 1;
+.message-main:hover > .sent-at {
+  opacity: 1;
 }
 .message-main > .image {
   height: 2rem;
   width: 2rem;
   position: relative;
+  align-self: flex-end;
 }
 .message-main > .image > img {
   height: 100%;

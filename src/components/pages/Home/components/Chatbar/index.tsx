@@ -23,6 +23,7 @@ interface ChatBarProps {
   loading: boolean;
   active: boolean;
   setActive: (input: boolean) => void;
+  unreadMessages: number;
 }
 export const Chatbar = ({
   setModal,
@@ -33,6 +34,7 @@ export const Chatbar = ({
   loading,
   active,
   setActive,
+  unreadMessages
 }: ChatBarProps) => {
   const { user } = React.useContext(UserContext);
 
@@ -67,7 +69,10 @@ export const Chatbar = ({
       </div>
       <div className="all-chats" onClick={getChats}>
         <Text varient="content2" italic style={{ padding: "0.4rem" }}>
-          All chats
+          All chats{" "}
+          {unreadMessages > 0 ? (
+            <span className="unreadMessages">({unreadMessages})</span>
+          ) : null}
         </Text>
         {loading ? (
           <Lottie animationData={loadingLottie} style={{ height: "2.4rem" }} />

@@ -9,8 +9,14 @@ interface TopbarProps {
   setActive: (input: boolean) => void;
   openOptions: () => void;
   userName: string;
+  unreadMessages: number;
 }
-export const Topbar = ({ setActive, userName, openOptions }: TopbarProps) => {
+export const Topbar = ({
+  setActive,
+  userName,
+  openOptions,
+  unreadMessages
+}: TopbarProps) => {
   return (
     <div className="topbar-main">
       <div>

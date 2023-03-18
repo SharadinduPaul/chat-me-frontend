@@ -26,6 +26,8 @@ export const Home = () => {
   const [messages, setMessages] = React.useState<any[]>([]);
   const [messageLoading, setMessageLoading] = React.useState<boolean>(false);
   const [typing, setTyping] = React.useState<boolean>(false);
+  
+  const [unreadMessages, setUnreadMessages] = React.useState<number>(0);
 
   const { user } = React.useContext(UserContext);
 
@@ -58,11 +60,11 @@ export const Home = () => {
 
     socket.on("message received", (newMessage: any) => {
       if (selectedChat?._id !== newMessage?.chat?._id) {
-        console.log("send notification");
+        console.log("send notification", newMessage);
         audio.play();
         setChats((prev) => {
           const updatedChats = prev?.map((item) => {
-            if (item?._id === newMessage?._id)
+            if (item?._id === newMessage?.chat?._id)
               return { ...item, readBy: [newMessage?.sender] };
             else return item;
           });
@@ -115,7 +117,8 @@ export const Home = () => {
     }
   }, [selected]);
   React.useEffect(() => {
-    const unreadMessages =
+    console.log("chat updated", chats);
+    const noOfUnreadMessages =
       chats.filter((chat) => {
         const ifUserHasRead = chat?.readBy?.filter(
           (item: any) => item?._id === user?._id
@@ -123,6 +126,7 @@ export const Home = () => {
         if (ifUserHasRead.length === 0) return true;
         else return false;
       }).length ?? 0;
+    setUnreadMessages(noOfUnreadMessages);
     document.title = unreadMessages
       ? `(${unreadMessages}) Messages | Chatme`
       : "Messages | Chatme";
@@ -193,11 +197,6 @@ export const Home = () => {
       user?.token
     );
     if (readByRes) {
-      //emitting socket read
-      socket.emit("read", {
-        room: chatId,
-        users: [user]
-      });
       setChats((prev) => {
         const updatedChats = prev?.map((item) => {
           if (item?._id === chatId) return { ...item, readBy: [user] };
@@ -259,13 +258,21 @@ export const Home = () => {
       <Chatbar
         setModal={setModal}
         loading={chatLoading}
-        {...{ chats, getChats, selected, setSelected, active, setActive }}
+        {...{
+          chats,
+          getChats,
+          selected,
+          setSelected,
+          active,
+          setActive,
+          unreadMessages
+        }}
       />
       <div className="home-content">
         <Topbar
           userName={selectedUserName}
           openOptions={() => setOptions(true)}
-          {...{ setActive }}
+          {...{ setActive, unreadMessages }}
         />
         <div className="message-container">
           <MessagePanel

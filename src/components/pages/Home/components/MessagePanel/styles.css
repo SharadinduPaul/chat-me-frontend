@@ -24,10 +24,10 @@
 .message-panel > .message-send {
   display: flex;
   align-items: center;
-  gap: 0.5vw;
-  padding: 1vw;
+  /* gap: .5rem; */
+  padding: 0.3rem 0rem 0.8rem 0.8rem;
 }
-.message-panel > .message-send > input {
+.message-panel > .message-send > textarea {
   background-color: var(--bg-primary);
   outline: none;
   border: 1px solid #000;
@@ -35,18 +35,22 @@
   color: var(--color-accent2);
   padding: 0.8rem;
   flex: 1;
+  resize: none;
   transition: 0.25s;
+  height: 4rem;
+  position: relative;
+  /* max-height: 10rem; */
 }
-.message-panel > .message-send > input:focus {
+.message-panel > .message-send > textarea:focus {
   border-bottom: 1px solid var(--color-accent2);
 }
 
 .message-panel > .message-send > button {
   border: none;
-  background-color: var(--bg-primary);
+  background-color: transparent;
   border-radius: 10rem;
-  height: 3rem;
-  width: 3rem;
+  height: 3.6rem;
+  width: 3.6rem;
   overflow: hidden;
 
   position: relative;

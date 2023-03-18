@@ -96,6 +96,11 @@ export const MessagePanel = ({
             const isImage =
               messages[index]?.sender?.email !==
               messages[index + 1]?.sender?.email;
+            const topFlat =
+              index > 0
+                ? messages[index]?.sender?.email !==
+                  messages[index - 1]?.sender?.email
+                : false;
             return (
               <Message
                 text={item?.content}
@@ -103,6 +108,7 @@ export const MessagePanel = ({
                 received={item?.sender?.email !== user?.email}
                 isImage={isImage}
                 sentAt={sentAtTime(item?.updatedAt)}
+                topRounded={!topFlat}
               />
             );
           })}
@@ -115,18 +121,17 @@ export const MessagePanel = ({
       ) : null}
       {typing ? <Message received typing isImage /> : null}
       {!noChatSelected ? (
-        <form onSubmit={handleSubmit} className="message-send">
-          <input
+        <div className="message-send">
+          <textarea
             value={text}
-            max={500}
+            maxLength={1000}
             placeholder="Type here"
             onChange={handleTyping}
-            type="text"
           />
-          <button type="submit">
+          <button onClick={handleSubmit}>
             <img src={send} alt="send" />
           </button>
-        </form>
+        </div>
       ) : null}
     </div>
   );

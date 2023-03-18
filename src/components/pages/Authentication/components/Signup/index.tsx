@@ -28,7 +28,6 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
     confirm: ""
   });
   const [loading, setLoading] = React.useState<"loading" | "done" | null>(null);
-  const [auth, setAuth] = React.useState<boolean>(false);
   const [error, setError] = React.useState<
     { errLocation: string; errMessage: string } | undefined
   >(undefined);
@@ -78,7 +77,6 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
     if (res?.token) {
       setLoading("done");
       setUser(res);
-      setAuth(true);
       setTimeout(() => {
         navigate("/profile?skippable=true");
       }, 800);

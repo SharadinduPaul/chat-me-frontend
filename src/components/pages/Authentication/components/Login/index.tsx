@@ -24,7 +24,6 @@ export const Login = ({ active, setSignupActive, close }: LoginProps) => {
     password: ""
   });
   const [loading, setLoading] = React.useState<"loading" | "done" | null>(null);
-  const [auth, setAuth] = React.useState<boolean>(false);
   const [error, setError] = React.useState<
     { errLocation: string; errMessage: string } | undefined
   >(undefined);
@@ -63,7 +62,6 @@ export const Login = ({ active, setSignupActive, close }: LoginProps) => {
     if (res?.token) {
       setLoading("done");
       setUser(res);
-      setAuth(true);
       setTimeout(() => {
         navigate("/");
       }, 1000);

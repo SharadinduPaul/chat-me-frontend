@@ -9,6 +9,8 @@ import { Button, Footer, Text } from "../../global";
 import authpage from "../../../assets/animated/authPage.json";
 import authpage2 from "../../../assets/animated/authPage2.json";
 import authpage3 from "../../../assets/animated/authPage3.json";
+import { Login as LoginAPI } from "../../../apis";
+import { POST } from "../../../utils/fetch";
 import "./styles.css";
 
 export const Authentication = () => {
@@ -18,7 +20,7 @@ export const Authentication = () => {
   const banner2 = React.useRef<HTMLDivElement>(null);
   const banner3 = React.useRef<HTMLDivElement>(null);
 
-  const { user } = React.useContext(UserContext);
+  const { user, setUser } = React.useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -55,6 +57,24 @@ export const Authentication = () => {
         : "Welcome to Chatme";
   }, [signup]);
 
+  const handleGuest = async () => {
+    const res = await POST(
+      LoginAPI,
+      {
+        email: "guest@streamify.co.in",
+        password: "guest"
+      },
+      user?.token
+    );
+    //validating the API response
+    if (res?.token) {
+      setUser(res);
+      setTimeout(() => {
+        navigate("/");
+      }, 800);
+    }
+  };
+
   return (
     <div className="authentication-main" onClick={() => setSignup(null)}>
       <div className="chatme-banner">
@@ -72,7 +92,7 @@ export const Authentication = () => {
             <br />
             Scroll down for a quick insight or rather Login to explore yourself.
           </Text>
-          {user?.name ? (
+          {user?.token ? (
             <Button
               style={{ marginTop: "2rem" }}
               color="accent2"
@@ -80,7 +100,15 @@ export const Authentication = () => {
             >
               Continue as {user?.name}
             </Button>
-          ) : null}
+          ) : (
+            <Button
+              style={{ marginTop: "2rem" }}
+              color="accent2"
+              onClick={handleGuest}
+            >
+              Continue as Guest
+            </Button>
+          )}
         </div>
       </div>
       <div className="chatme-banner">
