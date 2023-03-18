@@ -127,8 +127,8 @@ export const Home = () => {
         else return false;
       }).length ?? 0;
     setUnreadMessages(noOfUnreadMessages);
-    document.title = unreadMessages
-      ? `(${unreadMessages}) Messages | Chatme`
+    document.title = noOfUnreadMessages
+      ? `(${noOfUnreadMessages}) Messages | Chatme`
       : "Messages | Chatme";
   }, [chats]);
 
