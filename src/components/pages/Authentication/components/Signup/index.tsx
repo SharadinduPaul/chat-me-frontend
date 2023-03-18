@@ -80,7 +80,7 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
       setUser(res);
       setAuth(true);
       setTimeout(() => {
-        navigate("/profile?skippable=true");
+        navigate("/chat/profile?skippable=true");
       }, 800);
     } else {
       setError({ errLocation: "main", errMessage: "Signup failed" });

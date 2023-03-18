@@ -65,7 +65,7 @@ export const Login = ({ active, setSignupActive, close }: LoginProps) => {
       setUser(res);
       setAuth(true);
       setTimeout(() => {
-        navigate("/");
+        navigate("/chat");
       }, 1000);
     } else {
       setError({ errLocation: "main", errMessage: "Failed to login" });

@@ -40,7 +40,7 @@ export const Chatbar = ({
 
   return (
     <div className={`chatbar-main ${active ? "active" : ""}`}>
-      <Text className="heading" onClick={() => navigate("/profile")}>
+      <Text className="heading" onClick={() => navigate("/chat/profile")}>
         <img
           src={user?.pic}
           alt=""

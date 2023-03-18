@@ -76,7 +76,7 @@ export const Authentication = () => {
             <Button
               style={{ marginTop: "2rem" }}
               color="accent2"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/chat")}
             >
               Continue as {user?.name}
             </Button>

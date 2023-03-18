@@ -36,7 +36,7 @@ export const Profile = ({}: ProfileProps) => {
   React.useEffect(() => {
     if (loading === "done") {
       setTimeout(() => {
-        navigate("/");
+        navigate("/chat");
       }, 1000);
     }
   }, [loading]);
@@ -157,7 +157,7 @@ export const Profile = ({}: ProfileProps) => {
           </div>
         ) : null}
         <div className="button-container">
-          <Button color="accent2" onClick={() => navigate("/")}>
+          <Button color="accent2" onClick={() => navigate("/chat")}>
             {skippable ? "Skip for now" : "Return home"}
           </Button>
           <Button disabled={loading === "uploading"} onClick={handleSave}>

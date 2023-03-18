@@ -22,13 +22,13 @@ export const Options = () => {
   };
 
   const handleChangePassword = () => {
-    navigate("/change-password");
+    navigate("/chat/change-password");
   };
 
   const handleLogout = () => {
     removeUser();
     setUser({});
-    navigate("/auth");
+    navigate("/");
   };
 
   return (
