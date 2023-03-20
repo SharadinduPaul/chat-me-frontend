@@ -102,6 +102,11 @@ export const Chatbar = ({
                 (chatUser: any) => chatUser?.email !== user?.email
               )?.name
             : item?.chatName;
+          const pic = !isGroupChat
+            ? item?.users?.find(
+                (chatUser: any) => chatUser?.email !== user?.email
+              )?.pic
+            : "";
           const latestMessage =
             item?.latestMessage?.content ?? "Send a first message?";
           const updatedAt = item?.latestMessage?.updatedAt;
@@ -111,7 +116,7 @@ export const Chatbar = ({
               key={index}
               name={name}
               online={false}
-              image_url={""}
+              image_url={pic}
               read={readByIds?.includes(user?._id)}
               latestMessage={latestMessage}
               selected={selected === index}

@@ -109,6 +109,7 @@ export const MessagePanel = ({
                 isImage={isImage}
                 sentAt={sentAtTime(item?.updatedAt)}
                 topRounded={!topFlat}
+                image_url={item?.sender?.pic}
               />
             );
           })}

@@ -7,12 +7,14 @@ import { Button, Footer, Input, Modal, Text } from "../../global";
 import { deletePng, edit, user as userPNG } from "../../../assets/images";
 import { ImageUploader } from "./components/ImageUploader";
 import "./styles.css";
+import { POST } from "../../../utils/fetch";
+import { UpdateProfile } from "../../../apis";
 
 interface ProfileProps {
   //   skippable: boolean;
 }
 export const Profile = ({}: ProfileProps) => {
-  const { user } = React.useContext(UserContext);
+  const { user, setUser } = React.useContext(UserContext);
 
   const [file, setFile] = React.useState<any>(null);
   const [name, setName] = React.useState<string>(user?.name ?? "");
@@ -31,8 +33,9 @@ export const Profile = ({}: ProfileProps) => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    document.title = "Edit Profile - Chatme";
+    document.title = "Your Profile | Chatme";
   }, []);
+
   React.useEffect(() => {
     if (loading === "done") {
       setTimeout(() => {
@@ -60,7 +63,7 @@ export const Profile = ({}: ProfileProps) => {
 
   const handleSave = async () => {
     console.log("name:", name);
-    console.log("image:", image);
+    console.log("image:", file);
     if (name.length === 0) {
       setError({
         errLocation: "name",
@@ -72,13 +75,31 @@ export const Profile = ({}: ProfileProps) => {
       errLocation: null,
       errMessage: ""
     });
+
     setLoading("uploading");
 
-    //POST the image and name here
-    setTimeout(() => {
-      console.log(file);
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("name", name);
+
+    const res = await fetch(UpdateProfile, {
+      method: "POST",
+      body: formData,
+      headers: {
+        Authorization: "Bearer " + user?.token
+      }
+    })
+      .then((data) => data.json())
+      .catch((e) => console.log(e));
+
+    console.log("profile update res", res);
+
+    if (res) {
       setLoading("done");
-    }, 4000);
+      setUser(res);
+    } else {
+      setLoading(null);
+    }
   };
   return (
     <div className="profile-main">
@@ -100,7 +121,7 @@ export const Profile = ({}: ProfileProps) => {
             ? file
               ? "Uploading image..."
               : "Saving data..."
-            : "Done!"}
+            : "Almost done!"}
         </Text>
         <div className="image-container">
           <img

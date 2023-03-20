@@ -8,7 +8,7 @@
   justify-content: center;
   flex-direction: column;
   padding: 2rem;
-  gap: 1rem;
+  gap: 0.8rem;
   cursor: pointer;
   position: relative;
 }

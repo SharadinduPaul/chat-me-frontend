@@ -29,6 +29,10 @@
 }
 .chat-main > .user-image {
   height: 2rem;
+  width: 2rem;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 1000px;
 }
 .chat-main > .chat-content {
   flex: 1;

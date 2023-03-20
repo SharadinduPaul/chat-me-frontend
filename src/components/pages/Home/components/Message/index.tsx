@@ -1,6 +1,6 @@
 import React from "react";
 import Lottie from "lottie-react";
-import { user } from "../../../../../assets/images";
+import { user as userPNG } from "../../../../../assets/images";
 import { Text } from "../../../../global";
 import "./styles.css";
 import typingLottie from "../../../../../assets/animated/typing.json";
@@ -58,7 +58,17 @@ export const Message = ({
         </>
       )}
       <div className="image">
-        {isImage ? <img src={image_url ?? user} alt="u" /> : null}
+        {isImage ? (
+          <img
+            className="user-image"
+            src={image_url}
+            alt=""
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null;
+              currentTarget.src = String(userPNG);
+            }}
+          />
+        ) : null}
       </div>
     </div>
   );

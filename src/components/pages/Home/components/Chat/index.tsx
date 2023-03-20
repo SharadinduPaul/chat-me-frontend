@@ -3,9 +3,8 @@ import Lottie from "lottie-react";
 import { user } from "../../../../../assets/images";
 import { Text } from "../../../../global";
 import onlineLottie from "../../../../../assets/animated/online.json";
-import "./styles.css";
-import moment from "moment";
 import { shortHandTime } from "../../../../../utils/formatTime";
+import "./styles.css";
 
 interface ChatProps {
   name: string;

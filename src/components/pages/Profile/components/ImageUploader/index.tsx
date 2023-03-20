@@ -37,7 +37,7 @@ export const ImageUploader = ({ setUserImage, close }: ImageUploaderProps) => {
         setFile(imageFile);
         if (imageFile?.size && imageFile?.size > maxFileSize) {
           // filesize <= 5Mb
-          setError("File size too big");
+          setError("File size should be less than 5 mb");
           return;
         } else if (imageFile?.type?.split("/")[0] !== "image") {
           setError("Please select an image file");
@@ -74,7 +74,7 @@ export const ImageUploader = ({ setUserImage, close }: ImageUploaderProps) => {
     const imageFile = e.target.files[0];
     setFile(imageFile);
     if (imageFile?.size > maxFileSize) {
-      setError("File size too big");
+      setError("File size should be less than 5 mb");
       return;
     } else if (imageFile?.type?.split("/")[0] !== "image") {
       setError("Please select an image file");

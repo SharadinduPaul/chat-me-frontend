@@ -25,7 +25,13 @@
 }
 .chatbar-main > .heading > img {
   height: 2rem;
+  width: 2rem;
+
+  object-fit: cover;
+  object-position: center;
+  border-radius: var(--radius2);
   margin-left: 0.5rem;
+  margin-right: 0.2rem;
 }
 .chatbar-main > .heading > .content1 {
   flex: 1;
@@ -65,14 +71,14 @@
 .chatbar-main > .add-new > .content1 {
   font-weight: 500;
 }
-.chatbar-main > .all-chats{
+.chatbar-main > .all-chats {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   height: 2.5rem;
 }
-.chatbar-main > .all-chats .unreadMessages{
+.chatbar-main > .all-chats .unreadMessages {
   border-radius: 100%;
   /* background-color: var(--bg-secondary); */
   color: var(--color-primary);
@@ -80,7 +86,7 @@
   justify-content: center;
   align-content: center;
   font-weight: 500;
-  width: 1.2rem ;
+  width: 1.2rem;
   letter-spacing: 2px;
 }
 
