@@ -1,12 +1,11 @@
 import React from "react";
 import { Search } from "../../../../../apis";
-import { user } from "../../../../../assets/images";
 import { debounce } from "../../../../../utils/debounce";
 import { GET, POST } from "../../../../../utils/fetch";
 import { CreateChat as CC, CreateGroup as CG } from "../../../../../apis";
-import { Switch, Text } from "../../../../global";
-import "./styles.css";
+import { Button, Input, Switch, Text, UserImage } from "../../../../global";
 import { UserContext } from "../../../../../utils/context";
+import "./styles.css";
 
 interface UserOptionProps {
   image_url?: string;
@@ -17,11 +16,27 @@ interface UserOptionProps {
 const UserOption = ({ image_url, name, email, onClick }: UserOptionProps) => {
   return (
     <div className="useroption-main" onClick={onClick}>
-      <img src={image_url ?? user} alt="user" />
+      <UserImage imageUrl={image_url} />
       <div>
         <Text varient="content2">{name}</Text>
-        <Text varient="content3">{email}</Text>
+        <Text varient="content3" faded>
+          {email}
+        </Text>
       </div>
+    </div>
+  );
+};
+
+interface SelectedUserProps {
+  image_url: string;
+  name: string;
+  onClick: () => void;
+}
+const SelectedUser = ({ image_url, name, onClick }: SelectedUserProps) => {
+  return (
+    <div className="selected-user" onClick={onClick}>
+      <UserImage imageUrl={image_url} rounded />
+      <Text varient="content3">{name}</Text>
     </div>
   );
 };
@@ -29,13 +44,13 @@ const UserOption = ({ image_url, name, email, onClick }: UserOptionProps) => {
 export const CreateChat = ({ close }: { close: () => void }) => {
   const [groupChat, setGroupChat] = React.useState<boolean>(false);
   const [groupName, setGroupName] = React.useState<string>("");
+  const [search, setSearch] = React.useState<string>("");
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [users, setUsers] = React.useState<any[]>([]);
   const [selectedUsers, setSelectedUsers] = React.useState<any[]>([]);
   const [userOptions, setUserOptions] = React.useState(false);
 
   const { user } = React.useContext(UserContext);
-
-  let search = "";
 
   React.useEffect(() => {
     if (!groupChat) {
@@ -50,7 +65,7 @@ export const CreateChat = ({ close }: { close: () => void }) => {
   };
   const addSelectedUser = (user: any) => {
     if (!groupChat && selectedUsers.length > 0) {
-      console.log("Switch to group chat for adding more users");
+      setSelectedUsers([user]);
       return;
     }
     setSelectedUsers((prev) => {
@@ -75,10 +90,10 @@ export const CreateChat = ({ close }: { close: () => void }) => {
   const createChat = async () => {
     const userId = selectedUsers[0]?._id;
     if (!userId) return;
-    const res = await POST(
+    await POST(
       CC,
       {
-        userId,
+        userId
       },
       user?.token
     );
@@ -89,11 +104,11 @@ export const CreateChat = ({ close }: { close: () => void }) => {
     if (selectedUsers.length < 1) return;
     const userId = selectedUsers.map((item) => item?._id);
 
-    const res = await POST(
+    await POST(
       CG,
       {
         name: groupName,
-        users: JSON.stringify(userId),
+        users: JSON.stringify(userId)
       },
       user?.token
     );
@@ -115,23 +130,24 @@ export const CreateChat = ({ close }: { close: () => void }) => {
         />
       </div>
       {groupChat ? (
-        <input
-          placeholder="Enter group name"
-          type="text"
-          maxLength={50}
+        <Input
+          value={groupName}
           onChange={(e) => setGroupName(e.target.value)}
+          placeHolder="Group name"
+          maxLength={69}
+          color={groupChat ? "accent2" : "accent1"}
+          faded
         />
       ) : null}
       {selectedUsers.length > 0 ? (
         <div className="selected-users">
           {selectedUsers.map((item, index) => (
-            <Text
+            <SelectedUser
               key={index}
-              varient="content2"
+              image_url={item?.pic}
+              name={item?.name}
               onClick={() => removeSelectedUser(item)}
-            >
-              {item?.name}
-            </Text>
+            />
           ))}
         </div>
       ) : null}
@@ -140,13 +156,16 @@ export const CreateChat = ({ close }: { close: () => void }) => {
         onFocus={() => setUserOptions(true)}
         onClick={(e) => e.stopPropagation()}
       >
-        <input
+        <Input
           type="search"
+          value={search}
           onChange={(e) => {
-            search = e.target.value;
+            setSearch(e.target.value);
             debouncedSearch();
           }}
-          placeholder="Search for user"
+          placeHolder="Search for user"
+          color={groupChat ? "accent2" : "accent1"}
+          faded
         />
         {userOptions && users.length > 0 ? (
           <div className="users">
@@ -155,17 +174,20 @@ export const CreateChat = ({ close }: { close: () => void }) => {
                 key={index}
                 name={item?.name}
                 email={item?.email}
+                image_url={item?.pic}
                 onClick={() => addSelectedUser(item)}
               />
             ))}
           </div>
         ) : null}
       </div>
-      <div className="button-container">
-        <button onClick={() => (groupChat ? createGroupChat() : createChat())}>
-          Create {groupChat ? "Group" : "Chat"}
-        </button>
-      </div>
+      <div style={{ flex: 1 }} />
+      <Button
+        onClick={() => (groupChat ? createGroupChat() : createChat())}
+        color={groupChat ? "accent2" : "accent1"}
+      >
+        Create {groupChat ? "Group" : "Chat"}
+      </Button>
     </div>
   );
 };

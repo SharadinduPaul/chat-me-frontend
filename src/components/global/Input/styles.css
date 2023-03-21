@@ -54,13 +54,15 @@
   top: 50%;
   left: 0.6rem;
   transform: translateY(-50%);
-  background-color: var(--bg-primary);
   color: var(--color);
   padding: 0 4px;
   border-radius: 4px;
   transition: 0.4s;
   font-size: 13px;
   pointer-events: none;
+}
+.input-main.faded > .input-container > .placeholder {
+  background-color: var(--bg-secondary);
 }
 .input-main > .input-container > .show-hide {
   display: none;
@@ -97,9 +99,12 @@
   background-color: var(--bg-primary);
   color: var(--color-primary);
   caret-color: var(--color);
-
+  
   font-size: 13px;
   font-weight: 300;
+}
+.input-main.faded > .input-container > input{
+  background-color: var(--bg-secondary);
 }
 .input-main > .input-container > input.disabled {
   color: #fff5;

@@ -1,10 +1,6 @@
 import React from "react";
-import { Text } from "../../../../global";
-import {
-  user as userPNG,
-  loading as loader,
-  close,
-} from "../../../../../assets/images";
+import { Text, UserImage } from "../../../../global";
+import { close } from "../../../../../assets/images";
 import { UserContext } from "../../../../../utils/context";
 import Lottie from "lottie-react";
 import loadingLottie from "../../../../../assets/animated/loading.json";
@@ -43,14 +39,7 @@ export const Chatbar = ({
   return (
     <div className={`chatbar-main ${active ? "active" : ""}`}>
       <Text className="heading" onClick={() => navigate("/profile")}>
-        <img
-          src={user?.pic}
-          alt=""
-          onError={({ currentTarget }) => {
-            currentTarget.onerror = null;
-            currentTarget.src = String(userPNG);
-          }}
-        />
+        <UserImage imageUrl={user?.pic} />
         <Text>{user?.name}</Text>
         <img
           src={close}
@@ -115,7 +104,7 @@ export const Chatbar = ({
             <Chat
               key={index}
               name={name}
-              online={false}
+              online={false} //this feature is yet to be done
               image_url={pic}
               read={readByIds?.includes(user?._id)}
               latestMessage={latestMessage}

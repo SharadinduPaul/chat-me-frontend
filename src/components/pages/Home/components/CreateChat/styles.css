@@ -7,8 +7,8 @@
 
   border: 1px solid var(--color);
   border-radius: var(--radius1);
-  padding: 1rem 5%;
-  height: 100%;
+  padding: 1rem;
+  height: 500px;
   width: 100%;
   transition: 0.4s;
   overflow: hidden auto;
@@ -21,7 +21,7 @@
 }
 .createchat-main > .header3 {
   text-align: center;
-  margin-bottom: 1rem;
+  padding: 1rem 0 0.6rem;
 }
 .createchat-main > .group {
   display: flex;
@@ -66,60 +66,42 @@
 }
 
 .createchat-main > .selected-users {
-  display: flex;
-  align-items: center;
-  /* justify-content: flex-start; */
-  gap: 0.25rem;
-  flex-wrap: nowrap;
   width: 100%;
-  padding: 0 0 0.25rem;
-  overflow: auto hidden;
+  padding: 1rem 0 0.3rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 .createchat-main > .selected-users::-webkit-scrollbar {
   height: 2px;
 }
 
-.createchat-main > .selected-users > .content2 {
-  padding: 0 0.4rem;
-  height: 1.5rem;
-
-  min-width: max-content;
-  max-width: 160px;
-
-  display: grid;
-  place-items: center;
+.selected-user {
+  width: 55px;
+  padding: 0.2rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: center;
+  cursor: pointer;
+  border-radius: var(--radius2);
+  border: 1px solid #fff0;
+}
+.selected-user:hover {
+  border: 1px solid var(--color-error);
+}
+.selected-user > img.user-image {
+  width: 60%;
+  aspect-ratio: 1 / 1;
+}
+.selected-user > .text-main {
+  width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
-  border: 1px solid var(--color);
-  border-radius: var(--radius2);
-  background-color: var(--bg-secondary);
-
-  cursor: pointer;
-  position: relative;
-}
-.createchat-main > .selected-users > .content2::after {
-}
-
-.createchat-main > .button-container {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  flex: 1;
-}
-.createchat-main button {
-  width: 100%;
-  border: none;
-  border-radius: var(--radius2);
-  background-color: var(--color);
-  height: 2rem;
-  cursor: pointer;
-  color: var(--bg-primary);
-  font-weight: 600;
-  font-size: 1rem;
-
-  transition: 0.4s;
+  text-align: center;
 }
 
 /* user option styles */
@@ -127,15 +109,16 @@
   display: flex;
   align-items: center;
   width: 100%;
-  height: 2.6rem;
+  min-height: 3rem;
   border-radius: var(--radius2);
-  padding: 0.2rem 0.4rem;
-  gap: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  gap: 0.6rem;
   background-color: var(--bg-primary);
   cursor: pointer;
 }
 .useroption-main > img {
-  height: 1.4rem;
+  height: 2rem;
+  border-radius: 100px;
   aspect-ratio: 1/1;
   object-fit: cover;
 }

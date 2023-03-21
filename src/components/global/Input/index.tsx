@@ -17,6 +17,8 @@ interface InputProps {
   style?: React.CSSProperties;
   type?: React.HTMLInputTypeAttribute;
   value?: string;
+  faded?: boolean;
+  maxLength?: number;
 }
 export const Input = ({
   color = "accent1",
@@ -29,6 +31,7 @@ export const Input = ({
   style,
   type = "text",
   value = "",
+  faded = false,
   ...rest
 }: InputProps) => {
   const [focus, setFocus] = React.useState<boolean>(false);
@@ -47,9 +50,9 @@ export const Input = ({
   }, [show]);
   return (
     <div
-      className={`input-main ${color} ${focus ? "focused" : ""} ${
-        completed ? "completed" : ""
-      } ${className}`}
+      className={`input-main ${color} ${faded ? "faded" : ""} ${
+        focus ? "focused" : ""
+      } ${completed ? "completed" : ""} ${className}`}
     >
       <div className="input-container">
         <div className="input-background" />

@@ -23,12 +23,9 @@
   background-color: var(--bg-primary);
   z-index: 10;
 }
-.chatbar-main > .heading > img {
+.chatbar-main > .heading > img.user-image {
   height: 2rem;
   width: 2rem;
-
-  object-fit: cover;
-  object-position: center;
   border-radius: var(--radius2);
   margin-left: 0.5rem;
   margin-right: 0.2rem;

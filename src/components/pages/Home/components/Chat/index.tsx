@@ -1,7 +1,6 @@
 import React from "react";
 import Lottie from "lottie-react";
-import { user } from "../../../../../assets/images";
-import { Text } from "../../../../global";
+import { Text, UserImage } from "../../../../global";
 import onlineLottie from "../../../../../assets/animated/online.json";
 import { shortHandTime } from "../../../../../utils/formatTime";
 import "./styles.css";
@@ -40,15 +39,7 @@ export const Chat = ({
       }`}
       onClick={onClick}
     >
-      <img
-        className="user-image"
-        src={image_url}
-        alt=""
-        onError={({ currentTarget }) => {
-          currentTarget.onerror = null;
-          currentTarget.src = String(user);
-        }}
-      />
+      <UserImage imageUrl={image_url} rounded />
       <div className="chat-content">
         <Text varient="content2">{name}</Text>
         <Text varient="content3" faded={read}>

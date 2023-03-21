@@ -28,11 +28,7 @@
     background-color: var(--color-accent) ;
 }
 .chat-main > .user-image {
-  height: 2rem;
-  width: 2rem;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 1000px;
+  height: 2.25rem;
 }
 .chat-main > .chat-content {
   flex: 1;
@@ -47,7 +43,7 @@
 .chat-main > .chat-content > .content3 {
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 200px;
+  width: 180px;
   overflow: hidden;
 }
 
