@@ -86,7 +86,7 @@ export const MessagePanel = ({
         </div>
       ) : messages.length === 0 ? (
         <div className="lottie-container">
-          <Lottie animationData={empty} style={{ height: "40vmin" }} />
+          <Lottie animationData={empty} style={{ height: "50vmin" }} />
           <Text varient="header3">No message found. Send a message?</Text>
         </div>
       ) : (
@@ -100,7 +100,7 @@ export const MessagePanel = ({
               index > 0
                 ? messages[index]?.sender?.email !==
                   messages[index - 1]?.sender?.email
-                : false;
+                : true;
             return (
               <Message
                 text={item?.content}

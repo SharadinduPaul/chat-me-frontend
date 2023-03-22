@@ -27,21 +27,18 @@ export const Authentication = () => {
   React.useEffect(() => {
     if (banner1.current) {
       const observer = new IntersectionObserver((e) => {
-        console.log(e);
         banner1.current?.classList.toggle("show", e[0]?.isIntersecting);
       });
       observer.observe(banner1.current);
     }
     if (banner2.current) {
       const observer = new IntersectionObserver((e) => {
-        console.log(e);
         banner2.current?.classList.toggle("show", e[0]?.isIntersecting);
       });
       observer.observe(banner2.current);
     }
     if (banner3.current) {
       const observer = new IntersectionObserver((e) => {
-        console.log(e);
         banner3.current?.classList.toggle("show", e[0]?.isIntersecting);
       });
       observer.observe(banner3.current);

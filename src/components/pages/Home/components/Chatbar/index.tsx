@@ -97,8 +97,10 @@ export const Chatbar = ({
               )?.pic
             : "";
           const latestMessage =
-            item?.latestMessage?.content ?? "Send a first message?";
-          const updatedAt = item?.latestMessage?.updatedAt;
+            item?.latestMessage?.content ?? "Send a message?";
+          const updatedAt = item?.latestMessage
+            ? item?.latestMessage?.updatedAt
+            : item?.updatedAt;
           const readByIds = item?.readBy?.map((item: any) => item?._id);
           return (
             <Chat

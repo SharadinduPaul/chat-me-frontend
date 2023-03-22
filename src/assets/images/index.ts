@@ -4,6 +4,8 @@ import close from "./close.png";
 import deletePng from "./delete.png";
 import dropdown from "./dropdown.png";
 import edit from "./edit.png";
+import faviconNormal from "./faviconNormal.png";
+import faviconNotification from "./faviconNotification.png";
 import hide from "./hide.png";
 import info from "./info.png";
 import loading from "./loading.png";
@@ -25,6 +27,8 @@ export {
   deletePng,
   dropdown,
   edit,
+  faviconNormal,
+  faviconNotification,
   hide,
   info,
   loading,

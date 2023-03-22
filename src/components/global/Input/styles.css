@@ -60,6 +60,7 @@
   transition: 0.4s;
   font-size: 13px;
   pointer-events: none;
+  background-color: var(--bg-primary);
 }
 .input-main.faded > .input-container > .placeholder {
   background-color: var(--bg-secondary);

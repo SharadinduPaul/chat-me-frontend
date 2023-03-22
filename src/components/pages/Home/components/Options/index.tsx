@@ -17,8 +17,12 @@ export const Options = () => {
 
   const navigate = useNavigate();
 
-  const handleAbout = () => {
-    navigate("/about");
+  const handleInfo = () => {
+    navigate("/chat-info");
+  };
+
+  const handleSettings = () => {
+    navigate("/settings");
   };
 
   const handleChangePassword = () => {
@@ -33,29 +37,21 @@ export const Options = () => {
 
   return (
     <div className="options-main">
-      <div>
+      <div onClick={handleInfo}>
         <img src={info} alt="info" />
         <Text>Info</Text>
-        <Text varient="content3" faded italic>
-          - View all users, created at, and other chat details
-        </Text>
       </div>
-      <div onClick={handleAbout}>
+      <div onClick={handleSettings}>
         <img src={setting} alt="profile" />
-        <Text>About us</Text>
-        <Text varient="content3" faded italic>
-          - Our journey and testimonials
-        </Text>
+        <Text>Settings</Text>
       </div>
       <div onClick={handleChangePassword}>
         <img src={password} alt="profile" />
         <Text>Change password</Text>
-        <Text varient="content3" faded italic></Text>
       </div>
       <div onClick={handleLogout}>
         <img src={logout} alt="logout" />
         <Text>Log out</Text>
-        <Text varient="content3" faded italic></Text>
       </div>
     </div>
   );

@@ -1,6 +1,8 @@
 import React from "react";
 import { io } from "socket.io-client";
 import { AllMessages, Chats, ReadByUsers, SendMessage } from "../../../apis";
+import { faviconNormal, faviconNotification } from "../../../assets/images";
+import { changeFavicon } from "../../../utils/changeFavicon";
 import { UserContext } from "../../../utils/context";
 import { GET, POST, PUT } from "../../../utils/fetch";
 import { Modal } from "../../global";
@@ -9,7 +11,6 @@ import { CreateChat } from "./components/CreateChat";
 import { MessagePanel } from "./components/MessagePanel";
 import { Options } from "./components/Options";
 import { Topbar } from "./components/Topbar";
-// import notificationSound from "../../../assets/audio/notification.mp3";
 import "./styles.css";
 
 const ENDPOINT = process.env.REACT_APP_API_BASE!;
@@ -26,7 +27,7 @@ export const Home = () => {
   const [messages, setMessages] = React.useState<any[]>([]);
   const [messageLoading, setMessageLoading] = React.useState<boolean>(false);
   const [typing, setTyping] = React.useState<boolean>(false);
-  
+
   const [unreadMessages, setUnreadMessages] = React.useState<number>(0);
 
   const { user } = React.useContext(UserContext);
@@ -62,14 +63,19 @@ export const Home = () => {
       if (selectedChat?._id !== newMessage?.chat?._id) {
         console.log("send notification", newMessage);
         audio.play();
+        let chatFound = false;
         setChats((prev) => {
           const updatedChats = prev?.map((item) => {
-            if (item?._id === newMessage?.chat?._id)
+            if (item?._id === newMessage?.chat?._id) {
+              chatFound = true;
               return { ...item, readBy: [newMessage?.sender] };
-            else return item;
+            } else return item;
           });
           return updatedChats;
         });
+
+        //this will trigger when new message is sent from a new chat.
+        if (!chatFound) getChats();
       } else {
         console.log("new message", newMessage);
         //adding the new message to messages
@@ -127,9 +133,13 @@ export const Home = () => {
         else return false;
       }).length ?? 0;
     setUnreadMessages(noOfUnreadMessages);
-    document.title = noOfUnreadMessages
-      ? `(${noOfUnreadMessages}) Messages | Chatme`
-      : "Messages | Chatme";
+    if (noOfUnreadMessages) {
+      changeFavicon(faviconNotification);
+      document.title = `(${noOfUnreadMessages}) Messages | Chatme`;
+    } else {
+      changeFavicon(faviconNormal);
+      document.title = "Messages | Chatme";
+    }
   }, [chats]);
 
   const getChats = async () => {
