@@ -1,5 +1,6 @@
-const storageKey = "chatmeToken";
-export const saveUser = (user: string) => {
+const storageKey = "chatmeUserData";
+
+export const saveUser = (user: any) => {
   localStorage.setItem(storageKey, JSON.stringify(user));
 };
 export const getUser = () => {

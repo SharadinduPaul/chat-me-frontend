@@ -1,16 +1,20 @@
 import React from "react";
 import { io } from "socket.io-client";
+
 import { AllMessages, Chats, ReadByUsers, SendMessage } from "../../../apis";
 import { faviconNormal, faviconNotification } from "../../../assets/images";
 import { changeFavicon } from "../../../utils/changeFavicon";
 import { UserContext } from "../../../utils/context";
 import { GET, POST, PUT } from "../../../utils/fetch";
 import { Modal } from "../../global";
-import { Chatbar } from "./components/Chatbar";
-import { CreateChat } from "./components/CreateChat";
-import { MessagePanel } from "./components/MessagePanel";
-import { Options } from "./components/Options";
-import { Topbar } from "./components/Topbar";
+import {
+  Chatbar,
+  ChatInfo,
+  CreateChat,
+  MessagePanel,
+  Options,
+  Topbar
+} from "./components";
 import "./styles.css";
 
 const ENDPOINT = process.env.REACT_APP_API_BASE!;
@@ -18,7 +22,9 @@ let socket: any, selectedChat: any;
 
 export const Home = () => {
   const [modal, setModal] = React.useState<boolean>(false);
-  const [options, setOptions] = React.useState<boolean>(false);
+  const [options, setOptions] = React.useState<"options" | "info" | null>(null);
+  const [infoChat, setInfoChat] = React.useState<any>(null);
+
   const [chats, setChats] = React.useState<any[]>([]);
   const [selected, setSelected] = React.useState<number | null>(null);
   const [active, setActive] = React.useState<boolean>(false);
@@ -252,7 +258,9 @@ export const Home = () => {
             (item: any) => item?.email !== user?.email
           )?.name
       : "Messages";
+
   const chatId: string = selected !== null ? selectedChat?._id : "";
+
   return (
     <div className="home-main">
       {modal ? (
@@ -261,13 +269,26 @@ export const Home = () => {
         </Modal>
       ) : null}
       {options ? (
-        <Modal onClose={() => setOptions(false)}>
-          <Options />
+        <Modal onClose={() => setOptions(null)}>
+          {options === "options" ? (
+            <Options
+              openInfo={() => {
+                setInfoChat(selectedChat);
+                setOptions("info");
+              }}
+            />
+          ) : (
+            <ChatInfo chat={infoChat} />
+          )}
         </Modal>
       ) : null}
       <Chatbar
         setModal={setModal}
         loading={chatLoading}
+        openInfo={(index) => {
+          setInfoChat(chats[index]);
+          setOptions("info");
+        }}
         {...{
           chats,
           getChats,
@@ -281,7 +302,7 @@ export const Home = () => {
       <div className="home-content">
         <Topbar
           userName={selectedUserName}
-          openOptions={() => setOptions(true)}
+          openOptions={() => setOptions("options")}
           {...{ setActive, unreadMessages }}
         />
         <div className="message-container">

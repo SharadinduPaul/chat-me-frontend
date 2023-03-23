@@ -1,14 +1,15 @@
 import React from "react";
 import Lottie from "lottie-react";
+
+import { Message } from "../index";
 import messageloading from "../../../../../assets/animated/messageLoading.json";
 import social from "../../../../../assets/animated/social.json";
 import empty from "../../../../../assets/animated/empty.json";
 import { Text } from "../../../../global";
 import { send } from "../../../../../assets/images";
-import { Message } from "../Message";
 import { debounce } from "../../../../../utils/debounce";
-import "./styles.css";
 import { sentAtTime } from "../../../../../utils/formatTime";
+import "./styles.css";
 
 interface MessagePanelProps {
   noChatSelected: boolean;
@@ -115,7 +116,7 @@ export const MessagePanel = ({
           })}
         </div>
       )}
-      {readBy.length > 0 ? (
+      {readBy.length > 0 && chatId ? (
         <Text className="read-by" varient="content2" faded>
           Read
         </Text>

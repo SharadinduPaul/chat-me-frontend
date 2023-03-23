@@ -14,6 +14,7 @@ interface ChatProps {
   updatedAt: string;
   online: boolean;
   onClick: () => void;
+  openInfo: () => void;
 }
 export const Chat = ({
   name,
@@ -23,7 +24,8 @@ export const Chat = ({
   read,
   updatedAt,
   online,
-  onClick
+  onClick,
+  openInfo
 }: ChatProps) => {
   const [lastUpdate, setLastUpdate] = React.useState<string>("");
 
@@ -39,7 +41,14 @@ export const Chat = ({
       }`}
       onClick={onClick}
     >
-      <UserImage imageUrl={image_url} rounded />
+      <UserImage
+        imageUrl={image_url}
+        rounded
+        onClick={(e) => {
+          e.stopPropagation();
+          openInfo();
+        }}
+      />
       <div className="chat-content">
         <Text varient="content2">{name}</Text>
         <Text varient="content3" faded={read}>

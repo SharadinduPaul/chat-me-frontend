@@ -9,12 +9,14 @@ import {
   PageNotFound,
   ProfilePage
 } from "./pages";
-import { UserContext } from "./utils/context";
+import { UserContext, UserInterface } from "./utils/context";
 import { getUser, saveUser } from "./utils/handleUser";
 
 function App() {
-  const [user, setUser] = React.useState<any>(getUser() ?? {});
+  const [user, setUser] = React.useState<UserInterface>(getUser() ?? {});
+
   const navigate = useNavigate();
+
   React.useEffect(() => {
     const user = getUser();
     if (!user?.token) {
@@ -22,8 +24,9 @@ function App() {
     }
   }, []);
   React.useEffect(() => {
-    saveUser(user);
+    if (user) saveUser(user);
   }, [user]);
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <div className="App">

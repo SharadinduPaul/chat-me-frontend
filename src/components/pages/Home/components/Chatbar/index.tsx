@@ -1,17 +1,19 @@
 import React from "react";
-import { Text, UserImage } from "../../../../global";
-import { close } from "../../../../../assets/images";
-import { UserContext } from "../../../../../utils/context";
 import Lottie from "lottie-react";
+import { useNavigate } from "react-router-dom";
+
+import { UserContext } from "../../../../../utils/context";
+import { Chat } from "../index";
+import { Text, UserImage } from "../../../../global";
+import { close, group } from "../../../../../assets/images";
 import loadingLottie from "../../../../../assets/animated/loading.json";
 import addUser from "../../../../../assets/animated/addUser.json";
 import addChat from "../../../../../assets/animated/addChat.json";
-import { useNavigate } from "react-router-dom";
-import { Chat } from "../Chat";
 import "./styles.css";
 
 interface ChatBarProps {
   setModal: (input: boolean) => void;
+  openInfo: (index: number) => void;
   chats: any[];
   selected: number | null;
   setSelected: (input: number) => void;
@@ -23,6 +25,7 @@ interface ChatBarProps {
 }
 export const Chatbar = ({
   setModal,
+  openInfo,
   chats,
   selected,
   setSelected,
@@ -95,7 +98,7 @@ export const Chatbar = ({
             ? item?.users?.find(
                 (chatUser: any) => chatUser?.email !== user?.email
               )?.pic
-            : "";
+            : String(group);
           const latestMessage =
             item?.latestMessage?.content ?? "Send a message?";
           const updatedAt = item?.latestMessage
@@ -107,6 +110,10 @@ export const Chatbar = ({
               key={index}
               name={name}
               online={false} //this feature is yet to be done
+              openInfo={() => {
+                console.log("clicked on ", index);
+                openInfo(index);
+              }}
               image_url={pic}
               read={readByIds?.includes(user?._id)}
               latestMessage={latestMessage}

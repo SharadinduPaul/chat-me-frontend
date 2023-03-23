@@ -1,7 +1,7 @@
 .chatbar-main {
   height: 100%;
   width: 100%;
-  max-width: 320px;
+  max-width: 330px;
   background-color: var(--bg-primary);
   padding-bottom: 2rem;
   position: relative;

@@ -1,6 +1,6 @@
 import React from "react";
 import Lottie from "lottie-react";
-import { menu, options, bell } from "../../../../../assets/images";
+import { menu, options } from "../../../../../assets/images";
 import bellLottie from "../../../../../assets/animated/bell.json";
 import { Text } from "../../../../global";
 import "./styles.css";

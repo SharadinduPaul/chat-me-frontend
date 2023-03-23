@@ -1,32 +1,32 @@
-.text-main{
-    color: var(--color-primary);
-    transition: 0.3s;
+.text-main {
+  color: var(--color-primary);
+  transition: 0.3s;
 }
-.content1{
-    font-size: 14px;
-    font-weight: 300;
+.content1 {
+  font-size: 14px;
+  font-weight: 300;
 }
-.content2{
-    font-size: 12px;
-    font-weight: 200;
+.content2 {
+  font-size: 12px;
+  font-weight: 200;
 }
-.content3{
-    font-size: 10px;
-    font-weight: 200;
+.content3 {
+  font-size: 10px;
+  font-weight: 200;
 }
 
-.header1{
-    font-size: 2rem;
-    font-weight: 600;
-    font-family: 'Quicksand', sans-serif;
+.header1 {
+  font-size: 2rem;
+  font-weight: 600;
+  font-family: "Quicksand", sans-serif;
 }
-.header2{
-    font-size: 1.5rem;
-    font-weight: 600;
-    font-family: 'Quicksand', sans-serif;
+.header2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: "Quicksand", sans-serif;
 }
-.header3{
-    font-size: 1.2rem;
-    font-weight: 600;
-    font-family: 'Quicksand', sans-serif;
+.header3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-family: "Quicksand", sans-serif;
 }

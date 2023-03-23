@@ -12,13 +12,16 @@ import { removeUser } from "../../../../../utils/handleUser";
 import { Text } from "../../../../global";
 import "./styles.css";
 
-export const Options = () => {
+interface OptionsProps {
+  openInfo: () => void;
+}
+export const Options = ({ openInfo }: OptionsProps) => {
   const { setUser } = React.useContext(UserContext);
 
   const navigate = useNavigate();
 
   const handleInfo = () => {
-    navigate("/chat-info");
+    openInfo();
   };
 
   const handleSettings = () => {

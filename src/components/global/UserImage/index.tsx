@@ -8,6 +8,7 @@ interface UserImageProps {
   style?: React.CSSProperties;
   className?: string;
   rounded?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => void;
 }
 
 export const UserImage = ({
@@ -15,7 +16,8 @@ export const UserImage = ({
   alt,
   rounded = false,
   style,
-  className
+  className,
+  onClick
 }: UserImageProps) => {
   return (
     <img
@@ -27,6 +29,7 @@ export const UserImage = ({
         currentTarget.onerror = null;
         currentTarget.src = String(user);
       }}
+      onClick={onClick}
     />
   );
 };
