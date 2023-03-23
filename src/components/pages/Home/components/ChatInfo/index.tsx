@@ -1,6 +1,7 @@
 import React from "react";
 import { back, block, group, mute } from "../../../../../assets/images";
 import { UserContext } from "../../../../../utils/context";
+import { sentAtTime } from "../../../../../utils/formatTime";
 import { Button, Text, UserImage } from "../../../../global";
 import "./styles.css";
 
@@ -28,7 +29,7 @@ export const ChatInfo = ({ chat }: ChatInfoProps) => {
       setData({
         name: chat?.chatName,
         imageUrl: String(group),
-        createdAt: chat?.createdAt
+        createdAt: sentAtTime(chat?.createdAt).split("/")[0]
       });
     } else {
       const receiver = chat?.users?.filter(
@@ -37,7 +38,7 @@ export const ChatInfo = ({ chat }: ChatInfoProps) => {
       setData({
         name: receiver?.name,
         imageUrl: receiver?.pic,
-        createdAt: chat?.createdAt,
+        createdAt: sentAtTime(chat?.createdAt).split("/")[0],
         email: receiver?.email
       });
     }
@@ -51,7 +52,7 @@ export const ChatInfo = ({ chat }: ChatInfoProps) => {
           {data?.email ? <Text faded>{data?.email}</Text> : null}
           <div className="flex">
             <Text varient="content2" faded italic>
-              Created at:
+              Chat created on
             </Text>
             <Text varient="content2" italic>
               {data?.createdAt}
