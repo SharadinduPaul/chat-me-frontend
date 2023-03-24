@@ -1,4 +1,4 @@
-:root{
+:root {
   --bg-primary: #0b0b0e;
   --bg-secondary: #18191e;
   --color-primary: #e8ecff;
@@ -12,18 +12,23 @@
   --topbar-height: 3.4rem;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 
-*,*::after, *::before{
+*,
+*::after,
+*::before {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
- font-family: 'Poppins', sans-serif;
- -webkit-tap-highlight-color: transparent;
+  font-family: "Poppins", sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
-html, body, #root, .App{
+html,
+body,
+#root,
+.App {
   max-height: 100vh;
   height: 100%;
   width: 100%;
@@ -33,7 +38,6 @@ html, body, #root, .App{
   padding: 0;
   overflow: hidden;
 }
-
 
 /* width */
 ::-webkit-scrollbar {
@@ -50,4 +54,15 @@ html, body, #root, .App{
 ::-webkit-scrollbar-thumb {
   background: var(--color-accent2);
   border-radius: 2px;
+}
+
+/* ###### highlight styling ##### */
+::-moz-selection {
+  color: var(--bg-primary);
+  background: var(--color-accent);
+}
+
+::selection {
+  color: var(--bg-primary);
+  background: var(--color-accent);
 }

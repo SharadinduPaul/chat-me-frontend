@@ -29,12 +29,11 @@ export const Text = ({
 }: TextProps) => {
   return (
     <div
-      className={`text-main ${varient} ${className}`}
+      className={`text-main ${faded ? "faded" : ""} ${varient} ${className}`}
       style={{
         ...style,
         textDecoration: underline ? "underline" : "none",
-        opacity: faded ? 0.5 : 1,
-        fontStyle: italic ? "italic" : "normal",
+        fontStyle: italic ? "italic" : "normal"
       }}
       onClick={onClick}
     >
