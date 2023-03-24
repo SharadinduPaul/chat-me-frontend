@@ -1,13 +1,12 @@
 import React from "react";
 import Lottie from "lottie-react";
-
+import { debounce } from "ts-debounce";
 import { Message } from "../index";
 import messageloading from "../../../../../assets/animated/messageLoading.json";
 import social from "../../../../../assets/animated/social.json";
 import empty from "../../../../../assets/animated/empty.json";
 import { Text } from "../../../../global";
 import { send } from "../../../../../assets/images";
-import { debounce } from "../../../../../utils/debounce";
 import { sentAtTime } from "../../../../../utils/formatTime";
 import "./styles.css";
 
@@ -37,9 +36,10 @@ export const MessagePanel = ({
   readBy = [],
   closeChatbar
 }: MessagePanelProps) => {
-  const [text, setText] = React.useState<string>("");
   const msgRef = React.useRef<HTMLDivElement>(null);
   let mytyping = false;
+
+  const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
 
   React.useEffect(() => {
     if (!loading) {
@@ -51,25 +51,32 @@ export const MessagePanel = ({
     if (mytyping) {
       await socket.emit("stop typing", chatId);
       mytyping = false;
+      console.log("stop typing");
     }
   };
-  const debouncedEmitStop = debounce(() => emitStopTyping(), 3000);
-  const handleTyping = async (e: any) => {
-    setText(e.target.value);
 
+  const debouncedEmitStop = debounce(() => emitStopTyping(), 2000);
+
+  const handleTyping = async () => {
     if (!mytyping) {
       mytyping = true;
       await socket.emit("typing", chatId);
+      console.log("typing");
     }
     debouncedEmitStop();
   };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (text.length === 0) {
+    if (
+      textAreaRef.current?.value.length === 0 ||
+      !textAreaRef.current?.value
+    ) {
       return;
+    } else {
+      sendMessage(textAreaRef.current.value, chatId);
+      textAreaRef.current.value = "";
     }
-    sendMessage(text, chatId);
-    setText("");
   };
   return (
     <div
@@ -116,19 +123,25 @@ export const MessagePanel = ({
           })}
         </div>
       )}
-      {readBy.length > 0 && chatId ? (
+      {typing ? (
+        <Text className="read-by" varient="content2" italic faded>
+          Typing...
+        </Text>
+      ) : readBy.length > 0 && chatId ? (
         <Text className="read-by" varient="content2" faded>
           Read
         </Text>
       ) : null}
-      {typing ? <Message received typing isImage /> : null}
+      {/* {typing ? <Message received typing isImage /> : null} */}
       {!noChatSelected ? (
         <div className="message-send">
           <textarea
-            value={text}
+            ref={textAreaRef}
             maxLength={1000}
             placeholder="Type here"
-            onChange={handleTyping}
+            onChange={(e) => {
+              handleTyping();
+            }}
           />
           <button onClick={handleSubmit}>
             <img src={send} alt="send" />

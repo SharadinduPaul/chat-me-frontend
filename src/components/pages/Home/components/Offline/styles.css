@@ -1,0 +1,19 @@
+.offline-main{
+    height: 340px;
+    width: 100%;
+    border-radius: var(--radius2);
+    border: 1px solid var(--color-accent);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+}
+.offline-main > img{
+    height: 8rem;
+}
+.offline-main > *{
+    text-align: center;
+}

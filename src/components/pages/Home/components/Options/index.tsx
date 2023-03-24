@@ -14,8 +14,9 @@ import "./styles.css";
 
 interface OptionsProps {
   openInfo: () => void;
+  onLogout: () => void;
 }
-export const Options = ({ openInfo }: OptionsProps) => {
+export const Options = ({ openInfo, onLogout }: OptionsProps) => {
   const { setUser } = React.useContext(UserContext);
 
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ export const Options = ({ openInfo }: OptionsProps) => {
   };
 
   const handleLogout = () => {
+    onLogout();
     removeUser();
     setUser({});
     navigate("/auth");

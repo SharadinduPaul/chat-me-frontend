@@ -11,6 +11,7 @@ import info from "./info.png";
 import logout from "./logout.png";
 import menu from "./menu.png";
 import mute from "./mute.png";
+import noInternet from "./noInternet.png";
 import options from "./options.png";
 import password from "./password.png";
 import profile from "./profile.png";
@@ -33,6 +34,7 @@ export {
   logout,
   menu,
   mute,
+  noInternet,
   options,
   password,
   profile,

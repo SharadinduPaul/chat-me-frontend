@@ -1,11 +1,11 @@
 import React from "react";
 import { Search } from "../../../../../apis";
-import { debounce } from "../../../../../utils/debounce";
 import { GET, POST } from "../../../../../utils/fetch";
 import { CreateChat as CC, CreateGroup as CG } from "../../../../../apis";
 import { Button, Input, Switch, Text, UserImage } from "../../../../global";
 import { UserContext } from "../../../../../utils/context";
 import "./styles.css";
+import { debounce } from "ts-debounce";
 
 interface UserOptionProps {
   image_url?: string;
@@ -44,13 +44,14 @@ const SelectedUser = ({ image_url, name, onClick }: SelectedUserProps) => {
 export const CreateChat = ({ close }: { close: () => void }) => {
   const [groupChat, setGroupChat] = React.useState<boolean>(false);
   const [groupName, setGroupName] = React.useState<string>("");
-  const [search, setSearch] = React.useState<string>("");
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [users, setUsers] = React.useState<any[]>([]);
   const [selectedUsers, setSelectedUsers] = React.useState<any[]>([]);
   const [userOptions, setUserOptions] = React.useState(false);
 
   const { user } = React.useContext(UserContext);
+
+  let searchText = "";
 
   React.useEffect(() => {
     if (!groupChat) {
@@ -80,12 +81,12 @@ export const CreateChat = ({ close }: { close: () => void }) => {
   };
 
   const handleSearch = async () => {
-    const res = await GET(Search + `search=${search}`, user?.token);
+    const res = await GET(Search + `search=${searchText}`, user?.token);
     if (res) {
       setUsers(res);
     }
   };
-  const debouncedSearch = debounce(() => handleSearch(), 500);
+  const debouncedSearch = debounce(handleSearch, 800);
 
   const createChat = async () => {
     const userId = selectedUsers[0]?._id;
@@ -156,16 +157,13 @@ export const CreateChat = ({ close }: { close: () => void }) => {
         onFocus={() => setUserOptions(true)}
         onClick={(e) => e.stopPropagation()}
       >
-        <Input
+        <input
           type="search"
-          value={search}
+          placeholder="Search for user"
           onChange={(e) => {
-            setSearch(e.target.value);
+            searchText = e.target.value;
             debouncedSearch();
           }}
-          placeHolder="Search for user"
-          color={groupChat ? "accent2" : "accent1"}
-          faded
         />
         {userOptions && users.length > 0 ? (
           <div className="users">

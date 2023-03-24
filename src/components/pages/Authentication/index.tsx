@@ -67,7 +67,7 @@ export const Authentication = () => {
     if (res?.token) {
       setUser(res);
       setTimeout(() => {
-        navigate("/");
+        navigate("/chat");
       }, 800);
     }
   };
@@ -93,7 +93,7 @@ export const Authentication = () => {
             <Button
               style={{ marginTop: "2rem" }}
               color="accent2"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/chat")}
             >
               Continue as {user?.name}
             </Button>

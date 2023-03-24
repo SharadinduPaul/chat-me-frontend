@@ -2,16 +2,21 @@ import React from "react";
 import { io } from "socket.io-client";
 
 import { AllMessages, Chats, ReadByUsers, SendMessage } from "../../../apis";
-import { faviconNormal, faviconNotification } from "../../../assets/images";
+import {
+  faviconNormal,
+  faviconNotification,
+  noInternet
+} from "../../../assets/images";
 import { changeFavicon } from "../../../utils/changeFavicon";
 import { UserContext } from "../../../utils/context";
 import { GET, POST, PUT } from "../../../utils/fetch";
-import { Modal } from "../../global";
+import { Modal, Text } from "../../global";
 import {
   Chatbar,
   ChatInfo,
   CreateChat,
   MessagePanel,
+  Offline,
   Options,
   Topbar
 } from "./components";
@@ -21,6 +26,9 @@ const ENDPOINT = process.env.REACT_APP_API_BASE!;
 let socket: any, selectedChat: any;
 
 export const Home = () => {
+  const [online, setOnline] = React.useState<boolean>(true);
+  // const [focus, setFocus] = React.useState<boolean>(true);
+
   const [modal, setModal] = React.useState<boolean>(false);
   const [options, setOptions] = React.useState<"options" | "info" | null>(null);
   const [infoChat, setInfoChat] = React.useState<any>(null);
@@ -44,15 +52,28 @@ export const Home = () => {
 
   React.useEffect(() => {
     document.title = "Messages | Chatme";
+    let focus = true;
 
+    //to check for focus
+    window.addEventListener("focus", () => (focus = true));
+    window.addEventListener("blur", () => (focus = false));
+
+    //to check online offline status of website
+    window.addEventListener("online", () => setOnline(true));
+    window.addEventListener("offline", () => setOnline(false));
+
+    //socket setup
     socket = io(ENDPOINT);
     socket.emit("setup", user);
     socket.on("connected", () => {
       console.log("connected to socket io");
     });
+
+    //typing indicator sockets
     socket.on("typing", () => setTyping(true));
     socket.on("stop typing", () => setTyping(false));
 
+    //chat read socket
     socket.on("read by", (data: any) => {
       const { room, users } = data;
       console.log("read by socket received");
@@ -65,6 +86,7 @@ export const Home = () => {
       });
     });
 
+    //message receiving socket
     socket.on("message received", (newMessage: any) => {
       if (selectedChat?._id !== newMessage?.chat?._id) {
         console.log("send notification", newMessage);
@@ -91,6 +113,7 @@ export const Home = () => {
           else return [...prev, newMessage];
         });
         //emitting socket read
+        // if (focus) {
         socket.emit("read", {
           room: selectedChat?._id,
           users: [...selectedChat?.readBy, user]
@@ -105,6 +128,7 @@ export const Home = () => {
           });
           return updatedChats;
         });
+        // }
       }
       setChats((prev) => {
         const updatedChats = prev?.map((item: any) => {
@@ -263,6 +287,8 @@ export const Home = () => {
 
   return (
     <div className="home-main">
+      <img src={noInternet} style={{ display: "none" }} />{" "}
+      {/* dont touch this line */}
       {modal ? (
         <Modal onClose={() => setModal(false)}>
           <CreateChat close={() => setModal(false)} />
@@ -276,10 +302,16 @@ export const Home = () => {
                 setInfoChat(selectedChat);
                 setOptions("info");
               }}
+              onLogout={() => socket.disconnect()}
             />
           ) : (
             <ChatInfo chat={infoChat} />
           )}
+        </Modal>
+      ) : null}
+      {!online ? (
+        <Modal onClose={() => setOnline(true)}>
+          <Offline />
         </Modal>
       ) : null}
       <Chatbar
