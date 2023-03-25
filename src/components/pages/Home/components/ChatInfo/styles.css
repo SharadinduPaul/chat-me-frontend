@@ -1,5 +1,6 @@
 .chat-info {
-  height: 420px;
+  height: max-content;
+  max-height: 90vh;
   width: 100%;
   border-radius: var(--radius1);
   background-color: var(--bg-primary);
@@ -9,10 +10,10 @@
   justify-content: center;
   flex-direction: column;
   position: relative;
-  overflow: hidden auto;
+  overflow: scroll;
   gap: 0.4rem;
 
-  padding: 2rem;
+  padding:2rem;
 }
 .chat-info > .back-btn {
   position: absolute;
@@ -51,4 +52,27 @@
 }
 .chat-info .block {
   background-color: var(--color-error);
+}
+
+.chat-info > .group-members{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.chat-info > .group-members > .user-item{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: .4rem;
+  gap: 0.3rem;
+  width: 66px;
+}
+.chat-info > .group-members > .user-item > .content3{
+  width: 60px;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

@@ -1,21 +1,22 @@
 import React from "react";
-import { back, block, group, mute } from "../../../../../assets/images";
+import { ChatModel } from "../../../../../apis/models";
+import { block, group, mute } from "../../../../../assets/images";
 import { UserContext } from "../../../../../utils/context";
 import { sentAtTime } from "../../../../../utils/formatTime";
 import { Button, Text, UserImage } from "../../../../global";
 import "./styles.css";
 
 interface ChatInfoProps {
-  chat: any;
+  chat: ChatModel;
 }
 export const ChatInfo = ({ chat }: ChatInfoProps) => {
   const { user } = React.useContext(UserContext);
 
   const [data, setData] = React.useState<{
-    name: string;
+    name?: string;
     email?: string;
-    createdAt: string;
-    imageUrl: string;
+    createdAt?: string;
+    imageUrl?: string;
   }>({
     name: "",
     imageUrl: "",
@@ -58,7 +59,27 @@ export const ChatInfo = ({ chat }: ChatInfoProps) => {
               {data?.createdAt}
             </Text>
           </div>
-          <div className="button-container">
+          {chat?.isGroupChat ? (
+            <>
+              <Text varient="content2" italic>
+                Group members
+              </Text>
+              <div className="group-members">
+                {chat?.users?.map((item, index) => (
+                  <div className="user-item">
+                    <UserImage
+                      imageUrl={item?.pic}
+                      rounded
+                      style={{ height: "2.2rem" }}
+                    />
+                    <Text varient="content3">{item?.name}</Text>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : null}
+          {/* ##### this is a future feature  #####*/}
+          {/* <div className="button-container">
             <Button className="block">
               <img src={block} className="btn-image" />
               Block
@@ -67,7 +88,7 @@ export const ChatInfo = ({ chat }: ChatInfoProps) => {
               <img src={mute} className="btn-image" />
               Mute
             </Button>
-          </div>
+          </div> */}
         </>
       ) : (
         <>

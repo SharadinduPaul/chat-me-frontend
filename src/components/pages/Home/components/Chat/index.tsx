@@ -1,7 +1,6 @@
 import React from "react";
 import Lottie from "lottie-react";
 import { Text, UserImage } from "../../../../global";
-import onlineLottie from "../../../../../assets/animated/online.json";
 import { shortHandTime } from "../../../../../utils/formatTime";
 import "./styles.css";
 
@@ -41,6 +40,7 @@ export const Chat = ({
       }`}
       onClick={onClick}
     >
+      {online ? <div className="online" /> : null}
       <UserImage
         imageUrl={image_url}
         rounded
@@ -59,9 +59,6 @@ export const Chat = ({
         <Text varient="content3" italic>
           {lastUpdate}
         </Text>
-        {online ? (
-          <Lottie animationData={onlineLottie} style={{ height: "1.5rem" }} />
-        ) : null}
       </div>
     </div>
   );

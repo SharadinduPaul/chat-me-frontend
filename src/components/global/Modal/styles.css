@@ -22,6 +22,7 @@
   border-radius: var(--radius1);
   animation: flip 0.5s forwards cubic-bezier(.48,.45,.69,1.16);
   transform-style: preserve-3d;
+  overflow: hidden;
 }
 
 @keyframes fadeIn {

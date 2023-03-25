@@ -4,17 +4,18 @@ import { useNavigate } from "react-router-dom";
 
 import { UserContext } from "../../../../../utils/context";
 import { Chat } from "../index";
-import { Text, UserImage } from "../../../../global";
+import { SearchBar, Text, UserImage } from "../../../../global";
 import { close, group } from "../../../../../assets/images";
 import loadingLottie from "../../../../../assets/animated/loading.json";
 import addUser from "../../../../../assets/animated/addUser.json";
 import addChat from "../../../../../assets/animated/addChat.json";
+import { ChatModel } from "../../../../../apis/models";
 import "./styles.css";
 
 interface ChatBarProps {
   setModal: (input: boolean) => void;
   openInfo: (index: number) => void;
-  chats: any[];
+  chats: ChatModel[];
   selected: number | null;
   setSelected: (input: number) => void;
   getChats: () => void;
@@ -37,7 +38,31 @@ export const Chatbar = ({
 }: ChatBarProps) => {
   const { user } = React.useContext(UserContext);
 
+  const [filteredchats, setfilteredchats] = React.useState<ChatModel[]>([]);
+
+  const renderdChats = filteredchats.length > 0 ? filteredchats : chats;
+
+  const searchBarRef = React.useRef<HTMLInputElement>(null);
+
   const navigate = useNavigate();
+
+  const handleSearch = (text: string) => {
+    setfilteredchats(
+      chats.filter((chat) => {
+        const name = chat.isGroupChat
+          ? chat.chatName
+          : chat?.users?.find(
+              (chatUser: any) => chatUser?.email !== user?.email
+            )?.name ?? "";
+        console.log(name);
+
+        return name.toLowerCase().includes(text.toLowerCase());
+      })
+    );
+    console.log("filterChats: ", filteredchats);
+  };
+
+  const handleChatClick = (index: number) => {};
 
   return (
     <div className={`chatbar-main ${active ? "active" : ""}`}>
@@ -59,6 +84,14 @@ export const Chatbar = ({
         <Lottie loop animationData={addUser} style={{ height: "3rem" }} />
         <Text varient="content1">New Chat</Text>
       </div>
+      {/* <div className="search">
+        <SearchBar
+          ref={searchBarRef}
+          placeholder="Search chat"
+          onChange={(text) => handleSearch(text)}
+          time={400}
+        />
+      </div> */}
       <div className="all-chats" onClick={getChats}>
         <Text varient="content2" italic style={{ padding: "0.4rem" }}>
           All chats{" "}
@@ -87,7 +120,7 @@ export const Chatbar = ({
           </Text>
         </div>
       ) : (
-        chats?.map((item: any, index) => {
+        renderdChats?.map((item: ChatModel, index) => {
           const isGroupChat = item?.isGroupChat;
           const name = !isGroupChat
             ? item?.users?.find(
@@ -108,7 +141,7 @@ export const Chatbar = ({
           return (
             <Chat
               key={index}
-              name={name}
+              name={name ?? ""}
               online={false} //this feature is yet to be done
               openInfo={() => {
                 console.log("clicked on ", index);

@@ -2,6 +2,7 @@ import React from "react";
 import { io } from "socket.io-client";
 
 import { AllMessages, Chats, ReadByUsers, SendMessage } from "../../../apis";
+import { ChatModel, MessageModel } from "../../../apis/models";
 import {
   faviconNormal,
   faviconNotification,
@@ -33,12 +34,12 @@ export const Home = () => {
   const [options, setOptions] = React.useState<"options" | "info" | null>(null);
   const [infoChat, setInfoChat] = React.useState<any>(null);
 
-  const [chats, setChats] = React.useState<any[]>([]);
+  const [chats, setChats] = React.useState<ChatModel[]>([]);
   const [selected, setSelected] = React.useState<number | null>(null);
   const [active, setActive] = React.useState<boolean>(false);
   const [chatLoading, setChatLoading] = React.useState<boolean>(false);
 
-  const [messages, setMessages] = React.useState<any[]>([]);
+  const [messages, setMessages] = React.useState<MessageModel[]>([]);
   const [messageLoading, setMessageLoading] = React.useState<boolean>(false);
   const [typing, setTyping] = React.useState<boolean>(false);
 
@@ -159,7 +160,7 @@ export const Home = () => {
         const ifUserHasRead = chat?.readBy?.filter(
           (item: any) => item?._id === user?._id
         );
-        if (ifUserHasRead.length === 0) return true;
+        if (ifUserHasRead?.length === 0) return true;
         else return false;
       }).length ?? 0;
     setUnreadMessages(noOfUnreadMessages);
@@ -333,7 +334,7 @@ export const Home = () => {
       />
       <div className="home-content">
         <Topbar
-          userName={selectedUserName}
+          userName={selectedUserName ?? ""}
           openOptions={() => setOptions("options")}
           {...{ setActive, unreadMessages }}
         />

@@ -2,11 +2,16 @@ import React from "react";
 import { Search } from "../../../../../apis";
 import { GET, POST } from "../../../../../utils/fetch";
 import { CreateChat as CC, CreateGroup as CG } from "../../../../../apis";
-import { Button, Input, Switch, Text, UserImage } from "../../../../global";
+import {
+  Button,
+  Input,
+  SearchBar,
+  Switch,
+  Text,
+  UserImage
+} from "../../../../global";
 import { UserContext } from "../../../../../utils/context";
 import "./styles.css";
-import { debounce } from "ts-debounce";
-
 interface UserOptionProps {
   image_url?: string;
   name: string;
@@ -51,8 +56,6 @@ export const CreateChat = ({ close }: { close: () => void }) => {
 
   const { user } = React.useContext(UserContext);
 
-  let searchText = "";
-
   React.useEffect(() => {
     if (!groupChat) {
       setSelectedUsers([]);
@@ -80,13 +83,12 @@ export const CreateChat = ({ close }: { close: () => void }) => {
     });
   };
 
-  const handleSearch = async () => {
-    const res = await GET(Search + `search=${searchText}`, user?.token);
+  const handleSearch = async (text: string) => {
+    const res = await GET(Search + `search=${text}`, user?.token);
     if (res) {
       setUsers(res);
     }
   };
-  const debouncedSearch = debounce(handleSearch, 800);
 
   const createChat = async () => {
     const userId = selectedUsers[0]?._id;
@@ -157,13 +159,10 @@ export const CreateChat = ({ close }: { close: () => void }) => {
         onFocus={() => setUserOptions(true)}
         onClick={(e) => e.stopPropagation()}
       >
-        <input
-          type="search"
-          placeholder="Search for user"
-          onChange={(e) => {
-            searchText = e.target.value;
-            debouncedSearch();
-          }}
+        <SearchBar
+          onChange={(text) => handleSearch(text)}
+          time={500}
+          placeholder="Search for users"
         />
         {userOptions && users.length > 0 ? (
           <div className="users">

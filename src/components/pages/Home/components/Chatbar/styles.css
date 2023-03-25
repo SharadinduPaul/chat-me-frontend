@@ -92,7 +92,9 @@
   width: 1.2rem;
   letter-spacing: 2px;
 }
-
+.chatbar-main > .search {
+  padding: 0rem 0.3rem;
+}
 .chatbar-main .close {
   display: none;
   height: 1.2rem !important;

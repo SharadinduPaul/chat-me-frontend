@@ -1,4 +1,5 @@
 import React from "react";
+import { UserModal } from "../apis/models";
 
 export interface UserInterface {
   name?: string;
@@ -8,8 +9,8 @@ export interface UserInterface {
   _id?: string;
 }
 export const UserContext = React.createContext<{
-  user: UserInterface;
-  setUser: (input: UserInterface) => void;
+  user: UserModal;
+  setUser: (input: UserModal) => void;
 }>({
   user: {},
   setUser: () => {}

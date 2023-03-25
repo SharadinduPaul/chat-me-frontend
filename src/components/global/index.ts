@@ -4,5 +4,6 @@ export { Input } from "./Input";
 export { Layout } from "./Layout";
 export { Modal } from "./Modal";
 export { UserImage } from "./UserImage";
+export { SearchBar } from "./SearchBar";
 export { Switch } from "./Switch";
 export { Text } from "./Text";
