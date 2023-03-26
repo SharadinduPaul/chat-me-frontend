@@ -1,0 +1,15 @@
+.about-main{
+    max-height: 100vh;
+    height: 100%;
+    overflow: hidden auto;
+    position: relative;
+}
+.about-main > .content{
+    padding: 3rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.about-main > .content > *{
+    max-width: 600px;
+}
