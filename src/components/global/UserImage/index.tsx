@@ -1,5 +1,5 @@
 import React from "react";
-import { user } from "../../../assets/images";
+import { user } from "../../../assets/icons";
 import "./styles.css";
 
 interface UserImageProps {

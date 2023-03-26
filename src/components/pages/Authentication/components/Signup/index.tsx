@@ -2,7 +2,7 @@ import React from "react";
 import Lottie from "lottie-react";
 import { useNavigate } from "react-router-dom";
 import { Registration } from "../../../../../apis";
-import { close as closePNG } from "../../../../../assets/images";
+import { close as closePNG } from "../../../../../assets/icons";
 import { UserContext } from "../../../../../utils/context";
 import { POST } from "../../../../../utils/fetch";
 import { signUpValidation } from "../../../../../utils/validation";

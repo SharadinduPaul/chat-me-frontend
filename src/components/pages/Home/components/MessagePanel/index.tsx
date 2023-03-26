@@ -6,7 +6,7 @@ import messageloading from "../../../../../assets/animated/messageLoading.json";
 import social from "../../../../../assets/animated/social.json";
 import empty from "../../../../../assets/animated/empty.json";
 import { Text } from "../../../../global";
-import { send } from "../../../../../assets/images";
+import { send } from "../../../../../assets/icons";
 import { sentAtTime } from "../../../../../utils/formatTime";
 import "./styles.css";
 

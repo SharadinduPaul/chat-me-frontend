@@ -1,6 +1,6 @@
 import React from "react";
 import Lottie from "lottie-react";
-import { user as userPNG } from "../../../../../assets/images";
+import { user as userPNG } from "../../../../../assets/icons";
 import { Text, UserImage } from "../../../../global";
 import "./styles.css";
 import typingLottie from "../../../../../assets/animated/typing.json";

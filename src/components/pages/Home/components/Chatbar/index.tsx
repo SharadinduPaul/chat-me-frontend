@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../../../utils/context";
 import { Chat } from "../index";
 import { SearchBar, Text, UserImage } from "../../../../global";
-import { close, group } from "../../../../../assets/images";
+import { close, group } from "../../../../../assets/icons";
 import loadingLottie from "../../../../../assets/animated/loading.json";
 import addUser from "../../../../../assets/animated/addUser.json";
 import addChat from "../../../../../assets/animated/addChat.json";

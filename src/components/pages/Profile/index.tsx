@@ -4,7 +4,7 @@ import Lottie from "lottie-react";
 import loader from "../../../assets/animated/loading-balls.json";
 import { UserContext } from "../../../utils/context";
 import { Button, Footer, Input, Modal, Text } from "../../global";
-import { deletePng, edit, user as userPNG } from "../../../assets/images";
+import { deletePng, edit, user as userPNG } from "../../../assets/icons";
 import { ImageUploader } from "./components/ImageUploader";
 import "./styles.css";
 import { POST } from "../../../utils/fetch";

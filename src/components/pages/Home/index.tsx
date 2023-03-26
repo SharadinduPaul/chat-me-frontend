@@ -7,7 +7,7 @@ import {
   faviconNormal,
   faviconNotification,
   noInternet
-} from "../../../assets/images";
+} from "../../../assets/icons";
 import { changeFavicon } from "../../../utils/changeFavicon";
 import { UserContext } from "../../../utils/context";
 import { GET, POST, PUT } from "../../../utils/fetch";

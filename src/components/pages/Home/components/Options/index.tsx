@@ -6,7 +6,7 @@ import {
   password,
   profile,
   setting
-} from "../../../../../assets/images";
+} from "../../../../../assets/icons";
 import { UserContext } from "../../../../../utils/context";
 import { removeUser } from "../../../../../utils/handleUser";
 import { Text } from "../../../../global";

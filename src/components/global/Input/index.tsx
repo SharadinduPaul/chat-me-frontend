@@ -1,5 +1,5 @@
 import React from "react";
-import { show as showPNG, hide } from "../../../assets/images";
+import { show as showPNG, hide } from "../../../assets/icons";
 import { Text } from "../Text";
 import "./styles.css";
 

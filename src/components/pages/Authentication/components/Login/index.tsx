@@ -1,7 +1,7 @@
 import React from "react";
 import Lottie from "lottie-react";
 import { useNavigate } from "react-router-dom";
-import { close as closePNG } from "../../../../../assets/images";
+import { close as closePNG } from "../../../../../assets/icons";
 import { Login as LoginAPI } from "../../../../../apis";
 import { UserContext } from "../../../../../utils/context";
 import { POST } from "../../../../../utils/fetch";

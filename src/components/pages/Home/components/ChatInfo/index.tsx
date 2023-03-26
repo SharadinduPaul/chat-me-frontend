@@ -1,6 +1,6 @@
 import React from "react";
 import { ChatModel } from "../../../../../apis/models";
-import { block, group, mute } from "../../../../../assets/images";
+import { block, group, mute } from "../../../../../assets/icons";
 import { UserContext } from "../../../../../utils/context";
 import { sentAtTime } from "../../../../../utils/formatTime";
 import { Button, Text, UserImage } from "../../../../global";

@@ -1,5 +1,5 @@
 import React from "react";
-import { noInternet } from "../../../../../assets/images";
+import { noInternet } from "../../../../../assets/icons";
 import { Text } from "../../../../global";
 import "./styles.css";
 

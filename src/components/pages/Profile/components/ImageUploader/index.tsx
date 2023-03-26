@@ -1,5 +1,5 @@
 import React from "react";
-import { profile } from "../../../../../assets/images";
+import { profile } from "../../../../../assets/icons";
 import { Button, Text } from "../../../../global";
 import "./styles.css";
 
