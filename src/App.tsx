@@ -20,7 +20,7 @@ function App() {
   React.useEffect(() => {
     const user = getUser();
     if (!user?.token) {
-      navigate("/auth");
+      navigate("/");
     }
   }, []);
   React.useEffect(() => {

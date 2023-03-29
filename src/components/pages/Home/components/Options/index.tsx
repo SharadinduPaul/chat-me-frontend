@@ -37,7 +37,7 @@ export const Options = ({ openInfo, onLogout }: OptionsProps) => {
     onLogout();
     removeUser();
     setUser({});
-    navigate("/auth");
+    navigate("/");
   };
 
   return (

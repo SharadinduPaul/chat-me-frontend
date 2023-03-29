@@ -4,7 +4,7 @@ import { debounce } from "ts-debounce";
 import { Message } from "../index";
 import messageloading from "../../../../../assets/animated/messageLoading.json";
 import social from "../../../../../assets/animated/social.json";
-import empty from "../../../../../assets/animated/empty.json";
+import hello from "../../../../../assets/animated/hello.json";
 import { Text } from "../../../../global";
 import { send } from "../../../../../assets/icons";
 import { sentAtTime } from "../../../../../utils/formatTime";
@@ -94,8 +94,15 @@ export const MessagePanel = ({
         </div>
       ) : messages.length === 0 ? (
         <div className="lottie-container">
-          <Lottie animationData={empty} style={{ height: "50vmin" }} />
-          <Text varient="header3">No message found. Send a message?</Text>
+          <Lottie
+            animationData={hello}
+            style={{
+              height: "50vmin",
+              maxHeight: "300px",
+              marginBottom: "1.2rem"
+            }}
+          />
+          <Text varient="header3">Say Hello!</Text>
         </div>
       ) : (
         <div ref={msgRef} className="message-container">

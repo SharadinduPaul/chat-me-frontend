@@ -16,8 +16,8 @@ interface ChatBarProps {
   setModal: (input: boolean) => void;
   openInfo: (index: number) => void;
   chats: ChatModel[];
-  selected: number | null;
-  setSelected: (input: number) => void;
+  selectedId: string | null;
+  setSelectedId: (input: string | null) => void;
   getChats: () => void;
   loading: boolean;
   active: boolean;
@@ -28,8 +28,8 @@ export const Chatbar = ({
   setModal,
   openInfo,
   chats,
-  selected,
-  setSelected,
+  selectedId,
+  setSelectedId,
   getChats,
   loading,
   active,
@@ -62,7 +62,14 @@ export const Chatbar = ({
     console.log("filterChats: ", filteredchats);
   };
 
-  const handleChatClick = (index: number) => {};
+  const handleChatClick = (id: string) => {
+    if (searchBarRef.current?.value) {
+      searchBarRef.current.value = "";
+      setfilteredchats([]);
+    }
+    setSelectedId(id);
+    setActive(false);
+  };
 
   return (
     <div className={`chatbar-main ${active ? "active" : ""}`}>
@@ -84,17 +91,21 @@ export const Chatbar = ({
         <Lottie loop animationData={addUser} style={{ height: "3rem" }} />
         <Text varient="content1">New Chat</Text>
       </div>
-      {/* <div className="search">
+      <div className="search">
         <SearchBar
           ref={searchBarRef}
           placeholder="Search chat"
           onChange={(text) => handleSearch(text)}
           time={400}
         />
-      </div> */}
+      </div>
       <div className="all-chats" onClick={getChats}>
         <Text varient="content2" italic style={{ padding: "0.4rem" }}>
-          All chats{" "}
+          {searchBarRef.current?.value
+            ? filteredchats.length > 0
+              ? `Searching for "${searchBarRef.current?.value}"`
+              : `No result for "${searchBarRef.current?.value}"`
+            : "All chats"}{" "}
           {unreadMessages > 0 ? (
             <span className="unreadMessages">({unreadMessages})</span>
           ) : null}
@@ -150,12 +161,9 @@ export const Chatbar = ({
               image_url={pic}
               read={readByIds?.includes(user?._id)}
               latestMessage={latestMessage}
-              selected={selected === index}
+              selected={selectedId === item?._id}
               updatedAt={updatedAt}
-              onClick={() => {
-                setSelected(index);
-                setActive(false);
-              }}
+              onClick={() => handleChatClick(item?._id)}
             />
           );
         })

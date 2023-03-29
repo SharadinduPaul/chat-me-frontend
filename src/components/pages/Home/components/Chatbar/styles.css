@@ -5,8 +5,11 @@
   background-color: var(--bg-primary);
   padding-bottom: 2rem;
   position: relative;
-  overflow: auto;
+  overflow: hidden auto;
   border-inline: 2px solid var(--bg-primary);
+}
+.chatbar-main::-webkit-scrollbar {
+  width: 0;
 }
 .chatbar-main > .heading {
   height: var(--topbar-height);
@@ -93,7 +96,7 @@
   letter-spacing: 2px;
 }
 .chatbar-main > .search {
-  padding: 0rem 0.3rem;
+  padding: 1rem 0.3rem 0;
 }
 .chatbar-main .close {
   display: none;

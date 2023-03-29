@@ -35,7 +35,7 @@ export const Home = () => {
   const [infoChat, setInfoChat] = React.useState<any>(null);
 
   const [chats, setChats] = React.useState<ChatModel[]>([]);
-  const [selected, setSelected] = React.useState<number | null>(null);
+  const [selectedId, setSelectedId] = React.useState<string | null>(null);
   const [active, setActive] = React.useState<boolean>(false);
   const [chatLoading, setChatLoading] = React.useState<boolean>(false);
 
@@ -148,13 +148,13 @@ export const Home = () => {
     if (!modal) getChats();
   }, [modal]);
   React.useEffect(() => {
-    if (selected !== null) {
-      selectedChat = chats[selected];
-      getMessages(chats[selected]);
+    if (selectedId !== null) {
+      const chat = chats.find((item) => item?._id === selectedId);
+      selectedChat = chat
+      getMessages(chat);
     }
-  }, [selected]);
+  }, [selectedId]);
   React.useEffect(() => {
-    console.log("chat updated", chats);
     const noOfUnreadMessages =
       chats.filter((chat) => {
         const ifUserHasRead = chat?.readBy?.filter(
@@ -185,9 +185,9 @@ export const Home = () => {
 
   const getMessages = async (chat: any) => {
     setMessageLoading(true);
-    if (selected === null) return;
+    if (selectedId === null) return;
 
-    const res = await GET(AllMessages + chats[selected]?._id, user?.token);
+    const res = await GET(AllMessages + selectedChat?._id, user?.token);
 
     if (res) {
       //updateing messages
@@ -230,11 +230,11 @@ export const Home = () => {
 
   const sendMessage = async (text: string, chatId: string) => {
     //validation
-    if (!text || selected === null) return;
+    if (!text || selectedId === null) return;
 
     const readByRes = await PUT(
       ReadByUsers,
-      { chatId: chats[selected]?._id, users: [user?._id] },
+      { chatId: selectedChat?._id, users: [user?._id] },
       user?.token
     );
     if (readByRes) {
@@ -264,7 +264,7 @@ export const Home = () => {
       //setting the new message as latest message in chats
       setChats((prev) => {
         const updatedChats = prev?.map((item: any) => {
-          if (item?._id === chats[selected ?? 0]?._id) {
+          if (item?._id === selectedChat?._id) {
             return { ...item, latestMessage: res };
           } else {
             return item;
@@ -276,15 +276,15 @@ export const Home = () => {
   };
 
   const selectedUserName =
-    selected !== null
-      ? chats[selected]?.isGroupChat
-        ? chats[selected]?.chatName
-        : chats[selected]?.users?.find(
+    selectedId !== null
+      ? selectedChat?.isGroupChat
+        ? selectedChat?.chatName
+        : selectedChat?.users?.find(
             (item: any) => item?.email !== user?.email
           )?.name
       : "Messages";
 
-  const chatId: string = selected !== null ? selectedChat?._id : "";
+  const chatId: string = selectedChat?._id ?? "";
 
   return (
     <div className="home-main">
@@ -325,8 +325,8 @@ export const Home = () => {
         {...{
           chats,
           getChats,
-          selected,
-          setSelected,
+          selectedId,
+          setSelectedId,
           active,
           setActive,
           unreadMessages
@@ -340,14 +340,14 @@ export const Home = () => {
         />
         <div className="message-container">
           <MessagePanel
-            noChatSelected={selected === null}
+            noChatSelected={selectedId === null}
             loading={messageLoading}
             faded={active}
             readBy={
               chats
-                ? chats[selected ?? 0]?.readBy?.filter(
-                    (item: any) => item?._id !== user?._id
-                  )
+                ? chats
+                    .find((item) => item?._id === selectedId)
+                    ?.readBy?.filter((item: any) => item?._id !== user?._id) ?? []
                 : []
             }
             closeChatbar={() => setActive(false)}
