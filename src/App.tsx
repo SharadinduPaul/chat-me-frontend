@@ -32,7 +32,8 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route path="chat" element={<HomePage />} />
+            {/* <Route path="chat" element={<HomePage />} /> */}
+            <Route path="chat/*" element={<HomePage />} />
             <Route index element={<AuthenticationPage />} />
             <Route path="auth" element={<AuthenticationPage />} />
             <Route path="profile" element={<ProfilePage />} />

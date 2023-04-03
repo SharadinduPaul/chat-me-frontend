@@ -40,9 +40,9 @@ export const Chatbar = ({
 
   const [filteredchats, setfilteredchats] = React.useState<ChatModel[]>([]);
 
-  const renderdChats = filteredchats.length > 0 ? filteredchats : chats;
-
   const searchBarRef = React.useRef<HTMLInputElement>(null);
+
+  const renderdChats = filteredchats.length > 0 ? filteredchats : chats;
 
   const navigate = useNavigate();
 
@@ -59,10 +59,10 @@ export const Chatbar = ({
         return name.toLowerCase().includes(text.toLowerCase());
       })
     );
-    console.log("filterChats: ", filteredchats);
   };
 
   const handleChatClick = (id: string) => {
+    navigate("/chat?chat_id=" + id);
     if (searchBarRef.current?.value) {
       searchBarRef.current.value = "";
       setfilteredchats([]);

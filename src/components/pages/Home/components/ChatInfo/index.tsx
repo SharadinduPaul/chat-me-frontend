@@ -66,7 +66,7 @@ export const ChatInfo = ({ chat }: ChatInfoProps) => {
               </Text>
               <div className="group-members">
                 {chat?.users?.map((item, index) => (
-                  <div className="user-item">
+                  <div className="user-item" key={index}>
                     <UserImage
                       imageUrl={item?.pic}
                       rounded

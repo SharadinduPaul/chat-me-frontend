@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { io } from "socket.io-client";
 
 import { AllMessages, Chats, ReadByUsers, SendMessage } from "../../../apis";
@@ -30,7 +31,7 @@ export const Home = () => {
   const [online, setOnline] = React.useState<boolean>(true);
   // const [focus, setFocus] = React.useState<boolean>(true);
 
-  const [modal, setModal] = React.useState<boolean>(false);
+  const [createChat, setCreateChat] = React.useState<boolean>(false);
   const [options, setOptions] = React.useState<"options" | "info" | null>(null);
   const [infoChat, setInfoChat] = React.useState<any>(null);
 
@@ -47,17 +48,22 @@ export const Home = () => {
 
   const { user } = React.useContext(UserContext);
 
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const audio = new Audio(
     String(require("../../../assets/audio/notification.mp3"))
   );
 
   React.useEffect(() => {
     document.title = "Messages | Chatme";
-    let focus = true;
+    getChats();
+    // let focus = true; //this is a future change
 
-    //to check for focus
-    window.addEventListener("focus", () => (focus = true));
-    window.addEventListener("blur", () => (focus = false));
+    //to check for focus //this is a future change
+    // window.addEventListener("focus", () => (focus = true));
+    // window.addEventListener("blur", () => (focus = false));
 
     //to check online offline status of website
     window.addEventListener("online", () => setOnline(true));
@@ -145,15 +151,23 @@ export const Home = () => {
   }, []);
 
   React.useEffect(() => {
-    if (!modal) getChats();
-  }, [modal]);
+    const urlChatId = searchParams.get("chat_id");
+    if (urlChatId !== selectedId && urlChatId !== null && selectedId !== null) {
+      setSelectedId(urlChatId);
+    }
+  }, [location]);
+
+  //this useeffect sets the selectedChat variable
   React.useEffect(() => {
     if (selectedId !== null) {
       const chat = chats.find((item) => item?._id === selectedId);
-      selectedChat = chat
+      selectedChat = chat;
+
       getMessages(chat);
     }
   }, [selectedId]);
+
+  // this useeffeect updates the title and favIcon when a notification is received
   React.useEffect(() => {
     const noOfUnreadMessages =
       chats.filter((chat) => {
@@ -173,6 +187,7 @@ export const Home = () => {
     }
   }, [chats]);
 
+  //fetch chats
   const getChats = async () => {
     setChatLoading(true);
     const res = await GET(Chats, user?.token);
@@ -187,7 +202,7 @@ export const Home = () => {
     setMessageLoading(true);
     if (selectedId === null) return;
 
-    const res = await GET(AllMessages + selectedChat?._id, user?.token);
+    const res = await GET(AllMessages + chat?._id, user?.token);
 
     if (res) {
       //updateing messages
@@ -217,6 +232,7 @@ export const Home = () => {
     socket?.emit("join chat", selectedChat?._id);
   };
 
+  //PUT request to update readByArray
   const sendReadBy = async (chatId: string, users: any[]) => {
     await PUT(
       ReadByUsers,
@@ -228,6 +244,7 @@ export const Home = () => {
     );
   };
 
+  //POST send message
   const sendMessage = async (text: string, chatId: string) => {
     //validation
     if (!text || selectedId === null) return;
@@ -275,36 +292,49 @@ export const Home = () => {
     }
   };
 
+  const openOptions = () => {
+    navigate("/chat?chat_options");
+    setOptions("options");
+  };
+  const openInfo = (chat: ChatModel = selectedChat) => {
+    navigate("/chat?chat_profile");
+    setInfoChat(chat);
+    setOptions("info");
+  };
+
   const selectedUserName =
     selectedId !== null
       ? selectedChat?.isGroupChat
         ? selectedChat?.chatName
-        : selectedChat?.users?.find(
-            (item: any) => item?.email !== user?.email
-          )?.name
+        : selectedChat?.users?.find((item: any) => item?.email !== user?.email)
+            ?.name
       : "Messages";
 
   const chatId: string = selectedChat?._id ?? "";
 
   return (
     <div className="home-main">
-      <img src={noInternet} style={{ display: "none" }} />{" "}
-      {/* dont touch this line */}
-      {modal ? (
-        <Modal onClose={() => setModal(false)}>
-          <CreateChat close={() => setModal(false)} />
+      <img src={noInternet} style={{ display: "none" }} />
+      {/* dont touch this line above ^^^ */}
+      {createChat ? (
+        <Modal
+          onClose={() => {
+            setCreateChat(false);
+            getChats();
+          }}
+        >
+          <CreateChat close={() => setCreateChat(false)} />
         </Modal>
       ) : null}
       {options ? (
-        <Modal onClose={() => setOptions(null)}>
+        <Modal
+          onClose={() => {
+            navigate(-1);
+            setOptions(null);
+          }}
+        >
           {options === "options" ? (
-            <Options
-              openInfo={() => {
-                setInfoChat(selectedChat);
-                setOptions("info");
-              }}
-              onLogout={() => socket.disconnect()}
-            />
+            <Options openInfo={openInfo} onLogout={() => socket.disconnect()} />
           ) : (
             <ChatInfo chat={infoChat} />
           )}
@@ -316,12 +346,9 @@ export const Home = () => {
         </Modal>
       ) : null}
       <Chatbar
-        setModal={setModal}
+        setModal={setCreateChat}
         loading={chatLoading}
-        openInfo={(index) => {
-          setInfoChat(chats[index]);
-          setOptions("info");
-        }}
+        openInfo={(index) => openInfo(chats[index])}
         {...{
           chats,
           getChats,
@@ -335,7 +362,7 @@ export const Home = () => {
       <div className="home-content">
         <Topbar
           userName={selectedUserName ?? ""}
-          openOptions={() => setOptions("options")}
+          openOptions={openOptions}
           {...{ setActive, unreadMessages }}
         />
         <div className="message-container">
@@ -347,7 +374,8 @@ export const Home = () => {
               chats
                 ? chats
                     .find((item) => item?._id === selectedId)
-                    ?.readBy?.filter((item: any) => item?._id !== user?._id) ?? []
+                    ?.readBy?.filter((item: any) => item?._id !== user?._id) ??
+                  []
                 : []
             }
             closeChatbar={() => setActive(false)}
