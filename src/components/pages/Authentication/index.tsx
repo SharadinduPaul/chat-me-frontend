@@ -11,6 +11,8 @@ import authpage2 from "../../../assets/animated/authPage2.json";
 import authpage3 from "../../../assets/animated/authPage3.json";
 import { Login as LoginAPI } from "../../../apis";
 import { POST } from "../../../utils/fetch";
+import { faviconNormal } from "../../../assets/icons";
+import { changeFavicon } from "../../../utils/changeFavicon";
 import "./styles.css";
 
 export const Authentication = () => {
@@ -25,6 +27,8 @@ export const Authentication = () => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
+    changeFavicon(faviconNormal);
+
     if (banner1.current) {
       const observer = new IntersectionObserver((e) => {
         banner1.current?.classList.toggle("show", e[0]?.isIntersecting);

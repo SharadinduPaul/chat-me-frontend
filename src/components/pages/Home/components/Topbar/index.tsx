@@ -1,7 +1,5 @@
 import React from "react";
-import Lottie from "lottie-react";
 import { menu, options } from "../../../../../assets/icons";
-import bellLottie from "../../../../../assets/animated/bell.json";
 import { Text } from "../../../../global";
 import "./styles.css";
 
@@ -19,13 +17,9 @@ export const Topbar = ({
 }: TopbarProps) => {
   return (
     <div className="topbar-main">
-      <div>
-        <img
-          src={menu}
-          className="menu"
-          alt="menu"
-          onClick={() => setActive(true)}
-        />
+      <div className="menu-button" onClick={() => setActive(true)}>
+        <img src={menu} alt="menu" />
+        {unreadMessages > 0 ? <div className="red-dot" /> : null}
       </div>
       <Text className="name" style={{ fontSize: "17px", fontWeight: "500" }}>
         {userName}

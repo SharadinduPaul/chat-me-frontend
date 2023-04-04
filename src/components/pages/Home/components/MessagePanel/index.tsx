@@ -22,6 +22,7 @@ interface MessagePanelProps {
   chatId: string;
   readBy: any[];
   closeChatbar: () => void;
+  isGroupChat?: boolean;
 }
 export const MessagePanel = ({
   noChatSelected,
@@ -34,12 +35,13 @@ export const MessagePanel = ({
   typing,
   chatId,
   readBy = [],
+  isGroupChat = false,
   closeChatbar
 }: MessagePanelProps) => {
   const msgRef = React.useRef<HTMLDivElement>(null);
-  let mytyping = false;
-
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
+
+  let mytyping = false;
 
   React.useEffect(() => {
     if (!loading) {
@@ -106,7 +108,12 @@ export const MessagePanel = ({
         </div>
       ) : (
         <div ref={msgRef} className="message-container">
-          <div style={{ flex: "1" }}></div>
+          <div className="end-guide">
+            <Text faded>
+              Your messages and calls are end-to-end encrypted. No one, not even
+              chatme, can access your personal data.
+            </Text>
+          </div>
           {messages.map((item, index) => {
             const isImage =
               messages[index]?.sender?.email !==
@@ -125,6 +132,8 @@ export const MessagePanel = ({
                 sentAt={sentAtTime(item?.updatedAt)}
                 topRounded={!topFlat}
                 image_url={item?.sender?.pic}
+                senderName={item?.sender?.name}
+                isGroupChat={isGroupChat}
               />
             );
           })}

@@ -60,8 +60,8 @@
   opacity: 1;
 }
 .message-main > .image {
-  height: 2rem;
-  width: 2rem;
+  height: 2.1rem;
+  width: 2.1rem;
   position: relative;
   align-self: flex-end;
 }
@@ -71,4 +71,9 @@
   border-radius: 100px;
   object-fit: cover;
   object-position: center;
+}
+
+.message-sender{
+  padding: 0 0 2px 1vw ;
+  transform: translateY(-5px);
 }

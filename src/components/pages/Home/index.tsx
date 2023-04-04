@@ -379,6 +379,7 @@ export const Home = () => {
                 : []
             }
             closeChatbar={() => setActive(false)}
+            isGroupChat={selectedChat?.isGroupChat}
             {...{
               messages,
               sendMessage,

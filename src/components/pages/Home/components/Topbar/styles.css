@@ -3,18 +3,46 @@
   height: var(--topbar-height);
   background-color: var(--bg-primary);
 
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 
   padding: 0 0.8rem;
 }
-.topbar-main .menu {
+.topbar-main > .menu-button {
   display: none;
-  height: 1.4rem;
-  aspect-ratio: 1/1;
+  position: relative;
+  height: 100%;
   cursor: pointer;
+  padding: 15px;
+  padding-left: 0;
 }
+
+.topbar-main >.menu-button > .red-dot {
+position: absolute;
+top: 27%;
+right: 23%;
+height: 12px;
+width: 12px;
+border-radius: 50%;
+background-color: var(--color-error);
+border: 2px solid var(--bg-primary);
+animation: grow .5s forwards ease;
+}
+@keyframes grow {
+  0%{
+    scale: 0;
+  }
+  100%{
+    scale: 1;
+  }
+}
+
+.topbar-main >.menu-button > img {
+height: 100%;
+}
+
 .topbar-main .options {
   height: 1.7rem;
   cursor: pointer;
@@ -33,7 +61,7 @@
 }
 
 @media all and (max-width: 650px) {
-  .topbar-main .menu {
+  .topbar-main .menu-button {
     display: block;
   }
 }
