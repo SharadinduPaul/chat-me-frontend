@@ -14,6 +14,7 @@ import { getUser, saveUser } from "./utils/handleUser";
 
 function App() {
   const [user, setUser] = React.useState<UserInterface>(getUser() ?? {});
+  const [rememberMe, setRememberMe] = React.useState<boolean>(true);
 
   const navigate = useNavigate();
 
@@ -24,11 +25,11 @@ function App() {
     }
   }, []);
   React.useEffect(() => {
-    if (user) saveUser(user);
+    if (user && rememberMe) saveUser(user);
   }, [user]);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, rememberMe, setRememberMe }}>
       <div className="App">
         <Routes>
           <Route path="/" element={<Layout />}>

@@ -6,7 +6,7 @@ import { close as closePNG } from "../../../../../assets/icons";
 import { UserContext } from "../../../../../utils/context";
 import { POST } from "../../../../../utils/fetch";
 import { signUpValidation } from "../../../../../utils/validation";
-import { Button, Input, Text } from "../../../../global";
+import { Button, Input, Switch, Text } from "../../../../global";
 import loadingPlane from "../../../../../assets/animated/loading-plane.json";
 import "./styles.css";
 
@@ -31,8 +31,11 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
   const [error, setError] = React.useState<
     { errLocation: string; errMessage: string } | undefined
   >(undefined);
+
+  const { user, setUser, rememberMe, setRememberMe } =
+    React.useContext(UserContext);
+
   const navigate = useNavigate();
-  const { user, setUser } = React.useContext(UserContext);
 
   const changeData = (key: string, value: string) => {
     setData((prev) => {
@@ -145,6 +148,19 @@ export const Signup = ({ active, close, setLoginActive }: SignupProps) => {
           <Lottie animationData={loadingPlane} style={{ height: "16rem" }} />
         </div>
       ) : null}
+      <div
+        className="keep-me-logged-in"
+        style={{
+          opacity: rememberMe ? "1" : "0.4",
+          pointerEvents: loading ? "none" : "all"
+        }}
+      >
+        <Text varient="content2">Keep me logged in </Text>
+        <Switch
+          selected={rememberMe}
+          onClick={() => setRememberMe((prev) => !prev)}
+        />
+      </div>
       <Button style={{ marginTop: "2rem" }} type="submit">
         Signup
       </Button>

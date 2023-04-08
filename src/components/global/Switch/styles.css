@@ -1,11 +1,12 @@
 .switch-main {
-  --size: 1rem;
+  --size: 0.7rem;
   height: var(--size);
-  width: calc(var(--size) * 1.5);
+  width: calc(var(--size) * 1.7);
   border-radius: 2rem;
   position: relative;
   cursor: pointer;
   transition: 0.6s;
+  border: 1px solid transparent;
 }
 .switch-main {
   background-color: var(--bg-secondary);
@@ -18,8 +19,8 @@
 }
 .switch-main > div {
   background-color: var(--color-primary);
-  height: calc(var(--size) * 1.2);
-  width: calc(var(--size) * 1.2);
+  height: calc(var(--size) * 1.4);
+  width: calc(var(--size) * 1.4);
 
   position: absolute;
   top: 50%;

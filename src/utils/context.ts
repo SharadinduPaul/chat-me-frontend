@@ -10,8 +10,12 @@ export interface UserInterface {
 }
 export const UserContext = React.createContext<{
   user: UserModal;
-  setUser: (input: UserModal) => void;
+  setUser: React.Dispatch<React.SetStateAction<UserInterface>>;
+  rememberMe: boolean;
+  setRememberMe: React.Dispatch<React.SetStateAction<boolean>>;
 }>({
   user: {},
-  setUser: () => {}
+  setUser: () => {},
+  rememberMe: true,
+  setRememberMe: () => {}
 });
